@@ -1,5 +1,9 @@
 import { useState } from 'react';
-import Footer from '../../components/layout/Footer';
+// import Footer from '../../components/layout/Footer';
+import RegisterImg from '../../images/image 9 (1).png'
+
+
+
 function Auth() {
   const [role, setRole] = useState(null);
 
@@ -18,10 +22,10 @@ function Auth() {
         </div>
 
         <div className="d-none d-md-flex col-md-6 align-items-center justify-content-center bg-light">
-          <img src="/doctor-group.png" alt="Doctors" className="img-fluid" />
+          <img src={RegisterImg} alt="Doctors" className="img-fluid" />
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
