@@ -4,7 +4,7 @@ import Person from '../../images/Shape.png'
 
 const Card = () => {
   return (
-    <div className="card d-flex flex-column g-3 align-content-center justify-items-center" style={{ width: "18rem",height: "20rem" }}>
+    <div className="card d-flex flex-column g-3 align-content-center justify-items-center text-start" style={{ width: "18rem",height: "20rem" }}>
       <div className="card-body">
         
         <div className="d-flex mb-2">
