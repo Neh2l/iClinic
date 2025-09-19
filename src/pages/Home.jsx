@@ -11,7 +11,7 @@ const Carousel = () => {
       id="carouselExample" 
       className="carousel slide d-flex justify-content-center align-items-center"
       data-bs-ride="carousel"
-      style={{ height: "100vh" }}
+      style={{ height: "" }}
     >
       
       <div className="carousel-inner" style={{ width: "80%" }}>
