@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
-import Register from './pages/Auth/Register'
+import Register from './pages/Auth/Register';
 import Layout from './components/layout/Layout';
 import Login from './pages/Auth/Login';
-import Chat from './pages/Chat'
+import Chat from './pages/Chat';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import Doctor from './pages/Doctor';
@@ -39,5 +39,3 @@ function App() {
 }
 
 export default App;
-
-
