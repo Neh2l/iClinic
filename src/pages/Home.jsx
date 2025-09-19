@@ -78,9 +78,7 @@ const Home = () =>{
   return(
 <>
     <Carousel />
-        <Carousel />
-
-            <Carousel />
+       
 </>
   );
 } 
