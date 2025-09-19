@@ -76,8 +76,12 @@ const Carousel = () => {
 
 const Home = () =>{
   return(
-
+<>
     <Carousel />
+        <Carousel />
+
+            <Carousel />
+</>
   );
 } 
 
