@@ -15,10 +15,15 @@
 .primary-btn{
     background-color: var(--primary-color);
     color: var(--white-color);
+    border: none;
+    border-radius: .3rem;
 }
 .secondary-btn{
     color: var(--white-color);
     background-color: var(--secondary-color);
+     border: none;
+    border-radius: .3rem;
+
 }
 .text{
     color: var(--text-color);

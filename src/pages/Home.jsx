@@ -78,6 +78,7 @@ const Home = () =>{
   return(
 <>
     <Carousel />
+    {/* <Forgetpassword/> */}
        
 </>
   );
