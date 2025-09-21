@@ -12,7 +12,7 @@ import Error from './pages/Error';
 function App() {
   return (
  
-  <BrowserRouter>
+<BrowserRouter>
   <Routes>
     <Route path='/' element={<Layout/>}>
     <Route index element={<Home/>}/>
@@ -23,17 +23,10 @@ function App() {
      <Route path='/dashboard' element={<Dashboard/>}/>
      <Route path='/doctor' element={<Doctor/>}/>
      <Route path='/payment' element={<Payment/>}/>
-      <Route path='*' element={<Error/>}/>
-    
-
-    </Route>
-        
-
-
-
+     <Route path='*' element={<Error/>}/>
+    </Route>     
   </Routes>
-  
-  </BrowserRouter>
+</BrowserRouter>
   )
   
 }

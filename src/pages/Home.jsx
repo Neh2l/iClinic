@@ -62,11 +62,11 @@ const Carousel = () => {
 
         <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
           <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span><BiSolidSkipPreviousCircle style={{ color: "black", fontSize: "3rem" }} /></span>
+          <span><BiSolidSkipPreviousCircle className='text' style={{ fontSize: "3rem" }} /></span>
         </button>
         <button className="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
           <span className="carousel-control-next-icon" aria-hidden="true"></span>
-          <span><BiSolidSkipNextCircle style={{ color: "black", fontSize: "3rem" }} /></span>
+          <span><BiSolidSkipNextCircle className='text' style={{ fontSize: "3rem" }} /></span>
         </button>
 
       </div>
