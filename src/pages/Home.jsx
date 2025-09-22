@@ -3,6 +3,7 @@ import Card from '../components/ui/Card';
 import '../styles/OurServices.css';
 import '../styles/OverView.css';
 import { BiSolidSkipNextCircle, BiSolidSkipPreviousCircle } from 'react-icons/bi';
+import styles from '../styles/landing.module.css';
 
 const Carousel = () => {
   return (
@@ -266,10 +267,68 @@ const OverView = () =>{
        </>
       );
 }
+const Hero = () =>{
+    return (
+        <div>
+            <main>
+                <section className={styles.hero}>
+                    <div className={styles.heroText}>
+                        <h1>
+                            Your Health,<br />
+                            <span className={styles.primary}>Anytime.<br /></span>
+                            <span className={styles.secondary}>Anywhere!</span>
+                        </h1>
+                        <p>
+                            Connect instantly with trusted doctors online.<br />
+                            Book appointments, chats for consultations,<br />
+                            and get medical advice across all specialties <br />
+                            - all from the comfort of your home
+                        </p>
 
+                        <a href="#" className={styles.exploreContainer}>
+                            <button className={styles.exploreBtn}>Explore now</button>
+                            <img src="/Arrow right-circle.png" alt="arrow" />
+                        </a>
+                    </div>
+
+                    <div className={styles.heroImg}>
+                        <img src="/image 1.png" alt="Verification" />
+                    </div>
+                </section>
+
+                <section className={styles.stats}>
+                    <div className={styles.stat}><h1>200+</h1><p>Doctors</p></div>
+                    <div className={styles.stat}><h1>3.2M+</h1><p>Site users</p></div>
+                    <div className={styles.stat}><h1>3.0M+</h1><p>Rating</p></div>
+                    <div className={styles.stat}><h1>6.5M+</h1><p>Appointment</p></div>
+                </section>
+            </main>
+        </div>
+    );
+}
+const Nav = () =>{
+    return (
+        <header>
+            <nav className={styles.nav}>
+                <div className={styles.logo}>IClinic</div>
+                <div className={styles.navLinks}>
+                    <a href="#features#">Features</a>
+                    <a href="#how-it-works#">How it works</a>
+                    <a href="#testimonies">Testimonies</a>
+                </div>
+                <div className={styles.navButtons}>
+                    <a href="#"><button className={styles.login}>Log in</button></a>
+                    <a href="#"><button className={styles.signup}>Sign up</button></a>
+                </div>
+            </nav>
+        </header>
+    );
+}
 const Home = () =>{
   return(
 <>
+    <Nav></Nav>
+    <Hero></Hero>
     <OurServices /> 
     <OverView />
     <Carousel />
