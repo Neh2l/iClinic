@@ -273,6 +273,7 @@ const Home = () =>{
     <OurServices /> 
     <OverView />
     <Carousel />
+    {/* <Forgetpassword/> */}
        
 </>
   );
