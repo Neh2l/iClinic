@@ -8,11 +8,14 @@ import Home from './pages/Home';
 import Doctor from './pages/Doctor';
 import Payment from './pages/Payment';
 import Error from './pages/Error';
+import Forgetpassword from './pages/Forgetpassword';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
  
 <BrowserRouter>
+<ToastContainer position="top-center" autoClose={3000} />
   <Routes>
     <Route path='/' element={<Layout/>}>
     <Route index element={<Home/>}/>
@@ -23,9 +26,12 @@ function App() {
      <Route path='/dashboard' element={<Dashboard/>}/>
      <Route path='/doctor' element={<Doctor/>}/>
      <Route path='/payment' element={<Payment/>}/>
+      <Route path='/forgetpassword' element={<Forgetpassword/>}/>
      <Route path='*' element={<Error/>}/>
+    
     </Route>     
   </Routes>
+   
 </BrowserRouter>
   )
   
