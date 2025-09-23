@@ -30,7 +30,7 @@ const CreateNewPassword = () => {
   }
 
   return (
-    <div className="container text-center p-5">
+    <div className="container text-center p-5ٍ">
       <div className="row align-items-center">
         
         <div className="col-12 col-md-6  ">
