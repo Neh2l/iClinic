@@ -1,0 +1,143 @@
+.login-page {
+  font-family: sans-serif;
+  padding: 20px;
+  display: flex;
+  margin-left: 50px;
+  margin-top: 50px;
+  align-items: center;
+}
+.login-page .form-container {
+  padding: 10px;
+  margin: 50px;
+  max-width: 300px;
+}
+.login-page .form-container h1 {
+  text-align: center;
+  font-weight: bold;
+}
+.login-page .form-container p {
+  color: gray;
+  font-weight: normal;
+  font-size: small;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.login-page .form-container label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333333;
+}
+.login-page .form-container input {
+  width: 265px;
+  padding: 5px;
+  margin-bottom: 20px;
+  margin-top: 5px;
+  height: 35px;
+}
+.login-page .form-container h5 {
+  color: gray;
+  text-align: center;
+  font-size: small;
+  margin-top: 20px;
+}
+.login-page .log {
+  border: none;
+  border-radius: 5px;
+  background-color: #015d82;
+  color: white;
+  padding: 8px;
+  cursor: pointer;
+  width: 265px;
+  font-weight: bold;
+  margin-top: 15px;
+  transition: background 0.3s ease;
+}
+.login-page .log:hover {
+  background-color: hsl(197, 98%, 36%);
+}
+.login-page .forget {
+  border: none;
+  border-radius: 5px;
+  background-color: #f5f5f5;
+  color: #015d82;
+  padding: 8px;
+  cursor: pointer;
+  width: 265px;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: background 0.3s ease;
+}
+.login-page .forget:hover {
+  background-color: hsl(0, 0%, 86%);
+}
+.pic img {
+  height: 90vh;
+  margin: 0%;
+  padding: 0%;
+}
+@media screen and (max-width: 480px) {
+  .login-page {
+    flex-direction: column;
+    margin: 20px auto;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .pic img {
+    display: none;
+  }
+
+  .login-page .form-container {
+    margin: 20px;
+    max-width: 100%;
+  }
+
+  .login-page .form-container input,
+  .login-page .log,
+  .login-page .forget {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 481px) and (max-width: 1024px) {
+  .login-page {
+    flex-direction: column;
+    margin: 30px auto;
+    align-items: center;
+    text-align: center;
+  }
+
+  .pic img {
+    display: none;
+  }
+
+  .login-page .form-container {
+    margin: 30px;
+    max-width: 80%;
+  }
+
+  .login-page .form-container input,
+  .login-page .log,
+  .login-page .forget {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 1225px) {
+  .login-page {
+    max-width: 1000px;
+    margin: 50px auto;
+    gap: 50px;
+  }
+
+  .pic img {
+    height: 80vh;
+  }
+
+  .login-page .form-container input,
+  .login-page .log,
+  .login-page .forget {
+    width: 320px;
+  }
+}
