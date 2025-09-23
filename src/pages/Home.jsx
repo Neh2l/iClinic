@@ -79,7 +79,7 @@ const Carousel = () => {
 const OurServices = () =>{
     return (
         <>
-        <div className="container text-center our-services">
+        <div id="features"  className="container text-center our-services">
 
             <div className="services-titles">
                 <h1 className="title-one"> <span className="our-word text"> Our </span> <span className="services-word primary-text"> Services </span> </h1>
@@ -150,7 +150,7 @@ const OurServices = () =>{
 const OverView = () =>{
       return(
        <>
-       <div className="overview-container container">
+       <div id="how-it-works" className="overview-container container">
         <div className="row g-3">
 
          <div className="overview-info col-lg-4 col-md-5 col-sm-12 ">
@@ -269,7 +269,7 @@ const OverView = () =>{
 }
 const Hero = () =>{
     return (
-        <div>
+        <div id="home">
             <main>
                 <section className={styles.hero}>
                     <div className={styles.heroText}>
@@ -312,9 +312,10 @@ const Nav = () =>{
             <nav className={styles.nav}>
                 <div className={styles.logo}>IClinic</div>
                 <div className={styles.navLinks}>
-                    <a href="#features#">Features</a>
-                    <a href="#how-it-works#">How it works</a>
-                    <a href="#testimonies">Testimonies</a>
+                    <a href="#home">Home</a>
+                    <a href="#features">Features</a>
+                    <a href="#how-it-works">How it works</a>
+                    <a href="#carouselExample">Testimonies</a>
                 </div>
                 <div className={styles.navButtons}>
                     <a href="#"><button className={styles.login}>Log in</button></a>
