@@ -10,7 +10,7 @@ import "../../styles/Forgot.css";
 import styles from '../../styles/verification.module.css'
 
 
- const OTPInput = ()=> {
+ const Verification = ({ goBack, goCreateNew })=> {
   const [otp, setOtp] = useState(Array(6).fill(""));
   const inputsRef = useRef([]);
 
@@ -40,7 +40,9 @@ import styles from '../../styles/verification.module.css'
      alert("Entered Code: " + otp.join(""));
      setOtp(Array(6).fill("")); 
      inputsRef.current[0].focus();  
+     goCreateNew();
    };
+
 
   return (
     <div className={styles.optContainer}>
@@ -91,11 +93,11 @@ import styles from '../../styles/verification.module.css'
 };
 
 
-const CreateNewPassword = ({goBack}) => {
+const CreateNewPassword = ({goBack ,goLogin}) => {
   const [password, setpassword] = useState("");
   const [confirm, setconfirm] = useState("");
   const [error, seterror] = useState("");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handlesubmit = (e) => {
     e.preventDefault();
@@ -113,11 +115,11 @@ const CreateNewPassword = ({goBack}) => {
     }
     seterror("");
     toast.success("Password created successfully!");
-    navigate("/login");
+       goLogin();
   };
 
   return (
-    <div className="container text-center p-5ٍ">
+    <div className="container text-center p-5ٍ mt-5">
       <div className="row align-items-center">
         <div className="col-12 col-md-6  ">
           <h3>Create new password</h3>
@@ -158,8 +160,8 @@ const CreateNewPassword = ({goBack}) => {
             </button>
             <p
               className="secondary-text mt-2"
-              onClick={() => navigate("/login")}
-            >
+              onClick={goLogin}
+                          >
               Back to login ?
             </p>
           </form>
@@ -228,15 +230,6 @@ const ForgotPass = ({ goBack, goVerification }) => {
   );
 };
 
-const Verification = ({goBack,goCreate}) => {
-  return (
-    <div>
-    <h1>verfication</h1>
-      
-    </div>
-  )
-}
-
 
 
 const Login = () => {
@@ -269,13 +262,13 @@ const Login = () => {
     return (
       <Verification
         goBack={() => setpage("ForgotPass")}
-        goCreate={() => setpage("CreateNewPassword")}
+        goCreateNew={() => setpage("CreateNewPassword")}
       />
     );
   }
 
   if (page === "CreateNewPassword") {
-    return <CreateNewPassword goBack={() => setpage("Login")} />;
+    return <CreateNewPassword goBack={() => setpage("Login")} goLogin={() => setpage("Login")}  />;
   }
 
   return (
