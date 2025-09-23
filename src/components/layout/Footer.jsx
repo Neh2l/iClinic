@@ -55,7 +55,7 @@ function Footer() {
             </li>
             <li>
               <i className="bi bi-geo-alt-fill me-2"></i>
-              23 Maadi street, Egypt
+              Cairo, Egypt
             </li>
           </ul>
         </div>

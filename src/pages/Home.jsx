@@ -2,42 +2,9 @@ import React from 'react';
 // import Card from '../components/ui/Card';
 import '../styles/OurServices.css';
 import '../styles/OverView.css';
-import Person from "../images/Shape.png"; 
-import { useState } from "react";
-import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
+import { BiSolidSkipNextCircle, BiSolidSkipPreviousCircle } from 'react-icons/bi';
 
-const Reviews = () => {
-  const reviews = [
-  {
-    title: "Great medical platform!",
-    text: "I’ve been using this medical website for a few months now and I can honestly say it has made my life so much easier. The booking system is straightforward, I can easily choose the doctor I want, and the reminders they send help me stay on track with my appointments. What I love the most is the articles section, where I find reliable information about different conditions and treatments. It really feels like the website cares about both patients and doctors, making communication smooth and professional.",
-    name: "Sarah M",
-    place: "London, UK",
-  },
-  {
-    title: "Very professional and helpful",
-    text: "The doctors listed on this website are very professional and easy to reach. I had an issue that required urgent attention and through the site I managed to book an appointment the same day. The interface is clean and I never felt lost while using it. The reviews and ratings also gave me confidence when choosing the right doctor. I also appreciate that the website offers both online consultations and physical visits, so I can choose what works best for me. It really gives me peace of mind knowing I can always find support here find support here.",
-    name: "Ahmed K",
-    place: "Cairo, Egypt",
-  },
-  {
-    title: "Excellent patient experience",
-    text: "From the very first time I logged in, I noticed how simple yet effective the website is. The design is user-friendly, with all the important features placed clearly. I was able to upload my medical history, share it with my doctor, and even access prescriptions online without any difficulty. Another thing I really value is the follow-up system — the website actually reminds me to check in with my doctor and keeps track of my health progress. I honestly think this is one of the best medical platforms available right now, and I’ve already recommended it to my friends and family.",
-    name: "Mona S",
-    place: "Dubai, UAE",
-  },
-];
-
-  const [current, setCurrent] = useState(0);
-
-  const nextReview = () => {
-    setCurrent((prev) => (prev + 1) % reviews.length);
-  };
-
-  const prevReview = () => {
-    setCurrent((prev) => (prev - 1 + reviews.length) % reviews.length);
-  };
-
+const Carousel = () => {
   return (
     <div className="container my-5">
        <div className="services-titles text-end mb-4">
@@ -103,7 +70,7 @@ const Reviews = () => {
 const OurServices = () =>{
     return (
         <>
-        <div className="container text-center our-services">
+        <div id="features"  className="container text-center our-services">
 
             <div className="services-titles">
                 <h1 className="title-one"> <span className="our-word text"> Our </span> <span className="services-word primary-text"> Services </span> </h1>
@@ -174,7 +141,7 @@ const OurServices = () =>{
 const OverView = () =>{
       return(
        <>
-       <div className="overview-container container">
+       <div id="how-it-works" className="overview-container container">
         <div className="row g-3">
 
          <div className="overview-info col-lg-4 col-md-5 col-sm-12 ">
@@ -291,10 +258,69 @@ const OverView = () =>{
        </>
       );
 }
+const Hero = () =>{
+    return (
+        <div id="home">
+            <main>
+                <section className={styles.hero}>
+                    <div className={styles.heroText}>
+                        <h1>
+                            Your Health,<br />
+                            <span className={styles.primary}>Anytime.<br /></span>
+                            <span className={styles.secondary}>Anywhere!</span>
+                        </h1>
+                        <p>
+                            Connect instantly with trusted doctors online.<br />
+                            Book appointments, chats for consultations,<br />
+                            and get medical advice across all specialties <br />
+                            - all from the comfort of your home
+                        </p>
 
+                        <a href="#" className={styles.exploreContainer}>
+                            <button className={styles.exploreBtn}>Explore now</button>
+                            <img src="/Arrow right-circle.png" alt="arrow" />
+                        </a>
+                    </div>
+
+                    <div className={styles.heroImg}>
+                        <img src="/image 1.png" alt="Verification" />
+                    </div>
+                </section>
+
+                <section className={styles.stats}>
+                    <div className={styles.stat}><h1>200+</h1><p>Doctors</p></div>
+                    <div className={styles.stat}><h1>3.2M+</h1><p>Site users</p></div>
+                    <div className={styles.stat}><h1>3.0M+</h1><p>Rating</p></div>
+                    <div className={styles.stat}><h1>6.5M+</h1><p>Appointment</p></div>
+                </section>
+            </main>
+        </div>
+    );
+}
+const Nav = () =>{
+    return (
+        <header>
+            <nav className={styles.nav}>
+                <div className={styles.logo}>IClinic</div>
+                <div className={styles.navLinks}>
+                    <a href="#home">Home</a>
+                    <a href="#features">Features</a>
+                    <a href="#how-it-works">How it works</a>
+                    <a href="#carouselExample">Testimonies</a>
+                </div>
+                <div className={styles.navButtons}>
+                    <a href="#"><button className={styles.login}>Log in</button></a>
+                    <a href="#"><button className={styles.signup}>Sign up</button></a>
+                </div>
+            </nav>
+        </header>
+    );
+}
 const Home = () =>{
   return(
 <>
+    <Nav></Nav>
+    <Hero></Hero>
     <OurServices /> 
     <OverView />
     <Reviews/>
