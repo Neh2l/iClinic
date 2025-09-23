@@ -15,7 +15,7 @@ function App() {
  
 <BrowserRouter>
 <ToastContainer position="top-center" autoClose={3000} />
-<div style={{backgroundColor:"#F5F5F5s"}}>
+<div style={{backgroundColor:"#F5F5F5"}}>
   <Routes>
     <Route path='/' element={<Layout/>}>
     <Route index element={<Home/>}/>
