@@ -5,8 +5,11 @@ import '../styles/OverView.css';
 import Person from "../images/Shape.png"; 
 import { useState } from "react";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
+import styles from '../styles/landing.module.css';
+import { useNavigate } from 'react-router-dom';
 
-const Reviews = () => {
+
+const Testimonies = () => {
   const reviews = [
   {
     title: "Great medical platform!",
@@ -39,9 +42,9 @@ const Reviews = () => {
   };
 
   return (
-    <div className="container my-5">
-       <div className="services-titles text-end mb-4">
-                <h1 className="title-one fw-bold"> <span className="our-word text"> Check out our  </span> <span className="services-word primary-text"> Reviews </span> </h1>
+    <div id='carouselExample' className="container my-5">
+       <div className="services-titles text-start mb-4">
+                <h1 className="title-one w-50 "> <span className="our-word text"> Check some of our </span> <span className="services-word primary-text"> Reviews </span> down here ...</h1>
                 
             </div>
       
@@ -58,9 +61,9 @@ const Reviews = () => {
           className="card border-0 shadow-sm p-4 text-center shadow-lg"
           style={{
             width: "100%",
-            maxWidth: "850px",
-            minHeight: "400px",
-            backgroundColor:"#F5F5F5"
+            maxWidth: "900px",
+            minHeight: "450px",
+            backgroundColor:"#f1ededb7 "
           }}
         >
           <h4 className="secondary-text mb-3">
@@ -103,7 +106,7 @@ const Reviews = () => {
 const OurServices = () =>{
     return (
         <>
-        <div className="container text-center our-services">
+        <div id="features" className="container text-center our-services">
 
             <div className="services-titles">
                 <h1 className="title-one"> <span className="our-word text"> Our </span> <span className="services-word primary-text"> Services </span> </h1>
@@ -174,7 +177,7 @@ const OurServices = () =>{
 const OverView = () =>{
       return(
        <>
-       <div className="overview-container container">
+       <div id="how-it-works"  className="overview-container container">
         <div className="row g-3">
 
          <div className="overview-info col-lg-4 col-md-5 col-sm-12 ">
@@ -291,15 +294,75 @@ const OverView = () =>{
        </>
       );
 }
+const Hero = () =>{
+    return (
+        <div  id="home">
+            <main>
+                <section className={styles.hero}>
+                    <div className={styles.heroText}>
+                        <h1>
+                            Your Health,<br />
+                            <span className={styles.primary}>Anytime.<br /></span>
+                            <span className={styles.secondary}>Anywhere!</span>
+                        </h1>
+                        <p>
+                            Connect instantly with trusted doctors online.<br />
+                            Book appointments, chats for consultations,<br />
+                            and get medical advice across all specialties <br />
+                            - all from the comfort of your home
+                        </p>
+
+                        <a href="#" className={styles.exploreContainer}>
+                            <button className={styles.exploreBtn}>Explore now</button>
+                            <img src="/Arrow right-circle.png" alt="arrow" />
+                        </a>
+                    </div>
+
+                    <div className={styles.heroImg}>
+                        <img src="/image 1.png" alt="Verification" />
+                    </div>
+                </section>
+
+                <section className={styles.stats}>
+                    <div className={styles.stat}><h1>200+</h1><p>Doctors</p></div>
+                    <div className={styles.stat}><h1>3.2M+</h1><p>Site users</p></div>
+                    <div className={styles.stat}><h1>3.0M+</h1><p>Rating</p></div>
+                    <div className={styles.stat}><h1>6.5M+</h1><p>Appointment</p></div>
+                </section>
+            </main>
+        </div>
+    );
+}
+const Nav = () =>{
+  const navigate=useNavigate();
+    return (
+        <header>
+            <nav className={styles.nav}>
+                <div className={styles.logo}>IClinic</div>
+                <div className={styles.navLinks}>
+                       <a href="#home">Home</a>
+                    <a href="#features">Features</a>
+                    <a href="#how-it-works">How it works</a>
+                    <a href="#carouselExample">Testimonies</a>
+                </div>
+                <div className={styles.navButtons}>
+                    <button onClick={()=>{navigate('/login')}} className={styles.login}>Login</button>
+                    <button onClick={()=>{navigate('/register')}} className={styles.signup}>Sign up</button>
+                </div>
+            </nav>
+        </header>
+    );
+}
 
 const Home = () =>{
   return(
 <>
+    <Nav/>
+    <Hero/>
     <OurServices /> 
     <OverView />
-    <Reviews/>
-    {/* <Carousel /> */}
-    {/* <Forgetpassword/> */}
+    <Testimonies/>
+   
        
 </>
   );
