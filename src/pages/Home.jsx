@@ -42,7 +42,7 @@ const Testimonies = () => {
   };
 
   return (
-    <div id='carouselExample' className="container my-5">
+    <div data-aos='fade-up' id='carouselExample' className="container my-5">
        <div className="services-titles text-start mb-4">
                 <h1 className="title-one w-50 "> <span className="our-word text"> Check some of our </span> <span className="services-word primary-text"> Reviews </span> down here ...</h1>
                 
@@ -177,7 +177,7 @@ const OurServices = () =>{
 const OverView = () =>{
       return(
        <>
-       <div id="how-it-works"  className="overview-container container">
+       <div  id="how-it-works"  className="overview-container container">
         <div className="row g-3">
 
          <div className="overview-info col-lg-4 col-md-5 col-sm-12 ">
