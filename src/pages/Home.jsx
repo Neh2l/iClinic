@@ -1,80 +1,105 @@
 import React from 'react';
-import Card from '../components/ui/Card';
+// import Card from '../components/ui/Card';
 import '../styles/OurServices.css';
 import '../styles/OverView.css';
-import { BiSolidSkipNextCircle, BiSolidSkipPreviousCircle } from 'react-icons/bi';
+import Person from "../images/Shape.png"; 
+import { useState } from "react";
+import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 
-const Carousel = () => {
+const Reviews = () => {
+  const reviews = [
+  {
+    title: "Great medical platform!",
+    text: "I’ve been using this medical website for a few months now and I can honestly say it has made my life so much easier. The booking system is straightforward, I can easily choose the doctor I want, and the reminders they send help me stay on track with my appointments. What I love the most is the articles section, where I find reliable information about different conditions and treatments. It really feels like the website cares about both patients and doctors, making communication smooth and professional.",
+    name: "Sarah M",
+    place: "London, UK",
+  },
+  {
+    title: "Very professional and helpful",
+    text: "The doctors listed on this website are very professional and easy to reach. I had an issue that required urgent attention and through the site I managed to book an appointment the same day. The interface is clean and I never felt lost while using it. The reviews and ratings also gave me confidence when choosing the right doctor. I also appreciate that the website offers both online consultations and physical visits, so I can choose what works best for me. It really gives me peace of mind knowing I can always find support here find support here.",
+    name: "Ahmed K",
+    place: "Cairo, Egypt",
+  },
+  {
+    title: "Excellent patient experience",
+    text: "From the very first time I logged in, I noticed how simple yet effective the website is. The design is user-friendly, with all the important features placed clearly. I was able to upload my medical history, share it with my doctor, and even access prescriptions online without any difficulty. Another thing I really value is the follow-up system — the website actually reminds me to check in with my doctor and keeps track of my health progress. I honestly think this is one of the best medical platforms available right now, and I’ve already recommended it to my friends and family.",
+    name: "Mona S",
+    place: "Dubai, UAE",
+  },
+];
+
+  const [current, setCurrent] = useState(0);
+
+  const nextReview = () => {
+    setCurrent((prev) => (prev + 1) % reviews.length);
+  };
+
+  const prevReview = () => {
+    setCurrent((prev) => (prev - 1 + reviews.length) % reviews.length);
+  };
+
   return (
-    <div className="container text-center my-5">
-      <h3 className="mb-4 w-75 mx-auto">
-        check some of our <span className="primary-text">reviews</span> down here...
-      </h3>
+    <div className="container my-5">
+       <div className="services-titles text-end mb-4">
+                <h1 className="title-one fw-bold"> <span className="our-word text"> Check out our  </span> <span className="services-word primary-text"> Reviews </span> </h1>
+                
+            </div>
+      
+      <div className="d-flex justify-content-center align-items-center">
+        <button
+          onClick={prevReview}
+          className="btn btn-light shadow rounded-circle me-3 d-flex justify-content-center align-items-center"
+          style={{ width: "50px", height: "50px" }}
+        >
+          <BiChevronLeft size={28} />
+        </button>
 
-      <div id="carouselExample" className="carousel slide" data-bs-ride="carousel">
-        <div className="carousel-inner">
+        <div
+          className="card border-0 shadow-sm p-4 text-center shadow-lg"
+          style={{
+            width: "100%",
+            maxWidth: "850px",
+            minHeight: "400px",
+            backgroundColor:"#F5F5F5"
+          }}
+        >
+          <h4 className="secondary-text mb-3">
+            <i className="bi bi-quote"></i> {reviews[current].title}
+          </h4>
+          <p className="text-muted" style={{ lineHeight: "1.6" }}>
+            {reviews[current].text}
+          </p>
 
-          <div className="carousel-item active">
-            <div className="d-flex justify-content-center flex-nowrap gap-3">
-
-              <div className="d-none d-lg-block col-lg-3"><Card /></div>
-              <div className="d-none d-lg-block col-lg-3"><Card /></div>
-              <div className="d-none d-lg-block col-lg-3"><Card /></div>
-              <div className="d-none d-lg-block col-lg-3"><Card /></div>
-
-
-              <div className="d-none d-md-flex d-lg-none col-md-6"><Card /></div>
-              <div className="d-none d-md-flex d-lg-none col-md-6"><Card /></div>
-
-
-              <div className="d-flex d-md-none justify-content-center col-10 mx-2"><Card /></div>
+          <div className="d-flex justify-content-center align-items-center gap-3 mt-4">
+            <img
+              src={Person}
+              alt="Person"
+              className="rounded-circle"
+              style={{ width: "3rem", height: "3rem", objectFit: "cover" }}
+            />
+            <div>
+              <h6 className="mb-0 fw-bold">{reviews[current].name}</h6>
+              <p className="mb-0 text-muted" style={{ fontSize: "0.9rem" }}>
+                {reviews[current].place}
+              </p>
             </div>
           </div>
-
-
-          <div className="carousel-item">
-            <div className="d-flex justify-content-center flex-nowrap gap-3">
-              <div className="d-none d-lg-block col-lg-3"><Card /></div>
-              <div className="d-none d-lg-block col-lg-3"><Card /></div>
-              <div className="d-none d-lg-block col-lg-3"><Card /></div>
-              <div className="d-none d-lg-block col-lg-3"><Card /></div>
-
-              <div className="d-none d-md-flex d-lg-none col-md-6"><Card /></div>
-              <div className="d-none d-md-flex d-lg-none col-md-6"><Card /></div>
-
-              <div className="d-flex d-md-none justify-content-center col-10 mx-2"><Card /></div>
-            </div>
-          </div>
-
-          <div className="carousel-item">
-            <div className="d-flex justify-content-center flex-nowrap gap-3">
-              <div className="d-none d-lg-block col-lg-3"><Card /></div>
-              <div className="d-none d-lg-block col-lg-3"><Card /></div>
-              <div className="d-none d-lg-block col-lg-3"><Card /></div>
-              <div className="d-none d-lg-block col-lg-3"><Card /></div>
-
-              <div className="d-none d-md-flex d-lg-none col-md-6"><Card /></div>
-              <div className="d-none d-md-flex d-lg-none col-md-6"><Card /></div>
-
-              <div className="d-flex d-md-none justify-content-center col-10 mx-2"><Card /></div>
-            </div>
-          </div>
-
         </div>
 
-        <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-          <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span><BiSolidSkipPreviousCircle className='text' style={{ fontSize: "3rem" }} /></span>
+        <button
+          onClick={nextReview}
+          className="btn btn-light shadow rounded-circle ms-3 d-flex justify-content-center align-items-center"
+          style={{ width: "50px", height: "50px" }}
+        >
+          <BiChevronRight size={28} />
         </button>
-        <button className="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-          <span className="carousel-control-next-icon" aria-hidden="true"></span>
-          <span><BiSolidSkipNextCircle className='text' style={{ fontSize: "3rem" }} /></span>
-        </button>
-
       </div>
+
+     
     </div>
   );
 };
+
 const OurServices = () =>{
     return (
         <>
@@ -174,11 +199,11 @@ const OverView = () =>{
                   <button type="button" data-bs-target="#slider" data-bs-slide-to="2"></button>
                 </div> {/*the end of div  carousel-indicators*/}
 
-                <div class="carousel-inner">
-                  <div class="carousel-item active d-flex justify-content-center align-items-center" data-bs-interval="3000">
+                <div className="carousel-inner">
+                  <div className="carousel-item active d-flex justify-content-center align-items-center" data-bs-interval="3000">
                     <div className="card rounded-4 text-start p-4 card-field w-50">
                       <div className="card-icon primary-text  d-flex justify-content-center align-items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-droplet" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fillRule="currentColor" className="bi bi-droplet" viewBox="0 0 16 16">
                           <path fill-rule="evenodd" d="M7.21.8C7.69.295 8 0 8 0q.164.544.371 1.038c.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21.8m.413 1.021A31 31 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z"/>
                           <path fill-rule="evenodd" d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87z"/>
                         </svg>
@@ -247,13 +272,13 @@ const OverView = () =>{
                   </div>
 
                 </div> {/*the end of div  carousel-inner*/}
-                <button class="carousel-control-prev" type="button" data-bs-target="#slider" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon"></span>
-                  <span class="visually-hidden">Previous</span>
+                <button className="carousel-control-prev" type="button" data-bs-target="#slider" data-bs-slide="prev">
+                  <span className="carousel-control-prev-icon"></span>
+                  <span className="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next " type="button" data-bs-target="#slider" data-bs-slide="next">
-                  <span class="carousel-control-next-icon "></span>
-                  <span class="visually-hidden">Next</span>
+                <button className="carousel-control-next " type="button" data-bs-target="#slider" data-bs-slide="next">
+                  <span className="carousel-control-next-icon "></span>
+                  <span className="visually-hidden">Next</span>
                 </button>
 
               </div> {/*the end of div slider*/}
@@ -272,7 +297,8 @@ const Home = () =>{
 <>
     <OurServices /> 
     <OverView />
-    <Carousel />
+    <Reviews/>
+    {/* <Carousel /> */}
     {/* <Forgetpassword/> */}
        
 </>
