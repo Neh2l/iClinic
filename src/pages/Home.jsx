@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 // import Card from '../components/ui/Card';
 import '../styles/OurServices.css';
 import '../styles/OverView.css';
@@ -7,7 +7,7 @@ import { useState } from "react";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import styles from '../styles/landing.module.css';
 import { useNavigate } from 'react-router-dom';
-
+import Aos from 'aos';
 
 const Testimonies = () => {
   const reviews = [
@@ -106,7 +106,7 @@ const Testimonies = () => {
 const OurServices = () =>{
     return (
         <>
-        <div id="features" className="container text-center our-services">
+        <div data-aos='fade-up' id="features" className="container text-center our-services">
 
             <div className="services-titles">
                 <h1 className="title-one"> <span className="our-word text"> Our </span> <span className="services-word primary-text"> Services </span> </h1>
@@ -177,7 +177,7 @@ const OurServices = () =>{
 const OverView = () =>{
       return(
        <>
-       <div  id="how-it-works"  className="overview-container container">
+       <div data-aos='fade-up'  id="how-it-works"  className="overview-container container">
         <div className="row g-3">
 
          <div className="overview-info col-lg-4 col-md-5 col-sm-12 ">
@@ -296,7 +296,7 @@ const OverView = () =>{
 }
 const Hero = () =>{
     return (
-        <div  id="home">
+        <div aos id="home">
             <main>
                 <section className={styles.hero}>
                     <div className={styles.heroText}>
@@ -355,6 +355,9 @@ const Nav = () =>{
 }
 
 const Home = () =>{
+  useEffect(()=>{
+      Aos.refresh();
+  },[])
   return(
 <>
     <Nav/>
