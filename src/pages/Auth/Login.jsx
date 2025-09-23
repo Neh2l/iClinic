@@ -8,7 +8,7 @@ import "../../styles/LoginPage.css";
 import forget from "../../images/forget.png";
 import "../../styles/Forgot.css";
 
-const CreateNewPassword = () => {
+const CreateNewPassword = ({goBack}) => {
   const [password, setpassword] = useState("");
   const [confirm, setconfirm] = useState("");
   const [error, seterror] = useState("");
@@ -89,20 +89,79 @@ const CreateNewPassword = () => {
     </div>
   );
 };
-
-const Login = () => {
+const ForgotPass = ({ goBack, goVerification }) => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   function handleEmailChange(event) {
     setEmail(event.target.value);
   }
 
-  function handlePasswordChange(event) {
-    setPassword(event.target.value);
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    if (!email) {
+      setError("please enter your email address!");
+      return;
+    }
+    setError("");
+    goVerification(); 
   }
+
+  return (
+    <div className="forget-page">
+      <div>
+        <img src={forget} alt="forget password pic" />
+      </div>
+      <div>
+        <h3> Forgot password?</h3>
+        <p>
+          Enter your email address and we'll send you a verification code to
+          reset your password
+        </p>
+        <form onSubmit={handleSubmit}>
+          <label>Email address</label>
+          <input
+            type="email"
+            value={email}
+            onChange={handleEmailChange}
+            placeholder="Enter your registered email"
+          />
+          <p style={{ color: "red" }}>{error}</p>
+
+          <button type="submit">Send verification code</button>
+
+          <p>
+            <span
+              style={{ color: "#015D82", cursor: "pointer" }}
+              onClick={goBack}
+            >
+              back to login
+            </span>
+          </p>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+const Verification = ({goBack,goCreate}) => {
+  return (
+    <div>
+    <h1>verfication</h1>
+      
+    </div>
+  )
+}
+
+
+
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [page, setpage] = useState("Login");
+  const navigate = useNavigate();
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -111,6 +170,29 @@ const Login = () => {
       setError("please fill in both fields!");
       return;
     }
+    setError("");
+  }
+
+  if (page === "ForgotPass") {
+    return (
+      <ForgotPass
+        goBack={() => setpage("Login")}
+        goVerification={() => setpage("Verification")}
+      />
+    );
+  }
+
+  if (page === "Verification") {
+    return (
+      <Verification
+        goBack={() => setpage("ForgotPass")}
+        goCreate={() => setpage("CreateNewPassword")}
+      />
+    );
+  }
+
+  if (page === "CreateNewPassword") {
+    return <CreateNewPassword goBack={() => setpage("Login")} />;
   }
 
   return (
@@ -123,7 +205,7 @@ const Login = () => {
           <label>Email</label>
           <input
             value={email}
-            onChange={handleEmailChange}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
             type="email"
           />
@@ -131,7 +213,7 @@ const Login = () => {
           <label>Password</label>
           <input
             value={password}
-            onChange={handlePasswordChange}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
             type="password"
           />
@@ -142,7 +224,12 @@ const Login = () => {
             Log in
           </button>
           <br />
-          <button onClick={() => navigate()} type="button" className="forget">
+
+          <button
+            type="button"
+            className="forget"
+            onClick={() => setpage("ForgotPass")}
+          >
             Forgot your password?
           </button>
 
@@ -163,59 +250,4 @@ const Login = () => {
     </div>
   );
 };
-
-const ForgotPass = () => {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
-
-  function handleEmailChange(event) {
-    setEmail(event.target.value);
-  }
-
-  function handleSubmit(event) {
-    event.preventDefault();
-
-    if (!email) {
-      setError("please enter your email address!");
-      return;
-    }
-  }
-  return (
-    <div className="forget-page">
-      <div>
-        <img src={forget} alt="forget password pic" />
-      </div>
-      <div>
-        <h3> Forgot password?</h3>
-        <p>
-          Enter your email address and we'll send you a verification code to
-          reset your password
-        </p>
-        <form onSubmit={handleSubmit}>
-          <label>Email address</label>
-          <input
-            type="email"
-            value={email}
-            onChange={handleEmailChange}
-            placeholder="Enter your registered email"
-          />
-
-          <p style={{ color: "red" }}> {error}</p>
-          <button onClick={() => navigate()}> Send verification code</button>
-
-          <p>
-            <span
-              style={{ color: "#015D82", cursor: "pointer" }}
-              onClick={() => navigate("/login")}
-            >
-              back to login
-            </span>
-          </p>
-        </form>
-      </div>
-    </div>
-  );
-};
-
 export default Login;
