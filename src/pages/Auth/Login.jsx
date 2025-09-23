@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState ,useRef  } from "react";
 import { useNavigate } from "react-router-dom";
 import Img from "../../images/forgetpass.jpg";
 import { toast } from "react-toastify";
@@ -7,6 +7,89 @@ import Pic from "../../images/image 9 (1).png";
 import "../../styles/LoginPage.css";
 import forget from "../../images/forget.png";
 import "../../styles/Forgot.css";
+import styles from '../../styles/verification.module.css'
+
+
+ const OTPInput = ()=> {
+  const [otp, setOtp] = useState(Array(6).fill(""));
+  const inputsRef = useRef([]);
+
+  const handleChange = (value, index) => {
+    if (!/^[0-9]?$/.test(value)) return;  
+    const newOtp = [...otp];
+    newOtp[index] = value; 
+    setOtp(newOtp); 
+
+    if (value && index < 5) {
+      inputsRef.current[index + 1].focus();
+    } 
+  };
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) { 
+      inputsRef.current[index - 1].focus();
+      
+    }
+  };
+
+   const handleSubmit = () => {
+     if (otp.some((digit) => digit === "")) {
+       alert("You need to enter the 6 numbers!");
+       return;
+     }
+     alert("Entered Code: " + otp.join(""));
+     setOtp(Array(6).fill("")); 
+     inputsRef.current[0].focus();  
+   };
+
+  return (
+    <div className={styles.optContainer}>
+      <div className={styles.leftPanel}>
+        <h1>Enter Verification Code</h1>
+        <p>
+          We've sent a 6-digit verification code to your email address.<br />
+          Please enter it below
+        </p>
+
+        {otp.map((digit, index) => (
+          <input
+            key={index}
+            type="text"
+            value={digit}
+            maxLength={1}
+            className={styles.otpInput}
+            onChange={(e) => handleChange(e.target.value, index)}
+            onKeyDown={(e) => handleKeyDown(e, index)}
+            ref={(el) => (inputsRef.current[index] = el)}
+          />
+        ))}
+
+        <br /><br />
+        <button onClick={handleSubmit} className={styles.verifyBtn}>
+          Send Verification Code
+        </button>
+
+        <div className={styles.resend}>
+          <p>
+            Didn't receive the code ? <a href="#">Resend code</a>
+          </p>
+          <a className={styles.backLink} href="#">
+            ← Back to email entry
+          </a>
+        </div>
+      </div>
+
+      <div className={styles.rightPanel}>
+        <img
+          src="/verificationimg.png"
+          alt="Verification"
+        />
+      </div>
+    </div>
+
+  );
+};
+
 
 const CreateNewPassword = ({goBack}) => {
   const [password, setpassword] = useState("");
