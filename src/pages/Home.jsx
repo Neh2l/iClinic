@@ -42,7 +42,7 @@ const Testimonies = () => {
   };
 
   return (
-    <div data-aos='fade-up' id='carouselExample' className="container ">
+    <div data-aos='fade-up' id='carouselExample' className="container my-5">
        <div className="services-titles text-start mb-4">
                 <h1 className="title-one w-50 "> <span className="our-word text"> Check some of our </span> <span className="services-word primary-text"> Reviews </span> down here ...</h1>
                 
