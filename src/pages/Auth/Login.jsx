@@ -75,9 +75,13 @@ import styles from '../../styles/verification.module.css'
           <p>
             Didn't receive the code ? <a href="#">Resend code</a>
           </p>
-          <a className={styles.backLink} href="#">
+          <p
+            className={styles.backLink}
+            style={{ cursor: "pointer" }}
+            onClick={goBack}
+          >
             ← Back to email entry
-          </a>
+          </p>
         </div>
       </div>
 

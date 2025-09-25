@@ -103,6 +103,7 @@ input[type="text"]:focus {
 .backLink {
   text-decoration: underline;
   margin-left: 55px;
+  color: #0073a8;
 }
 
 a:hover {
