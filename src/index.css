@@ -6,6 +6,9 @@
   --white-color: #FFFFFF;
   --gray-color: #999999;
 }
+body{
+    background-color: var(--primary-color);
+}
 .primary-text{
     color: var(--primary-color);
 }
