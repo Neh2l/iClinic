@@ -8,14 +8,22 @@ import Home from './pages/Home';
 import Doctor from './pages/Doctor';
 import Payment from './pages/Payment';
 import Error from './pages/Error';
-import Forgetpassword from './pages/Forgetpassword';
+// import ForgotPass from './pages/Auth/Login/ForgotPass'
+
 import { ToastContainer } from 'react-toastify';
+import Aos from 'aos';
+import 'aos/dist/aos.css'
+import { useEffect } from 'react';
 
 function App() {
+  useEffect(()=>{
+    Aos.init({duration:1000});
+  },[])
   return (
  
 <BrowserRouter>
 <ToastContainer position="top-center" autoClose={3000} />
+<div style={{backgroundColor:"#F5F5F5"}}>
   <Routes>
     <Route path='/' element={<Layout/>}>
     <Route index element={<Home/>}/>
@@ -26,11 +34,12 @@ function App() {
      <Route path='/dashboard' element={<Dashboard/>}/>
      <Route path='/doctor' element={<Doctor/>}/>
      <Route path='/payment' element={<Payment/>}/>
-      <Route path='/forgetpassword' element={<Forgetpassword/>}/>
+      {/* <Route path='/forgetpassword' element={<ForgotPass/>}/> */}
      <Route path='*' element={<Error/>}/>
     
     </Route>     
   </Routes>
+  </div>
    
 </BrowserRouter>
   )

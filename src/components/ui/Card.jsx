@@ -8,7 +8,7 @@ const Card = () => {
       <div className="card-body">
         
         <div className="d-flex mb-2">
-          <FaStar className="text-warning" />
+          <FaStar className="text-warning"  />
           <FaStar className="text-warning" />
           <FaStar className="text-warning" />
           <FaStar className="text-warning" />
