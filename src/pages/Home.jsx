@@ -207,9 +207,19 @@ const OverView = () =>{
                   <div className="carousel-item active d-flex justify-content-center align-items-center" data-bs-interval="3000">
                     <div className="card rounded-4 text-start p-4 card-field w-50">
                       <div className="card-icon primary-text  d-flex justify-content-center align-items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-droplet" viewBox="0 0 16 16">
-                          <path fill-rule="evenodd" d="M7.21.8C7.69.295 8 0 8 0q.164.544.371 1.038c.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21.8m.413 1.021A31 31 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z"/>
-                          <path fill-rule="evenodd" d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87z"/>
+                       <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 2v0.8c0 2.7 0.9 5.3 2.6 7.4c-0.5 2.6-1.9 4.9-4.1 6.4c-1.5 0.8-3.2 1.1-5 0.9l-1.2-0.1c-1.4-0.3-2.8 0.1-3.8 1.1C3.5 19.5 3 20.7 3 21.9V29" 
+                                  fill="none" 
+                                  stroke="currentColor" 
+                                  stroke-width="1.824" 
+                                  stroke-linecap="round" 
+                                  stroke-linejoin="round"/>
+                            <path d="M20 2v0.4C20 7 22 9 22 9h0.9c3.4 0 6.1 2.7 6.1 6.1c0 1.9-0.5 3.8-1.4 5.5c-2.2 3.9-6.6 6.4-11.9 5.8c-2.4-0.2-4.7-1.1-6.5-2.6C8.3 23 7 23.6 7 24.7V29" 
+                                  fill="none" 
+                                  stroke="currentColor" 
+                                  stroke-width="1.824" 
+                                  stroke-linecap="round" 
+                                  stroke-linejoin="round"/>
                         </svg>
                       </div>
                         <div className="card-body text">
