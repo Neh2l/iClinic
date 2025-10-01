@@ -200,26 +200,37 @@ const OverView = () =>{
                   <button type="button" data-bs-target="#slider" data-bs-slide-to="0" class="active"></button>
                   <button type="button" data-bs-target="#slider" data-bs-slide-to="1"></button>
                   <button type="button" data-bs-target="#slider" data-bs-slide-to="2"></button>
-                </div> 
+                  <button type="button" data-bs-target="#slider" data-bs-slide-to="3"></button>
+                </div> {/*the end of div  carousel-indicators*/}
 
                 <div className="carousel-inner">
                   <div className="carousel-item active d-flex justify-content-center align-items-center" data-bs-interval="3000">
                     <div className="card rounded-4 text-start p-4 card-field w-50">
                       <div className="card-icon primary-text  d-flex justify-content-center align-items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fillRule="currentColor" className="bi bi-droplet" viewBox="0 0 16 16">
-                          <path fill-rule="evenodd" d="M7.21.8C7.69.295 8 0 8 0q.164.544.371 1.038c.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21.8m.413 1.021A31 31 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z"/>
-                          <path fill-rule="evenodd" d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87z"/>
+                       <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 2v0.8c0 2.7 0.9 5.3 2.6 7.4c-0.5 2.6-1.9 4.9-4.1 6.4c-1.5 0.8-3.2 1.1-5 0.9l-1.2-0.1c-1.4-0.3-2.8 0.1-3.8 1.1C3.5 19.5 3 20.7 3 21.9V29" 
+                                  fill="none" 
+                                  stroke="currentColor" 
+                                  stroke-width="1.824" 
+                                  stroke-linecap="round" 
+                                  stroke-linejoin="round"/>
+                            <path d="M20 2v0.4C20 7 22 9 22 9h0.9c3.4 0 6.1 2.7 6.1 6.1c0 1.9-0.5 3.8-1.4 5.5c-2.2 3.9-6.6 6.4-11.9 5.8c-2.4-0.2-4.7-1.1-6.5-2.6C8.3 23 7 23.6 7 24.7V29" 
+                                  fill="none" 
+                                  stroke="currentColor" 
+                                  stroke-width="1.824" 
+                                  stroke-linecap="round" 
+                                  stroke-linejoin="round"/>
                         </svg>
                       </div>
                         <div className="card-body text">
                           <div className="card-title">
                             <h4>
-                               Diabetes
+                                Internal Medicine
                             </h4>
                           </div>
                             <div className="card-text">
                                <p>
-                                  Our doctors are specialized in Diabetes with wide
+                                  Our doctors are specialized in Internal Medicine with wide
                                   experience and continuous follow-up.
                                </p>
                             </div>
@@ -254,25 +265,57 @@ const OverView = () =>{
                   <div class="carousel-item d-flex justify-content-center align-items-center">
                     <div className="card rounded-4 text-start p-4 card-field w-50">
                       <div className="card-icon primary-text  d-flex justify-content-center align-items-center">
-                       <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                         <path d="M3 12L6 8L9 16L12 4L15 12L18 8L21 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                       </svg>
+                        <svg width="200" height="200" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M496.337,308.978c-7.013-9.271-20.214-11.1-29.484-4.088l-30.076,22.793 c-21.608-48.706-5.19-106.308-5.19-106.308c-43.763,26.641-54.219,73.9-56.469,88.503c-32.274-27.008-73.794-43.366-119.118-43.382 c-63.902,0.03-120.363,32.431-153.814,81.594L45.14,304.89c-9.262-7.012-22.471-5.182-29.483,4.088 c-7.005,9.248-5.19,22.448,4.065,29.476h0.014l223.566,169.294c7.5,5.67,17.902,5.67,25.41,0l223.558-169.294 C501.527,331.426,503.356,318.226,496.337,308.978z M256.016,293.618c27.106,0,49.096,7.274,49.096,16.26 c0,8.977-21.99,16.253-49.096,16.253c-27.113,0-49.104-7.276-49.104-16.253C206.912,300.892,228.903,293.618,256.016,293.618z M256.001,464.576l-120.266-91.067c8.618-13.066,19.283-24.63,31.568-34.276c9.413,18.63,45.511,32.513,88.712,32.513 c43.186,0,79.276-13.883,88.705-32.49c12.262,9.622,22.928,21.187,31.538,34.253L256.001,464.576z" 
+                                fill="currentColor"/>
+                          <path d="M256.008,185.87c37.194,0,67.344-30.143,67.344-67.344C323.352,81.332,256.383,0,256.008,0 c-0.368,0-67.344,81.332-67.344,118.525C188.664,155.726,218.815,185.87,256.008,185.87z" 
+                                fill="currentColor"/>
+                        </svg>
                       </div>
                         <div className="card-body text">
                           <div className="card-title">
                             <h4>
-                               Blood Pressure
+                              Eye Department
                             </h4>
                           </div>
                             <div className="card-text">
                                <p>
-                                  Our doctors are specialized in Blood Pressure with wide
+                                  Our doctors are specialized in Eye Department with wide
                                   experience and continuous follow-up.
                                </p>
                             </div>
                         </div>
                     </div>
                   </div>
+
+                   <div class="carousel-item d-flex justify-content-center align-items-center">
+                    <div className="card rounded-4 text-start p-4 card-field w-50">
+                      <div className="card-icon primary-text  d-flex justify-content-center align-items-center">
+                        <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M9.19807 4.45825C8.55418 4.22291 7.94427 4 7 4C5 4 4 6 4 8.5C4 10.0985 4.40885 11.0838 4.83441 12.1093C5.0744 12.6877 5.31971 13.2788 5.5 14C5.649 14.596 5.7092 15.4584 5.77321 16.3755C5.92401 18.536 6.096 21 7.5 21C8.39898 21 8.79286 19.5857 9.22652 18.0286C9.75765 16.1214 10.3485 14 12 14C13.6515 14 14.2423 16.1214 14.7735 18.0286C15.2071 19.5857 15.601 21 16.5 21C17.904 21 18.076 18.536 18.2268 16.3755C18.2908 15.4584 18.351 14.596 18.5 14C18.6803 13.2788 18.9256 12.6877 19.1656 12.1093C19.5912 11.0838 20 10.0985 20 8.5C20 6 19 4 17 4C16.0557 4 15.4458 4.22291 14.8019 4.45825C14.082 4.72136 13.3197 5 12 5C10.6803 5 9.91796 4.72136 9.19807 4.45825Z" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                stroke-width="1.5" 
+                                stroke-linecap="round" 
+                                stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+                        <div className="card-body text">
+                          <div className="card-title">
+                            <h4>
+                                Dental Department
+                            </h4>
+                          </div>
+                            <div className="card-text">
+                               <p>
+                                  Our doctors are specialized in Dental Department with wide
+                                  experience and continuous follow-up.
+                               </p>
+                            </div>
+                        </div> 
+                    </div>
+                  </div>
+
 
                 </div>
                 <button className="carousel-control-prev" type="button" data-bs-target="#slider" data-bs-slide="prev">
