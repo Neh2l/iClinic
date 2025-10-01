@@ -168,7 +168,7 @@ const CreateNewPassword = ({goBack ,goLogin}) => {
         </div>
 
         <div className="col-12 col-md-6 d-none d-md-block">
-          <img src={Img} alt="forgetpass" className="img-fluid" />
+          <img src="/verificationimg.png" alt="forgetpass" className="img-fluid" />
         </div>
       </div>
     </div>
