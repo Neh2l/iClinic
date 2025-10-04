@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Pic from '../../images/image 9 (1).png';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap is included
 
 const Verification = ({ goBack, goCreateNew }) => {
   const [otp, setOtp] = useState(Array(6).fill(''));
