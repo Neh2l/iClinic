@@ -339,7 +339,7 @@ const OverView = () =>{
 }
 const Hero = () =>{
     return (
-        <div aos id="home">
+        <div data-aos="fade-up" id="home">
             <main>
                 <section className={styles.hero}>
                     <div className={styles.heroText}>

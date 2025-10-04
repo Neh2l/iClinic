@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Register from './pages/Auth/Register';
 import Layout from './components/layout/Layout';
 import Login from './pages/Auth/Login';
