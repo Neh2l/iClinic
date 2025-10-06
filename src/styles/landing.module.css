@@ -209,3 +209,143 @@ nav {
   color: var(--background-color);
   font-size: small;
 }
+.SideIcon {
+  display: none; 
+}
+.navMobilButtons {
+  display: none; 
+}
+
+/* Responsive Design */
+/* (تابلت + أجهزة وسط */
+@media (max-width: 1024px) {
+  .SideIcon {
+    display: block; 
+    cursor: pointer;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+  }
+  nav {
+    padding: 0.8rem 1rem;
+  }
+
+  .navLinks {
+    display: none; 
+    flex-direction: column;
+    background: var(--white-color);
+    position: absolute;
+    top: 70px;
+    right: 0;
+    width: 240px;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    padding: 1rem;
+    z-index: 1000;
+  }
+
+  .navLinks.show {
+    display: flex;
+    flex-direction: column;
+  }
+  .navLinks a {
+    padding: 0.75rem 1rem;
+    margin: 0;
+    border-bottom: 1px solid #eee;
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .navLinks a:last-child {
+    border-bottom: none;
+  }
+
+  .navLinks a:hover {
+    background: var(--primary-color);
+    color: var(--white-color);
+  }
+  .navButtons {
+    display: none;
+  }
+  .navLinks.show {
+    display: flex; /* تظهر الأزرار جوا السايد */
+  }
+  .navMobilButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+  }
+  .navMobilButtons button {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Hero */
+  .hero {
+    flex-direction: column-reverse;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .heroText {
+    max-width: 100%;
+  }
+
+  .heroText h1 {
+    font-size: 2.2rem;
+  }
+
+  .heroImg {
+    width: 100%;
+    text-align: center;
+  }
+
+  .heroImg img {
+    width: 100%;
+    max-width: 400px; 
+    margin: 0 auto;
+  }
+
+  /* Stats */
+  .stats {
+    flex-direction: row; 
+    justify-content: space-around;
+    gap: 0.5rem;
+    width: 95%;
+    margin: 1rem auto;
+    padding: 1rem;
+  }
+
+  .stat h1 {
+    font-size: 1.6rem;
+  }
+
+  .stat p {
+    font-size: 0.85rem;
+  }
+}
+
+/* موبايلات صغيرة  */
+@media (max-width: 480px) {
+  .heroText h1 {
+    font-size: 1.6rem;
+  }
+
+  .stat h1 {
+    font-size: 1.2rem;
+  }
+
+  .stat p {
+    font-size: 0.7rem;
+  }
+
+  .exploreBtn {
+    width: 120px;
+    font-size: 0.8rem;
+  }
+}
