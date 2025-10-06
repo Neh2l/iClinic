@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Pic from '../../images/image 9 (1).png';
+import styles from '../../styles/verification.module.css';
 
 const Verification = ({ goBack, goCreateNew }) => {
   const [otp, setOtp] = useState(Array(6).fill(''));
@@ -36,10 +37,10 @@ const Verification = ({ goBack, goCreateNew }) => {
   };
 
   return (
-    <div className="d-flex flex-column flex-md-row min-vh-100">
-      <div className="col-12 col-md-6 d-flex flex-column justify-content-center p-4">
-        <h1 className="fw-bold mb-3">Enter Verification Code</h1>
-        <p className="text-muted mb-4">
+    <div className={styles.optContainer}>
+      <div className={styles.leftPanel}>
+        <h1 >Enter Verification Code</h1>
+        <p >
           We've sent a 6-digit verification code to your email address. <br />
           Please enter it below
         </p>
@@ -51,8 +52,7 @@ const Verification = ({ goBack, goCreateNew }) => {
               type="text"
               value={digit}
               maxLength={1}
-              className="form-control text-center"
-              style={{ width: '50px' }}
+              className={styles.otpInput}
               onChange={(e) => handleChange(e.target.value, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
               ref={(el) => (inputsRef.current[index] = el)}
@@ -60,32 +60,25 @@ const Verification = ({ goBack, goCreateNew }) => {
           ))}
         </div>
 
-        <button onClick={handleSubmit} className="btn btn-primary w-100 mb-3">
+        <br /><br />
+        <button onClick={handleSubmit} className={styles.verifyBtn}>
           Send Verification Code
         </button>
 
-        <div className="text-center">
-          <p className="mb-2">
-            Didn't receive the code?{' '}
-            <a href="#" className="text-primary">
-              Resend code
-            </a>
+        <div className={styles.resend}>
+          <p>
+            Didn't receive the code ? <a href="#">Resend code</a>
           </p>
-          <p
-            className="text-muted mb-0"
-            style={{ cursor: 'pointer' }}
-            onClick={goBack}
-          >
+          <p className={styles.backLink} onClick={goBack}>
             ← Back to email entry
           </p>
         </div>
       </div>
-      <div className="d-none d-md-flex col-md-6 align-items-center justify-content-center bg-light">
+
+      <div className={styles.rightPanel}>
         <img
-          src={Pic}
-          alt="Doctors"
-          className="img-fluid"
-          style={{ maxWidth: '100%', height: 'auto' }}
+          src="/verificationimg.png"
+          alt="Verification"
         />
       </div>
     </div>
