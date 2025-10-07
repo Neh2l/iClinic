@@ -43,63 +43,59 @@ const Testimonies = () => {
 
   return (
     <div data-aos='fade-up' id='carouselExample' className="container my-5">
-       <div className="services-titles text-start mb-4">
-                <h1 className="title-one w-50 "> <span className="our-word text"> Check some of our </span> <span className="services-word primary-text"> Reviews </span> down here ...</h1>
-                
-            </div>
-      
-      <div className="d-flex justify-content-center align-items-center">
-        <button
-          onClick={prevReview}
-          className="btn btn-light shadow rounded-circle me-3 d-flex justify-content-center align-items-center"
-          style={{ width: "50px", height: "50px" }}
-        >
-          <BiChevronLeft size={28} />
-        </button>
+  <div className="services-titles text-start mb-4">
+    <h1 className="title-one w-100 w-md-50">
+      <span className="our-word text">Check some of our </span>
+      <span className="services-word primary-text">Reviews</span> down here ...
+    </h1>
+  </div>
 
-        <div
-          className="card border-0 shadow-sm p-4 text-center shadow-lg"
-          style={{
-            width: "100%",
-            maxWidth: "900px",
-            minHeight: "450px",
-            backgroundColor:"#f1ededb7 "
-          }}
-        >
-          <h4 className="secondary-text mb-3">
-            <i className="bi bi-quote"></i> {reviews[current].title}
-          </h4>
-          <p className="text-muted" style={{ lineHeight: "1.6" }}>
-            {reviews[current].text}
-          </p>
+  <div className="row justify-content-center align-items-center text-center g-3">
+    <div className="col-12 col-md-auto d-flex justify-content-center">
+      <button
+        onClick={prevReview}
+        className="btn btn-light shadow rounded-circle d-flex justify-content-center align-items-center"
+        style={{ width: "50px", height: "50px" }}
+      >
+        <BiChevronLeft size={28} />
+      </button>
+    </div>
 
-          <div className="d-flex justify-content-center align-items-center gap-3 mt-4">
-            <img
-              src={Person}
-              alt="Person"
-              className="rounded-circle"
-              style={{ width: "3rem", height: "3rem", objectFit: "cover" }}
-            />
-            <div>
-              <h6 className="mb-0 fw-bold">{reviews[current].name}</h6>
-              <p className="mb-0 text-muted" style={{ fontSize: "0.9rem" }}>
-                {reviews[current].place}
-              </p>
-            </div>
+    {/* card */}
+    <div className="col-12 col-md-8">
+      <div className="card border-0 shadow p-4 text-center shadow-lg bg-light-subtle">
+        <h4 className="secondary-text mb-3">
+          <i className="bi bi-quote"></i> {reviews[current].title}
+        </h4>
+        <p className="text-muted">{reviews[current].text}</p>
+
+        <div className="d-flex justify-content-center align-items-center gap-3 mt-4">
+          <img
+            src={Person}
+            alt="Person"
+            className="rounded-circle"
+            style={{ width: "3rem", height: "3rem", objectFit: "cover" }}
+          />
+          <div>
+            <h6 className="mb-0 fw-bold">{reviews[current].name}</h6>
+            <p className="mb-0 text-muted small">{reviews[current].place}</p>
           </div>
         </div>
-
-        <button
-          onClick={nextReview}
-          className="btn btn-light shadow rounded-circle ms-3 d-flex justify-content-center align-items-center"
-          style={{ width: "50px", height: "50px" }}
-        >
-          <BiChevronRight size={28} />
-        </button>
       </div>
-
-     
     </div>
+
+    <div className="col-12 col-md-auto d-flex justify-content-center">
+      <button
+        onClick={nextReview}
+        className="btn btn-light shadow rounded-circle d-flex justify-content-center align-items-center"
+        style={{ width: "50px", height: "50px" }}
+      >
+        <BiChevronRight size={28} />
+      </button>
+    </div>
+  </div>
+</div>
+
   );
 };
 
@@ -238,7 +234,7 @@ const OverView = () =>{
                     </div>
                   </div>
 
-                  <div class="carousel-item d-flex justify-content-center align-items-center">
+                  <div className="carousel-item d-flex justify-content-center align-items-center">
                     <div className="card rounded-4 text-start p-4 card-field w-50">
                       <div className="card-icon primary-text  d-flex justify-content-center align-items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-pulse" viewBox="0 0 16 16">
@@ -262,7 +258,7 @@ const OverView = () =>{
                     </div>
                   </div>
 
-                  <div class="carousel-item d-flex justify-content-center align-items-center">
+                  <div className="carousel-item d-flex justify-content-center align-items-center">
                     <div className="card rounded-4 text-start p-4 card-field w-50">
                       <div className="card-icon primary-text  d-flex justify-content-center align-items-center">
                         <svg width="200" height="200" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
@@ -288,7 +284,7 @@ const OverView = () =>{
                     </div>
                   </div>
 
-                   <div class="carousel-item d-flex justify-content-center align-items-center">
+                   <div className="carousel-item d-flex justify-content-center align-items-center">
                     <div className="card rounded-4 text-start p-4 card-field w-50">
                       <div className="card-icon primary-text  d-flex justify-content-center align-items-center">
                         <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
