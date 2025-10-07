@@ -8,6 +8,7 @@ import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import styles from '../styles/landing.module.css';
 import { useNavigate } from 'react-router-dom';
 import Aos from 'aos';
+import { FaBars } from "react-icons/fa";
 
 const Testimonies = () => {
   const reviews = [
@@ -374,15 +375,23 @@ const Hero = () =>{
 }
 const Nav = () =>{
   const navigate=useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
     return (
         <header>
             <nav className={styles.nav}>
                 <div className={styles.logo}>IClinic</div>
-                <div className={styles.navLinks}>
-                       <a href="#home">Home</a>
+                <div className={styles.SideIcon} onClick={() => setIsOpen(!isOpen)}>
+                    <FaBars />
+                </div>
+                <div className={`${styles.navLinks} ${isOpen ? styles.show : ""}`}>
+                    <a href="#home">Home</a>
                     <a href="#features">Features</a>
                     <a href="#how-it-works">How it works</a>
                     <a href="#carouselExample">Testimonies</a>
+                    <div className={styles.navMobilButtons}>
+                         <button onClick={()=>{navigate('/login')}} className={styles.login}>Login</button>
+                         <button onClick={()=>{navigate('/register')}} className={styles.signup}>Sign up</button>
+                    </div>
                 </div>
                 <div className={styles.navButtons}>
                     <button onClick={()=>{navigate('/login')}} className={styles.login}>Login</button>
