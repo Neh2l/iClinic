@@ -4,12 +4,15 @@
   display: flex;
   margin-left: 50px;
   margin-top: 50px;
-  align-items: center;
+  align-items: stretch;
+  justify-content: space-between;
+  height: 80vh;
 }
 .login-page .form-container {
   padding: 10px;
   margin: 50px;
   max-width: 300px;
+  justify-content: center;
 }
 .login-page .form-container h1 {
   text-align: center;
@@ -66,14 +69,22 @@
   font-weight: bold;
   margin-top: 10px;
   transition: background 0.3s ease;
+  margin-bottom: 10px;
 }
 .login-page .forget:hover {
   background-color: hsl(0, 0%, 86%);
 }
+.pic {
+  flex: 2;
+  display: flex;
+  justify-content: flex-end;
+  max-width: 1000px;
+}
+
 .pic img {
-  height: 90vh;
-  margin: 0%;
-  padding: 0%;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 @media screen and (max-width: 480px) {
   .login-page {
@@ -82,6 +93,7 @@
     align-items: center;
     text-align: center;
     gap: 20px;
+    height: auto;
   }
 
   .pic img {
@@ -100,12 +112,13 @@
   }
 }
 
-@media screen and (min-width: 481px) and (max-width: 1024px) {
+@media screen and (min-width: 481px) and (max-width: 1225px) {
   .login-page {
     flex-direction: column;
     margin: 30px auto;
     align-items: center;
     text-align: center;
+    height: auto;
   }
 
   .pic img {
@@ -129,10 +142,13 @@
     max-width: 1000px;
     margin: 50px auto;
     gap: 50px;
+    height: 80vh;
   }
 
   .pic img {
-    height: 80vh;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
   }
 
   .login-page .form-container input,
