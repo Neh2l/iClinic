@@ -1,8 +1,6 @@
-import { useState } from 'react';
+import { useState } from "react";
 // import Footer from '../../components/layout/Footer';
-import RegisterImg from '../../images/image 9 (1).png'
-
-
+import RegisterImg from "../../images/image 9 (1).png";
 
 function Auth() {
   const [role, setRole] = useState(null);
@@ -21,7 +19,7 @@ function Auth() {
           )}
         </div>
 
-        <div className="d-none d-md-flex col-md-6 align-items-center justify-content-center bg-light">
+        <div className="d-none d-md-flex col-md-6 align-items-center justify-content-center">
           <img src={RegisterImg} alt="Doctors" className="img-fluid" />
         </div>
       </div>
@@ -32,8 +30,8 @@ function Auth() {
 
 function Header() {
   return (
-    <h2 className="fw-bold mb-3" style={{ fontSize: '2rem' }}>
-      Join <span className="text-info">IClinic</span>
+    <h2 className="fw-bold mb-3" style={{ fontSize: "2rem" }}>
+      Join <span style={{ color: "#015D82" }}>IClinic</span>
     </h2>
   );
 }
@@ -51,13 +49,14 @@ function RegisterButtons({ setRole }) {
     <div className="d-flex gap-3 mb-4">
       <button
         className="btn btn-outline-dark px-4"
-        onClick={() => setRole('doctor')}
+        onClick={() => setRole("doctor")}
       >
         Sign Up as Doctor
       </button>
       <button
-        className="btn btn-info text-white px-4"
-        onClick={() => setRole('patient')}
+        className="btn text-white px-4"
+        onClick={() => setRole("patient")}
+        style={{ backgroundColor: "#015d82", color: "white", border: "none" }}
       >
         Sign Up as Patient
       </button>
@@ -68,7 +67,7 @@ function RegisterButtons({ setRole }) {
 function RegisterForm({ role, setRole }) {
   return (
     <form className="d-flex flex-column gap-3">
-      {role === 'patient' ? (
+      {role === "patient" ? (
         <>
           <input
             type="text"
@@ -132,7 +131,12 @@ function RegisterForm({ role, setRole }) {
       )}
 
       {/* Register Button */}
-      <button className="btn btn-info text-white w-100 mt-2">Register</button>
+      <button
+        className="btn text-white w-100 mt-2"
+        style={{ backgroundColor: "#015D82" }}
+      >
+        Register
+      </button>
 
       {/* Back Button */}
       <button
@@ -144,8 +148,8 @@ function RegisterForm({ role, setRole }) {
       </button>
 
       <p className="small mt-2">
-        Already have an account?{' '}
-        <a href="..." className="text-info fw-bold">
+        Already have an account?{" "}
+        <a href="..." className="fw-bold" style={{ color: "#015D82" }}>
           Sign in here
         </a>
       </p>

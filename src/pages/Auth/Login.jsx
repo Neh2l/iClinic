@@ -1,11 +1,14 @@
-import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import Pic from '../../images/image 9 (1).png';
-import styles from '../../styles/verification.module.css';
+import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Pic from "../../images/image 9 (1).png";
+import styles from "../../styles/verification.module.css";
+import forget from "../../images/forget.png";
+import "../../styles/Forgot.css";
+import "../../styles/LoginPage.css";
 
 const Verification = ({ goBack, goCreateNew }) => {
-  const [otp, setOtp] = useState(Array(6).fill(''));
+  const [otp, setOtp] = useState(Array(6).fill(""));
   const inputsRef = useRef([]);
 
   const handleChange = (value, index) => {
@@ -20,18 +23,18 @@ const Verification = ({ goBack, goCreateNew }) => {
   };
 
   const handleKeyDown = (e, index) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputsRef.current[index - 1].focus();
     }
   };
 
   const handleSubmit = () => {
-    if (otp.some((digit) => digit === '')) {
-      alert('You need to enter the 6 numbers!');
+    if (otp.some((digit) => digit === "")) {
+      alert("You need to enter the 6 numbers!");
       return;
     }
-    alert('Entered Code: ' + otp.join(''));
-    setOtp(Array(6).fill(''));
+    alert("Entered Code: " + otp.join(""));
+    setOtp(Array(6).fill(""));
     inputsRef.current[0].focus();
     goCreateNew();
   };
@@ -39,8 +42,8 @@ const Verification = ({ goBack, goCreateNew }) => {
   return (
     <div className={styles.optContainer}>
       <div className={styles.leftPanel}>
-        <h1 >Enter Verification Code</h1>
-        <p >
+        <h1>Enter Verification Code</h1>
+        <p>
           We've sent a 6-digit verification code to your email address. <br />
           Please enter it below
         </p>
@@ -60,7 +63,8 @@ const Verification = ({ goBack, goCreateNew }) => {
           ))}
         </div>
 
-        <br /><br />
+        <br />
+        <br />
         <button onClick={handleSubmit} className={styles.verifyBtn}>
           Send Verification Code
         </button>
@@ -76,36 +80,33 @@ const Verification = ({ goBack, goCreateNew }) => {
       </div>
 
       <div className={styles.rightPanel}>
-        <img
-          src="/verificationimg.png"
-          alt="Verification"
-        />
+        <img src="/verificationimg.png" alt="Verification" />
       </div>
     </div>
   );
 };
 
 const CreateNewPassword = ({ goBack, goLogin }) => {
-  const [password, setPassword] = useState('');
-  const [confirm, setConfirm] = useState('');
-  const [error, setError] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!password || !confirm) {
-      setError('Both fields are required!');
+      setError("Both fields are required!");
       return;
     }
     if (password !== confirm) {
-      setError('Passwords do not match!');
+      setError("Passwords do not match!");
       return;
     }
     if (password.length < 6) {
-      setError('Password is weak!');
+      setError("Password is weak!");
       return;
     }
-    setError('');
-    toast.success('Password created successfully!');
+    setError("");
+    toast.success("Password created successfully!");
     goLogin();
   };
 
@@ -163,7 +164,7 @@ const CreateNewPassword = ({ goBack, goLogin }) => {
             src={Pic}
             alt="Doctors"
             className="img-fluid"
-            style={{ maxWidth: '100%', height: 'auto' }}
+            style={{ maxWidth: "100%", height: "auto" }}
           />
         </div>
       </div>
@@ -172,117 +173,111 @@ const CreateNewPassword = ({ goBack, goLogin }) => {
 };
 
 const ForgotPass = ({ goBack, goVerification }) => {
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!email) {
-      setError('Please enter your email address!');
+      setError("Please enter your email address!");
       return;
     }
-    setError('');
+    setError("");
     goVerification();
   };
 
   return (
-    <div className="d-flex flex-column min-vh-100">
-      <div className="d-flex flex-grow-1">
-        <div className="col-12 col-md-6 d-flex flex-column justify-content-center p-4">
-          <h3 className="fw-bold mb-3">Forgot password?</h3>
-          <p className="text-muted mb-4">
-            Enter your email address and we'll send you a verification code to
-            reset your password
+    <div className="forget-page">
+      <div>
+        <img src={forget} alt="forget pass" />
+      </div>
+      <div>
+        <h3>Forgot password?</h3>
+        <p>
+          Enter your email address and we'll send you a verification code to
+          reset your password
+        </p>
+
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">
+              Email address
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your registered email"
+              className="form-control"
+            />
+          </div>
+          {error && <p className="text-danger">{error}</p>}
+
+          <button type="submit">Send verification code</button>
+          <p
+            onClick={goBack}
+            style={{ cursor: "pointer", color: "#015d82", fontWeight: "bold" }}
+          >
+            Back to login
           </p>
-
-          <form className="d-flex flex-column gap-4" onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="email" className="form-label">
-                Email address
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your registered email"
-                className="form-control"
-              />
-            </div>
-            {error && <p className="text-danger">{error}</p>}
-
-            <button type="submit" className="btn btn-primary w-100 mt-3">
-              Send verification code
-            </button>
-            <p className="text-muted text-center mt-2" onClick={goBack}>
-              Back to login
-            </p>
-          </form>
-        </div>
-        <div className="d-none d-md-flex col-md-6 align-items-center justify-content-center bg-light">
-          <img
-            src={Pic}
-            alt="Doctors"
-            className="img-fluid"
-            style={{ maxWidth: '100%', height: 'auto' }}
-          />
-        </div>
+        </form>
       </div>
     </div>
   );
 };
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [page, setPage] = useState('Login');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [page, setPage] = useState("Login");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!email || !password) {
-      setError('Please fill in both fields!');
+      setError("Please fill in both fields!");
       return;
     }
-    setError('');
+    setError("");
     // Add login logic here
   };
 
-  if (page === 'ForgotPass') {
+  if (page === "ForgotPass") {
     return (
       <ForgotPass
-        goBack={() => setPage('Login')}
-        goVerification={() => setPage('Verification')}
+        goBack={() => setPage("Login")}
+        goVerification={() => setPage("Verification")}
       />
     );
   }
 
-  if (page === 'Verification') {
+  if (page === "Verification") {
     return (
       <Verification
-        goBack={() => setPage('ForgotPass')}
-        goCreateNew={() => setPage('CreateNewPassword')}
+        goBack={() => setPage("ForgotPass")}
+        goCreateNew={() => setPage("CreateNewPassword")}
       />
     );
   }
 
-  if (page === 'CreateNewPassword') {
+  if (page === "CreateNewPassword") {
     return (
       <CreateNewPassword
-        goBack={() => setPage('Login')}
-        goLogin={() => setPage('Login')}
+        goBack={() => setPage("Login")}
+        goLogin={() => setPage("Login")}
       />
     );
   }
 
   return (
-    <div className="d-flex flex-column flex-md-row min-vh-100">
-      <div className="col-12 col-md-6 d-flex flex-column justify-content-center p-4">
-        <h1 className="fw-bold mb-3">Welcome back</h1>
-        <p className="text-muted mb-4">Please enter your credentials</p>
+    <div className="login-page">
+      <div className="form-container">
+        <h1>Welcome back</h1>
+        <p>Please enter your credentials</p>
 
-        <form className="d-flex flex-column gap-4" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email
@@ -313,36 +308,31 @@ const Login = () => {
 
           {error && <p className="text-danger">{error}</p>}
 
-          <button type="submit" className="btn btn-info text-white w-100 mt-3">
+          <button className="log" type="submit">
             Log in
           </button>
           <button
             type="button"
-            className="btn btn-link text-info p-0"
-            onClick={() => setPage('ForgotPass')}
+            className="forget"
+            onClick={() => setPage("ForgotPass")}
           >
             Forgot your password?
           </button>
 
-          <p className="text-muted text-center mt-2">
-            Don't have an account?{' '}
+          <p>
+            Don't have an account?{" "}
             <span
-              className="text-info fw-bold"
-              onClick={() => navigate('/register')}
-              style={{ cursor: 'pointer' }}
+              className="fw-bold"
+              onClick={() => navigate("/register")}
+              style={{ cursor: "pointer", color: "#015D82" }}
             >
               Sign up here
             </span>
           </p>
         </form>
       </div>
-      <div className="d-none d-md-flex col-md-6 align-items-center justify-content-center bg-light">
-        <img
-          src={Pic}
-          alt="Doctors"
-          className="img-fluid"
-          style={{ maxWidth: '100%', height: 'auto' }}
-        />
+      <div className="pic">
+        <img src={Pic} alt="Doctors" />
       </div>
     </div>
   );
