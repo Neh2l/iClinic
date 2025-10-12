@@ -12,25 +12,25 @@ import { FaBars } from "react-icons/fa";
 
 const Testimonies = () => {
   const reviews = [
-  {
-    title: "Great medical platform!",
-    text: "I’ve been using this medical website for a few months now and I can honestly say it has made my life so much easier. The booking system is straightforward, I can easily choose the doctor I want, and the reminders they send help me stay on track with my appointments. What I love the most is the articles section, where I find reliable information about different conditions and treatments. It really feels like the website cares about both patients and doctors, making communication smooth and professional.",
-    name: "Sarah M",
-    place: "London, UK",
-  },
-  {
-    title: "Very professional and helpful",
-    text: "The doctors listed on this website are very professional and easy to reach. I had an issue that required urgent attention and through the site I managed to book an appointment the same day. The interface is clean and I never felt lost while using it. The reviews and ratings also gave me confidence when choosing the right doctor. I also appreciate that the website offers both online consultations and physical visits, so I can choose what works best for me. It really gives me peace of mind knowing I can always find support here find support here.",
-    name: "Ahmed K",
-    place: "Cairo, Egypt",
-  },
-  {
-    title: "Excellent patient experience",
-    text: "From the very first time I logged in, I noticed how simple yet effective the website is. The design is user-friendly, with all the important features placed clearly. I was able to upload my medical history, share it with my doctor, and even access prescriptions online without any difficulty. Another thing I really value is the follow-up system — the website actually reminds me to check in with my doctor and keeps track of my health progress. I honestly think this is one of the best medical platforms available right now, and I’ve already recommended it to my friends and family.",
-    name: "Mona S",
-    place: "Dubai, UAE",
-  },
-];
+    {
+      title: "Great medical platform!",
+      text: "I’ve been using this medical website for a few months now and I can honestly say it has made my life so much easier. The booking system is straightforward, I can easily choose the doctor I want, and the reminders they send help me stay on track with my appointments.",
+      name: "Sarah M",
+      place: "London, UK",
+    },
+    {
+      title: "Very professional and helpful",
+      text: "The doctors listed on this website are very professional and easy to reach. I had an issue that required urgent attention and through the site I managed to book an appointment the same day. The interface is clean and I never felt lost while using it.",
+      name: "Ahmed K",
+      place: "Cairo, Egypt",
+    },
+    {
+      title: "Excellent patient experience",
+      text: "From the very first time I logged in, I noticed how simple yet effective the website is. I was able to upload my medical history, share it with my doctor, and access prescriptions online without difficulty.",
+      name: "Mona S",
+      place: "Dubai, UAE",
+    },
+  ];
 
   const [current, setCurrent] = useState(0);
 
@@ -43,59 +43,87 @@ const Testimonies = () => {
   };
 
   return (
-    <div data-aos='fade-up' id='carouselExample' className="container my-5">
-  <div className="services-titles text-start mb-4">
-    <h1 className="title-one w-100 w-md-50">
-      <span className="our-word text">Check some of our </span>
-      <span className="services-word primary-text">Reviews</span> down here ...
-    </h1>
-  </div>
+    <div data-aos="fade-up" className="container my-5" id="Testimonies">
+      <div className="text-start mb-4">
+        <h1 className="w-75">
+          <span className="text-dark">Check some of our </span>
+          <span className="primary-text fw-bold">Reviews</span> down here ...
+        </h1>
+      </div>
 
-  <div className="row justify-content-center align-items-center text-center g-3">
-    <div className="col-12 col-md-auto d-flex justify-content-center">
-      <button
-        onClick={prevReview}
-        className="btn btn-light shadow rounded-circle d-flex justify-content-center align-items-center"
-        style={{ width: "50px", height: "50px" }}
-      >
-        <BiChevronLeft size={28} />
-      </button>
-    </div>
+      <div className="d-flex justify-content-center align-items-center flex-wrap">
+        <button
+          onClick={prevReview}
+          className="btn btn-light shadow rounded-circle me-3 d-none d-md-flex justify-content-center align-items-center"
+          style={{ width: "50px", height: "50px" }}
+        >
+          <BiChevronLeft size={28} />
+        </button>
 
-    <div className="col-12 col-md-8">
-      <div className="card border-0 shadow p-4 text-center shadow-lg bg-light-subtle">
-        <h4 className="secondary-text mb-3">
-          <i className="bi bi-quote"></i> {reviews[current].title}
-        </h4>
-        <p className="text-muted">{reviews[current].text}</p>
+        <div
+          className="card border-0 shadow-lg text-center p-4 flex-grow-1 mx-auto"
+          style={{
+            maxWidth: "900px",
+            backgroundColor: "#f1ededb7",
+            minHeight: "450px",
+          }}
+        >
+          <h4 className="primary-text mb-3">
+            <i className="bi bi-quote"></i> {reviews[current].title}
+          </h4>
+          <p className="text-muted lh-base">{reviews[current].text}</p>
 
-        <div className="d-flex justify-content-center align-items-center gap-3 mt-4">
-          <img
-            src={Person}
-            alt="Person"
-            className="rounded-circle"
-            style={{ width: "3rem", height: "3rem", objectFit: "cover" }}
-          />
-          <div>
-            <h6 className="mb-0 fw-bold">{reviews[current].name}</h6>
-            <p className="mb-0 text-muted small">{reviews[current].place}</p>
+          <div className="d-flex justify-content-center align-items-center gap-3 mt-4">
+            <img
+              src={Person}
+              alt="Person"
+              className="rounded-circle"
+              style={{ width: "3rem", height: "3rem", objectFit: "cover" }}
+            />
+            <div>
+              <h6 className="mb-0 fw-bold">{reviews[current].name}</h6>
+              <p className="mb-0 text-muted small">{reviews[current].place}</p>
+            </div>
+          </div>
+
+          <div className="d-flex justify-content-center mt-4 d-md-none">
+            {reviews.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrent(index)}
+                className={`btn rounded-circle mx-1 p-0 ${
+                  index === current ? "bg-primary" : "bg-secondary"
+                }`}
+                style={{
+                  width: "10px",
+                  height: "10px",
+                  opacity: index === current ? 1 : 0.4,
+                }}
+              ></button>
+            ))}
           </div>
         </div>
+
+        <button
+          onClick={nextReview}
+          className="btn btn-light shadow rounded-circle ms-3 d-none d-md-flex justify-content-center align-items-center"
+          style={{ width: "50px", height: "50px" }}
+        >
+          <BiChevronRight size={28} />
+        </button>
+      </div>
+
+      <div className="d-md-none mt-3">
+        <div
+          className="card border-0 shadow-sm p-3 text-center mx-auto"
+          style={{
+            backgroundColor: "#f1ededb7",
+            maxWidth: "100%",
+            minHeight: "auto",
+          }}
+        ></div>
       </div>
     </div>
-
-    <div className="col-12 col-md-auto d-flex justify-content-center">
-      <button
-        onClick={nextReview}
-        className="btn btn-light shadow rounded-circle d-flex justify-content-center align-items-center"
-        style={{ width: "50px", height: "50px" }}
-      >
-        <BiChevronRight size={28} />
-      </button>
-    </div>
-  </div>
-</div>
-
   );
 };
 
@@ -234,7 +262,7 @@ const OverView = () =>{
                     </div>
                   </div>
 
-                  <div className="carousel-item d-flex justify-content-center align-items-center">
+                  <div class="carousel-item d-flex justify-content-center align-items-center">
                     <div className="card rounded-4 text-start p-4 card-field w-50">
                       <div className="card-icon primary-text  d-flex justify-content-center align-items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-pulse" viewBox="0 0 16 16">
@@ -258,7 +286,7 @@ const OverView = () =>{
                     </div>
                   </div>
 
-                  <div className="carousel-item d-flex justify-content-center align-items-center">
+                  <div class="carousel-item d-flex justify-content-center align-items-center">
                     <div className="card rounded-4 text-start p-4 card-field w-50">
                       <div className="card-icon primary-text  d-flex justify-content-center align-items-center">
                         <svg width="200" height="200" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
@@ -284,7 +312,7 @@ const OverView = () =>{
                     </div>
                   </div>
 
-                   <div className="carousel-item d-flex justify-content-center align-items-center">
+                   <div class="carousel-item d-flex justify-content-center align-items-center">
                     <div className="card rounded-4 text-start p-4 card-field w-50">
                       <div className="card-icon primary-text  d-flex justify-content-center align-items-center">
                         <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -382,12 +410,11 @@ const Nav = () =>{
                 <div className={styles.SideIcon} onClick={() => setIsOpen(!isOpen)}>
                     <FaBars />
                 </div>
-                <div className={`${styles.navLinks} ${isOpen ? styles.show : ""}`}></div>
-                <div className={styles.navLinks}>
+                <div className={`${styles.navLinks} ${isOpen ? styles.show : ""}`}>
                     <a href="#home">Home</a>
                     <a href="#features">Features</a>
                     <a href="#how-it-works">How it works</a>
-                    <a href="#carouselExample">Testimonies</a>
+                    <a href="#Testimonies">Testimonies</a>
                     <div className={styles.navMobilButtons}>
                          <button onClick={()=>{navigate('/login')}} className={styles.login}>Login</button>
                          <button onClick={()=>{navigate('/register')}} className={styles.signup}>Sign up</button>
