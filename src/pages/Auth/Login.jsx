@@ -6,6 +6,7 @@ import styles from "../../styles/verification.module.css";
 import forget from "../../images/forget.png";
 import "../../styles/Forgot.css";
 import "../../styles/LoginPage.css";
+import CNP from '../../images/verificationimg.png'
 
 const Verification = ({ goBack, goCreateNew }) => {
   const [otp, setOtp] = useState(Array(6).fill(""));
@@ -111,9 +112,18 @@ const CreateNewPassword = ({ goBack, goLogin }) => {
   };
 
   return (
-    <div className="d-flex flex-column min-vh-100">
-      <div className="d-flex flex-grow-1">
-        <div className="col-12 col-md-6 d-flex flex-column justify-content-center p-4">
+          <div className="d-flex flex-column min-vh-100">
+      <div className="d-flex flex-column flex-lg-row">
+        <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center bg-light">
+          <img
+            src={CNP}
+            alt="Doctors"
+            className="img-fluid"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </div>
+
+        <div className="col-12 col-lg-6 d-flex flex-column justify-content-center p-4 flex-wrap">
           <h3 className="fw-bold mb-3">Create new password</h3>
           <p className="text-muted mb-4">
             Please create a new password for your account, make sure it's strong
@@ -151,21 +161,22 @@ const CreateNewPassword = ({ goBack, goLogin }) => {
 
             {error && <p className="text-danger">{error}</p>}
 
-            <button type="submit" className="btn btn-primary w-100 mt-3">
+            <button
+              type="submit"
+              className="btn w-100 mt-3"
+              style={{ color: "white", background: "#015D82" }}
+            >
               Reset Password
             </button>
-            <p className="text-muted text-center mt-2" onClick={goLogin}>
+
+            <p
+              className="text-muted text-center mt-2"
+              style={{ cursor: "pointer" }}
+              onClick={goLogin}
+            >
               Back to login?
             </p>
           </form>
-        </div>
-        <div className="d-none d-md-flex col-md-6 align-items-center justify-content-center bg-light">
-          <img
-            src={Pic}
-            alt="Doctors"
-            className="img-fluid"
-            style={{ maxWidth: "100%", height: "auto" }}
-          />
         </div>
       </div>
     </div>
