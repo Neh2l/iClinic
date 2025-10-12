@@ -10,6 +10,8 @@ import { useNavigate } from 'react-router-dom';
 import Aos from 'aos';
 import { FaBars } from "react-icons/fa";
 
+
+
 const Testimonies = () => {
   const reviews = [
     {
@@ -60,34 +62,39 @@ const Testimonies = () => {
           <BiChevronLeft size={28} />
         </button>
 
-        <div
-          className="card border-0 shadow-lg text-center p-4 flex-grow-1 mx-auto"
+        <div className="card border-0 shadow-lg text-center p-4 flex-grow-1 mx-auto"
           style={{
             maxWidth: "900px",
             backgroundColor: "#f1ededb7",
             minHeight: "450px",
           }}
         >
-          <h4 className="primary-text mb-3">
-            <i className="bi bi-quote"></i> {reviews[current].title}
-          </h4>
-          <p className="text-muted lh-base">{reviews[current].text}</p>
+          {reviews[current] && (
+            <>
+              <h4 className="primary-text mb-3">
+                <i className="bi bi-quote"></i> {reviews[current].title}
+              </h4>
+              <p className="text-muted lh-base">{reviews[current].text}</p>
 
-          <div className="d-flex justify-content-center align-items-center gap-3 mt-4">
-            <img
-              src={Person}
-              alt="Person"
-              className="rounded-circle"
-              style={{ width: "3rem", height: "3rem", objectFit: "cover" }}
-            />
-            <div>
-              <h6 className="mb-0 fw-bold">{reviews[current].name}</h6>
-              <p className="mb-0 text-muted small">{reviews[current].place}</p>
-            </div>
-          </div>
+              <div className="d-flex justify-content-center align-items-center gap-3 mt-4">
+                <img
+                  src={Person}
+                  alt="Person"
+                  className="rounded-circle"
+                  style={{ width: "3rem", height: "3rem", objectFit: "cover" }}
+                />
+                <div>
+                  <h6 className="mb-0 fw-bold">{reviews[current].name}</h6>
+                  <p className="mb-0 text-muted small">
+                    {reviews[current].place}
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
 
           <div className="d-flex justify-content-center mt-4 d-md-none">
-            {reviews.map((_, index) => (
+            {reviews.map((review, index) => (
               <button
                 key={index}
                 onClick={() => setCurrent(index)}
@@ -113,19 +120,11 @@ const Testimonies = () => {
         </button>
       </div>
 
-      <div className="d-md-none mt-3">
-        <div
-          className="card border-0 shadow-sm p-3 text-center mx-auto"
-          style={{
-            backgroundColor: "#f1ededb7",
-            maxWidth: "100%",
-            minHeight: "auto",
-          }}
-        ></div>
-      </div>
+  
     </div>
   );
 };
+
 
 const OurServices = () =>{
     return (
