@@ -1,15 +1,14 @@
-import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import Pic from "../../images/image 9 (1).png";
-import styles from "../../styles/verification.module.css";
-import forget from "../../images/forget.png";
-import "../../styles/Forgot.css";
-import "../../styles/LoginPage.css";
-import CNP from '../../images/verificationimg.png'
+import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import forget from '../../images/forget.png';
+import CNP from '../../images/verificationimg.png';
+import Pic from '../../images/image 9 (1).png';
+
+const theFuckinColorShit = '#015D82';
 
 const Verification = ({ goBack, goCreateNew }) => {
-  const [otp, setOtp] = useState(Array(6).fill(""));
+  const [otp, setOtp] = useState(Array(6).fill(''));
   const inputsRef = useRef([]);
 
   const handleChange = (value, index) => {
@@ -17,142 +16,151 @@ const Verification = ({ goBack, goCreateNew }) => {
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
-
-    if (value && index < 5) {
-      inputsRef.current[index + 1].focus();
-    }
+    if (value && index < 5) inputsRef.current[index + 1].focus();
   };
 
   const handleKeyDown = (e, index) => {
-    if (e.key === "Backspace" && !otp[index] && index > 0) {
+    if (e.key === 'Backspace' && !otp[index] && index > 0) {
       inputsRef.current[index - 1].focus();
     }
   };
 
   const handleSubmit = () => {
-    if (otp.some((digit) => digit === "")) {
-      alert("You need to enter the 6 numbers!");
+    if (otp.some((digit) => digit === '')) {
+      alert('You need to enter the 6 numbers!');
       return;
     }
-    alert("Entered Code: " + otp.join(""));
-    setOtp(Array(6).fill(""));
+    alert('Entered Code: ' + otp.join(''));
+    setOtp(Array(6).fill(''));
     inputsRef.current[0].focus();
     goCreateNew();
   };
 
   return (
-    <div className={styles.optContainer}>
-      <div className={styles.leftPanel}>
-        <h1>Enter Verification Code</h1>
-        <p>
-          We've sent a 6-digit verification code to your email address. <br />
-          Please enter it below
-        </p>
-
-        <div className="d-flex gap-2 mb-4">
-          {otp.map((digit, index) => (
-            <input
-              key={index}
-              type="text"
-              value={digit}
-              maxLength={1}
-              className={styles.otpInput}
-              onChange={(e) => handleChange(e.target.value, index)}
-              onKeyDown={(e) => handleKeyDown(e, index)}
-              ref={(el) => (inputsRef.current[index] = el)}
-            />
-          ))}
-        </div>
-
-        <br />
-        <br />
-        <button onClick={handleSubmit} className={styles.verifyBtn}>
-          Send Verification Code
-        </button>
-
-        <div className={styles.resend}>
-          <p>
-            Didn't receive the code ? <a href="#">Resend code</a>
+    <div className="container py-5">
+      <div className="row align-items-center">
+        <div className="col-lg-6 mb-4 mb-lg-0 text-center text-lg-start">
+          <h2 className="fw-bold mb-3" style={{ color: theFuckinColorShit }}>
+            Enter Verification Code
+          </h2>
+          <p className="text-muted mb-4">
+            We've sent a 6-digit verification code to your email address.
+            <br />
+            Please enter it below.
           </p>
-          <p className={styles.backLink} onClick={goBack}>
+
+          <div className="d-flex justify-content-center justify-content-lg-start gap-2 mb-4">
+            {otp.map((digit, index) => (
+              <input
+                key={index}
+                type="text"
+                value={digit}
+                maxLength={1}
+                onChange={(e) => handleChange(e.target.value, index)}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                ref={(el) => (inputsRef.current[index] = el)}
+                className="form-control text-center fs-4 border-2"
+                style={{
+                  width: '50px',
+                  height: '50px',
+                  borderColor: theFuckinColorShit
+                }}
+              />
+            ))}
+          </div>
+
+          <button
+            onClick={handleSubmit}
+            className="btn w-100 mb-3"
+            style={{
+              backgroundColor: theFuckinColorShit,
+              color: 'white',
+              border: 'none'
+            }}
+          >
+            Send Verification Code
+          </button>
+
+          <p className="mt-3 mb-1">
+            Didn't receive the code?{' '}
+            <a
+              href="..."
+              style={{ color: theFuckinColorShit, fontWeight: 'bold' }}
+            >
+              Resend code
+            </a>
+          </p>
+          <p
+            onClick={goBack}
+            className="fw-bold"
+            style={{ cursor: 'pointer', color: theFuckinColorShit }}
+          >
             ← Back to email entry
           </p>
         </div>
-      </div>
 
-      <div className={styles.rightPanel}>
-        <img src="/verificationimg.png" alt="Verification" />
+        <div className="col-lg-6 text-center">
+          <img src={CNP} alt="Verification" className="img-fluid" />
+        </div>
       </div>
     </div>
   );
 };
 
 const CreateNewPassword = ({ goBack, goLogin }) => {
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [error, setError] = useState("");
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!password || !confirm) {
-      setError("Both fields are required!");
-      return;
-    }
-    if (password !== confirm) {
-      setError("Passwords do not match!");
-      return;
-    }
-    if (password.length < 6) {
-      setError("Password is weak!");
-      return;
-    }
-    setError("");
-    toast.success("Password created successfully!");
+    if (!password || !confirm) return setError('Both fields are required!');
+    if (password !== confirm) return setError('Passwords do not match!');
+    if (password.length < 6) return setError('Password is weak!');
+    setError('');
+    toast.success('Password created successfully!');
     goLogin();
   };
 
   return (
-          <div className="d-flex flex-column min-vh-100">
-      <div className="d-flex flex-column flex-lg-row">
-        <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center bg-light">
-          <img
-            src={CNP}
-            alt="Doctors"
-            className="img-fluid"
-            style={{ maxWidth: "100%", height: "auto" }}
-          />
+    <div className="container py-5">
+      <div className="row align-items-center">
+        <div className="col-lg-6 text-center mb-4 mb-lg-0">
+          <img src={CNP} alt="Create Password" className="img-fluid" />
         </div>
 
-        <div className="col-12 col-lg-6 d-flex flex-column justify-content-center p-4 flex-wrap">
-          <h3 className="fw-bold mb-3">Create new password</h3>
+        <div className="col-lg-6">
+          <h3 className="fw-bold mb-3" style={{ color: theFuckinColorShit }}>
+            Create New Password
+          </h3>
           <p className="text-muted mb-4">
-            Please create a new password for your account, make sure it's strong
-            and secure
+            Please create a new password for your account. Make sure it's strong
+            and secure.
           </p>
 
-          <form className="d-flex flex-column gap-4" onSubmit={handleSubmit}>
-            <div className="mb-3">
+          <form className="d-flex flex-column gap-3" onSubmit={handleSubmit}>
+            <div>
               <label htmlFor="createpass" className="form-label">
-                New password
+                New Password
               </label>
               <input
                 id="createpass"
                 type="password"
-                placeholder="Create new Password"
+                placeholder="Enter new password"
                 className="form-control"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
-            <div className="mb-3">
+            <div>
               <label htmlFor="confirm" className="form-label">
-                Confirm New password
+                Confirm New Password
               </label>
               <input
                 id="confirm"
                 type="password"
-                placeholder="Confirm new Password"
+                placeholder="Confirm new password"
                 className="form-control"
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
@@ -163,18 +171,22 @@ const CreateNewPassword = ({ goBack, goLogin }) => {
 
             <button
               type="submit"
-              className="btn w-100 mt-3"
-              style={{ color: "white", background: "#015D82" }}
+              className="btn w-100 mt-2"
+              style={{
+                backgroundColor: theFuckinColorShit,
+                color: 'white',
+                border: 'none'
+              }}
             >
               Reset Password
             </button>
 
             <p
-              className="text-muted text-center mt-2"
-              style={{ cursor: "pointer" }}
+              className="text-center mt-3"
+              style={{ cursor: 'pointer', color: theFuckinColorShit }}
               onClick={goLogin}
             >
-              Back to login?
+              Back to login
             </p>
           </form>
         </div>
@@ -184,166 +196,189 @@ const CreateNewPassword = ({ goBack, goLogin }) => {
 };
 
 const ForgotPass = ({ goBack, goVerification }) => {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email) {
-      setError("Please enter your email address!");
-      return;
-    }
-    setError("");
+    if (!email) return setError('Please enter your email address!');
+    setError('');
     goVerification();
   };
 
   return (
-    <div className="forget-page">
-      <div>
-        <img src={forget} alt="forget pass" />
-      </div>
-      <div>
-        <h3>Forgot password?</h3>
-        <p>
-          Enter your email address and we'll send you a verification code to
-          reset your password
-        </p>
+    <div className="container py-5">
+      <div className="row align-items-center">
+        <div className="col-lg-6 text-center mb-4 mb-lg-0">
+          <img src={forget} alt="Forgot Password" className="img-fluid" />
+        </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label">
-              Email address
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your registered email"
-              className="form-control"
-            />
-          </div>
-          {error && <p className="text-danger">{error}</p>}
-
-          <button type="submit">Send verification code</button>
-          <p
-            onClick={goBack}
-            style={{ cursor: "pointer", color: "#015d82", fontWeight: "bold" }}
-          >
-            Back to login
+        <div className="col-lg-6">
+          <h3 className="fw-bold mb-3" style={{ color: theFuckinColorShit }}>
+            Forgot Password?
+          </h3>
+          <p className="text-muted mb-4">
+            Enter your email and we'll send you a verification code to reset
+            your password.
           </p>
-        </form>
+
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label">
+                Email Address
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="form-control"
+                placeholder="Enter your registered email"
+              />
+            </div>
+            {error && <p className="text-danger">{error}</p>}
+
+            <button
+              type="submit"
+              className="btn w-100 mb-3"
+              style={{
+                backgroundColor: theFuckinColorShit,
+                color: 'white',
+                border: 'none'
+              }}
+            >
+              Send Verification Code
+            </button>
+
+            <p
+              onClick={goBack}
+              className="fw-bold text-center"
+              style={{ cursor: 'pointer', color: theFuckinColorShit }}
+            >
+              Back to login
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );
 };
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [page, setPage] = useState("Login");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [page, setPage] = useState('Login');
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      setError("Please fill in both fields!");
-      return;
-    }
-    setError("");
+    if (!email || !password) return setError('Please fill in both fields!');
+    setError('');
     // Add login logic here
   };
 
-  if (page === "ForgotPass") {
+  if (page === 'ForgotPass')
     return (
       <ForgotPass
-        goBack={() => setPage("Login")}
-        goVerification={() => setPage("Verification")}
+        goBack={() => setPage('Login')}
+        goVerification={() => setPage('Verification')}
       />
     );
-  }
 
-  if (page === "Verification") {
+  if (page === 'Verification')
     return (
       <Verification
-        goBack={() => setPage("ForgotPass")}
-        goCreateNew={() => setPage("CreateNewPassword")}
+        goBack={() => setPage('ForgotPass')}
+        goCreateNew={() => setPage('CreateNewPassword')}
       />
     );
-  }
 
-  if (page === "CreateNewPassword") {
+  if (page === 'CreateNewPassword')
     return (
       <CreateNewPassword
-        goBack={() => setPage("Login")}
-        goLogin={() => setPage("Login")}
+        goBack={() => setPage('Login')}
+        goLogin={() => setPage('Login')}
       />
     );
-  }
 
   return (
-    <div className="login-page">
-      <div className="form-container">
-        <h1>Welcome back</h1>
-        <p>Please enter your credentials</p>
+    <div className="container py-5">
+      <div className="row align-items-center">
+        <div className="col-lg-6 mb-4 mb-lg-0">
+          <h2 className="fw-bold mb-3" style={{ color: theFuckinColorShit }}>
+            Welcome Back
+          </h2>
+          <p className="text-muted mb-4">Please enter your credentials</p>
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label">
-              Email
-            </label>
-            <input
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              type="email"
-              className="form-control"
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
+            <div>
+              <label htmlFor="email" className="form-label">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                className="form-control"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
 
-          <div className="mb-3">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <input
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              type="password"
-              className="form-control"
-            />
-          </div>
+            <div>
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                className="form-control"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
 
-          {error && <p className="text-danger">{error}</p>}
+            {error && <p className="text-danger">{error}</p>}
 
-          <button className="log" type="submit">
-            Log in
-          </button>
-          <button
-            type="button"
-            className="forget"
-            onClick={() => setPage("ForgotPass")}
-          >
-            Forgot your password?
-          </button>
-
-          <p>
-            Don't have an account?{" "}
-            <span
-              className="fw-bold"
-              onClick={() => navigate("/register")}
-              style={{ cursor: "pointer", color: "#015D82" }}
+            <button
+              className="btn w-100"
+              type="submit"
+              style={{
+                backgroundColor: theFuckinColorShit,
+                color: 'white',
+                border: 'none'
+              }}
             >
-              Sign up here
-            </span>
-          </p>
-        </form>
-      </div>
-      <div className="pic">
-        <img src={Pic} alt="Doctors" />
+              Log In
+            </button>
+
+            <button
+              type="button"
+              className="btn btn-link"
+              style={{ color: theFuckinColorShit, textDecoration: 'none' }}
+              onClick={() => setPage('ForgotPass')}
+            >
+              Forgot your password?
+            </button>
+
+            <p className="text-center">
+              Don't have an account?{' '}
+              <span
+                className="fw-bold"
+                style={{ cursor: 'pointer', color: theFuckinColorShit }}
+                onClick={() => navigate('/register')}
+              >
+                Sign up here
+              </span>
+            </p>
+          </form>
+        </div>
+
+        <div className="col-lg-6 text-center">
+          <img src={Pic} alt="Doctors" className="img-fluid" />
+        </div>
       </div>
     </div>
   );
