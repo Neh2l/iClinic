@@ -15,6 +15,38 @@ body{
 .secondary-text{
     color: var(--secondary-color);
 }
+.accept-btn{
+    background-color: #00A6CE;
+    color: white;
+    width: 100px;
+    height: 2.5rem;
+    border: none;
+    border-radius: .4rem;
+}
+.decline-btn{
+    background-color: transparent;
+    color: rgb(199, 19, 19);
+    width: 100px;
+    height: 2.5rem;
+    border: 1px solid gray;
+    border-radius: .4rem;
+}
+.accept-btn-all{
+    background-color: #00A6CE;
+    color: white;
+    width: 150px;
+    height: 2.5rem;
+    border: none;
+    border-radius: .4rem;
+}
+.decline-btn-all{
+    background-color: transparent;
+    color:black;
+    width: 150px;
+    height: 2.5rem;
+    border: 1px solid gray;
+    border-radius: .4rem;
+}
 .primary-btn{
     background-color: var(--primary-color);
     color: var(--white-color);

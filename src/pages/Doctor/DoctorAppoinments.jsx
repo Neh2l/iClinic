@@ -68,10 +68,10 @@ function SinglePatient({ name, date, type, img, onAccept, onDecline }) {
         </div>
       </div>
       <div>
-        <button className="btn btn-info me-2" onClick={onAccept}>
+        <button className="accept-btn me-2" onClick={onAccept}>
           Accept
         </button>
-        <button className="btn btn-outline-danger" onClick={onDecline}>
+        <button className="decline-btn" onClick={onDecline}>
           Decline
         </button>
       </div>
@@ -166,10 +166,10 @@ const DoctorAppointments = () => {
               <p>View and manage appointment requests from your patients</p>
             </div>
             <div className="col-12 col-lg-4 text-lg-end mt-3 mt-lg-0">
-              <button className="btn btn-info me-2" onClick={handleAcceptAll}>
+              <button className="accept-btn-all me-2" onClick={handleAcceptAll}>
                 Accept All
               </button>
-              <button className="btn btn-outline-danger" onClick={handleDeclineAll}>
+              <button className="decline-btn-all" onClick={handleDeclineAll}>
                 Decline All
               </button>
             </div>
