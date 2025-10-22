@@ -5,7 +5,12 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: sticky;  
+  top: 65px;      
+  height: calc(100vh - 60px); 
+  overflow-y: auto;  
 }
+
 
 .sidebar .top {
   padding: 20px;

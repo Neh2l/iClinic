@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import DoctorHeader from "../../components/layout/doctorHeader";
+import DoctorSidebar from "../../components/layout/doctorSidebar";
 import img from "../../images/Shape.png";
+// import "react-toastify/dist/ReactToastify.css";
+
 const initialAppointments = [
   {
     name: "Michael James",
@@ -111,68 +115,81 @@ const DoctorAppointments = () => {
   };
 
   const handleDecline = (index) => {
-    showConfirmToast(
-      `Are you sure To remove all ? ${appointments[index].name}؟`,
-      () => {
-        setAppointments((apps) => apps.filter((i, id) => id !== index));
-      }
-    );
+    showConfirmToast(`Are you sure To remove? ${appointments[index].name}?`, () => {
+      setAppointments((apps) => apps.filter((appointment, Index) => Index !== index));
+    });
   };
 
   const handleAccept = (index) => {
-    showConfirmToast(
-      `Are you sure to confirm all ?${appointments[index].name}؟`,
-      () => {
-        toast.success(`Accepted ! ${appointments[index].name}`, {
-          position: "top-right",
-        });
-        setAppointments((apps) => apps.filter((i, id) => id !== index));
-      }
-    );
+    showConfirmToast(`Are you sure to accept? ${appointments[index].name}?`, () => {
+      toast.success(`Accepted ! ${appointments[index].name}`, {
+        position: "top-right",
+      });
+      setAppointments((apps) => apps.filter((appointment, Index) => Index !== index));
+    });
   };
 
   const handleAcceptAll = () => {
-    showConfirmToast("Are you sure to confirm all  ?", () => {
-      toast.success("All were Accepted!   ", { position: "top-right" });
+    showConfirmToast("Are you sure to accept all?", () => {
+      toast.success("All were Accepted!", { position: "top-right" });
       setAppointments([]);
     });
   };
 
   const handleDeclineAll = () => {
-    showConfirmToast("Are you sure to remove all ? ", () => {
+    showConfirmToast("Are you sure to remove all?", () => {
       setAppointments([]);
     });
   };
 
   return (
-    <div className="container" style={{ minHeight: "100vh" }}>
-      <ToastContainer />
-      <div class="row justify-content-lg-between align-items-center">
-        <div className="col-8">
-            <h2 className="mb-3  fw-bold">Appointments</h2>
-            <p>View and manage appointment requests from your patients</p>
+    <>
+      <DoctorHeader />
+      <div className="d-flex" style={{ minHeight: "100vh" }}>
+        <div
+          className="d-none d-lg-block"
+          style={{
+            width: "240px",
+            position: "sticky",
+            top: "60px",
+            height: "calc(100vh - 60px)",
+            overflowY: "auto",
+          }}
+        >
+          <DoctorSidebar />
         </div>
-        <div className="mb-3 col-3">
-          <button className="btn btn-info me-2" onClick={handleAcceptAll}>
-            Accept All
-          </button>
-          <button className="btn btn-outline-danger" onClick={handleDeclineAll}>
-            Decline All
-          </button>
-        </div>
+        <main className="flex-grow-1 p-5 mt-5">
+          <ToastContainer />
+          <div className="row justify-content-between align-items-center mb-3">
+            <div className="col-12 col-lg-8">
+              <h2 className="fw-bold">Appointments</h2>
+              <p>View and manage appointment requests from your patients</p>
+            </div>
+            <div className="col-12 col-lg-4 text-lg-end mt-3 mt-lg-0">
+              <button className="btn btn-info me-2" onClick={handleAcceptAll}>
+                Accept All
+              </button>
+              <button className="btn btn-outline-danger" onClick={handleDeclineAll}>
+                Decline All
+              </button>
+            </div>
+          </div>
+
+          {appointments.length === 0 ? (
+            <div className="text-muted">No appointments available</div>
+          ) : (
+            appointments.map((app, i) => (
+              <SinglePatient
+                key={i}
+                {...app}
+                onAccept={() => handleAccept(i)}
+                onDecline={() => handleDecline(i)}
+              />
+            ))
+          )}
+        </main>
       </div>
-      {appointments.length === 0 && (
-        <div className="text-muted">No appointments available</div>
-      )}
-      {appointments.map((app, id) => (
-        <SinglePatient
-          key={id}
-          {...app}
-          onAccept={() => handleAccept(id)}
-          onDecline={() => handleDecline(id)}
-        />
-      ))}
-    </div>
+    </>
   );
 };
 
