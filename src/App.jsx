@@ -5,7 +5,7 @@ import Login from './pages/Auth/Login';
 import Chat from './pages/Chat';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
-import Doctor from './pages/Doctor';
+// import Doctor from './pages/Doctor';
 import Payment from './pages/Payment';
 import Error from './pages/Error';
 // import ForgotPass from './pages/Auth/Login/ForgotPass'
@@ -14,6 +14,7 @@ import { ToastContainer } from 'react-toastify';
 import Aos from 'aos';
 import 'aos/dist/aos.css'
 import { useEffect } from 'react';
+import DoctorAppointments from './pages/Doctor/DoctorAppoinments';
 
 function App() {
   useEffect(()=>{
@@ -32,9 +33,10 @@ function App() {
      <Route path='/register' element={<Register/>}/>
      <Route path='/chat' element={<Chat/>}/>
      <Route path='/dashboard' element={<Dashboard/>}/>
-     <Route path='/doctor' element={<Doctor/>}/>
+     {/* <Route path='/doctor' element={<Doctor/>}/> */}
      <Route path='/payment' element={<Payment/>}/>
-      {/* <Route path='/forgetpassword' element={<ForgotPass/>}/> */}
+          <Route path='/appoinment' element={<DoctorAppointments/>}/>
+
      <Route path='*' element={<Error/>}/>
     
     </Route>     
