@@ -1,7 +1,7 @@
 import React from 'react';
 import DoctorHeader from "../../components/layout/doctorHeader";
 import DoctorSidebar from "../../components/layout/doctorSidebar";
-import styles from "./overView.module.css";
+import styles from "../../styles/overView.module.css";
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 
 const DoctorOverview = () => {
