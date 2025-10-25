@@ -4,7 +4,7 @@ const doctorSidebar = () => {
   return (
      <div className={styles.sidebar}>
       <div className={styles.top}>
-        <p className={styles.logo}>IClinic</p>
+        <p className={`${styles.logo} primary-text`}>IClinic</p>
         <ul>
           <li><a href="..." className={styles.active}> Overview</a></li>
           <li><a href="..."> Appointments</a></li>
