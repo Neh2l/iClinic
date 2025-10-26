@@ -1,19 +1,20 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Register from "./pages/Auth/Register";
-import Layout from "./components/layout/Layout";
-import Login from "./pages/Auth/Login";
-import Chat from "./pages/Chat";
-import Dashboard from "./pages/Dashboard";
-import Home from "./pages/Home";
-import Payment from "./pages/Payment";
-import Error from "./pages/Error";
-import { ToastContainer } from "react-toastify";
-import Aos from "aos";
-import "aos/dist/aos.css";
-import { useEffect } from "react";
-import DoctorAppointments from "./pages/Doctor/DoctorAppoinments";
-import DoctorOverview from "./pages/Doctor/DoctorOverview";
-import DoctorPatients from "./pages/Doctor/DoctorPatients"
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Register from './pages/Auth/Register';
+import Layout from './components/layout/Layout';
+import Login from './pages/Auth/Login';
+import Chat from './pages/Chat';
+import Dashboard from './pages/Dashboard';
+import Home from './pages/Home';
+import Payment from './pages/Payment';
+import Error from './pages/Error';
+import { ToastContainer } from 'react-toastify';
+import Aos from 'aos';
+import 'aos/dist/aos.css';
+import { useEffect } from 'react';
+import DoctorAppointments from './pages/Doctor/Dashboard/DoctorAppoinments';
+import DoctorOverview from './pages/Doctor/Dashboard/DoctorOverview';
+import DoctorPatients from './pages/Doctor/Dashboard/DoctorPatients';
+import DoctorMessages from './pages/Doctor/Dashboard/DoctorMessages';
 
 function App() {
   useEffect(() => {
@@ -22,7 +23,7 @@ function App() {
   return (
     <BrowserRouter>
       <ToastContainer position="top-center" autoClose={3000} />
-      <div style={{ backgroundColor: "#F5F5F5" }}>
+      <div style={{ backgroundColor: '#F5F5F5' }}>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
@@ -32,12 +33,15 @@ function App() {
             <Route path="/chat" element={<Chat />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/payment" element={<Payment />} />
-            
-            {/* Doctor Routes */}
+
             <Route path="/doctor/overview" element={<DoctorOverview />} />
-            <Route path="/doctor/appointments" element={<DoctorAppointments />} />
+            <Route
+              path="/doctor/appointments"
+              element={<DoctorAppointments />}
+            />
             <Route path="/doctor/patients" element={<DoctorPatients />} />
-            
+            <Route path="/doctor/messages" element={<DoctorMessages />} />
+
             <Route path="*" element={<Error />} />
           </Route>
         </Routes>

@@ -1,13 +1,95 @@
 import { useState } from 'react';
-// import Footer from '../../components/layout/Footer';
 import RegisterImg from '../../images/image 9 (1).png';
 
 function Auth() {
   const [role, setRole] = useState(null);
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    specialization: '',
+    licenseID: '',
+    clinicName: '',
+    nationalID: '',
+    password: '',
+    passwordConfirm: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!role) {
+      alert('Please select your role (Doctor or Patient).');
+      return;
+    }
+
+    const url =
+      role === 'doctor'
+        ? 'http://localhost:5000/api/v1/doctors/signup'
+        : 'http://localhost:5000/api/v1/patients/signup';
+
+    const payload =
+      role === 'doctor'
+        ? {
+            fullName: formData.fullName,
+            email: formData.email,
+            nationalID: formData.nationalID,
+            password: formData.password,
+            passwordConfirm: formData.passwordConfirm,
+            clinicName: formData.clinicName,
+            licenseID: formData.licenseID,
+            specialization: formData.specialization
+          }
+        : {
+            name: formData.fullName,
+            email: formData.email,
+            nationalID: formData.nationalID,
+            phone: formData.phone,
+            password: formData.password,
+            passwordConfirm: formData.passwordConfirm
+          };
+
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      console.log('Response:', data);
+
+      if (data.status === 'success') {
+        alert(`${role} registered successfully!`);
+        setFormData({
+          fullName: '',
+          email: '',
+          phone: '',
+          specialization: '',
+          licenseID: '',
+          clinicName: '',
+          nationalID: '',
+          password: '',
+          passwordConfirm: ''
+        });
+        setRole(null);
+      } else {
+        alert(data.message || 'Something went wrong!');
+      }
+    } catch (err) {
+      console.error('Error:', err);
+      alert('Registration failed!');
+    }
+  };
 
   return (
     <div className="d-flex flex-column min-vh-100">
       <div className="d-flex flex-grow-1">
+        {/* LEFT SIDE */}
         <div className="col-12 col-md-6 d-flex flex-column justify-content-center px-5">
           <Header />
           <Description />
@@ -15,15 +97,139 @@ function Auth() {
           {!role ? (
             <RegisterButtons setRole={setRole} />
           ) : (
-            <RegisterForm role={role} setRole={setRole} />
+            <form className="d-flex flex-column gap-3" onSubmit={handleSubmit}>
+              {/* Common fields */}
+              <input
+                name="fullName"
+                type="text"
+                placeholder="Enter your Full Name"
+                className="form-control"
+                value={formData.fullName}
+                onChange={handleChange}
+                required
+              />
+
+              <input
+                name="email"
+                type="email"
+                placeholder="Enter your Email"
+                className="form-control"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+
+              <input
+                name="nationalID"
+                type="text"
+                placeholder="Enter your National ID (14 digits)"
+                className="form-control"
+                value={formData.nationalID}
+                onChange={handleChange}
+                required
+              />
+
+              {/* Doctor-only fields */}
+              {role === 'doctor' && (
+                <>
+                  <input
+                    name="clinicName"
+                    type="text"
+                    placeholder="Enter your Clinic Name"
+                    className="form-control"
+                    value={formData.clinicName}
+                    onChange={handleChange}
+                    required
+                  />
+                  <input
+                    name="licenseID"
+                    type="text"
+                    placeholder="Enter your License Number"
+                    className="form-control"
+                    value={formData.licenseID}
+                    onChange={handleChange}
+                    required
+                  />
+                  <input
+                    name="specialization"
+                    type="text"
+                    placeholder="Enter your Specialization"
+                    className="form-control"
+                    value={formData.specialization}
+                    onChange={handleChange}
+                  />
+                </>
+              )}
+
+              {/* Patient-only field */}
+              {role === 'patient' && (
+                <input
+                  name="phone"
+                  type="tel"
+                  placeholder="Enter your Phone Number"
+                  className="form-control"
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
+              )}
+
+              {/* Password fields */}
+              <input
+                name="password"
+                type="password"
+                placeholder="Create your Password"
+                className="form-control"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+
+              <input
+                name="passwordConfirm"
+                type="password"
+                placeholder="Confirm your Password"
+                className="form-control"
+                value={formData.passwordConfirm}
+                onChange={handleChange}
+                required
+              />
+
+              {/* Buttons */}
+              <button
+                type="submit"
+                className="btn text-white w-100 mt-2"
+                style={{ backgroundColor: '#015D82' }}
+              >
+                Register as {role === 'doctor' ? 'Doctor' : 'Patient'}
+              </button>
+
+              <button
+                type="button"
+                className="btn btn-outline-secondary w-100"
+                onClick={() => setRole(null)}
+              >
+                ← Back
+              </button>
+
+              <p className="small mt-2">
+                Already have an account?{' '}
+                <a
+                  href="/login"
+                  className="fw-bold"
+                  style={{ color: '#015D82' }}
+                >
+                  Sign in here
+                </a>
+              </p>
+            </form>
           )}
         </div>
 
+        {/* RIGHT SIDE IMAGE */}
         <div className="d-none d-md-flex col-md-6 align-items-center justify-content-center">
           <img src={RegisterImg} alt="Doctors" className="img-fluid" />
         </div>
       </div>
-      {/* <Footer /> */}
     </div>
   );
 }
@@ -61,99 +267,6 @@ function RegisterButtons({ setRole }) {
         Sign Up as Patient
       </button>
     </div>
-  );
-}
-
-function RegisterForm({ role, setRole }) {
-  return (
-    <form className="d-flex flex-column gap-3">
-      {role === 'patient' ? (
-        <>
-          <input
-            type="text"
-            placeholder="Enter your Full Name"
-            className="form-control"
-          />
-          <input
-            type="tel"
-            placeholder="Enter your Phone Number"
-            className="form-control"
-          />
-          <input
-            type="email"
-            placeholder="Enter your Email"
-            className="form-control"
-          />
-          <input
-            type="password"
-            placeholder="Create your Password"
-            className="form-control"
-          />
-          <input
-            type="password"
-            placeholder="Confirm your Password"
-            className="form-control"
-          />
-        </>
-      ) : (
-        <>
-          <input
-            type="text"
-            placeholder="Enter your Full Name"
-            className="form-control"
-          />
-          <input
-            type="email"
-            placeholder="Enter your Email"
-            className="form-control"
-          />
-          <input
-            type="text"
-            placeholder="Enter your Specialization"
-            className="form-control"
-          />
-          <input
-            type="text"
-            placeholder="Enter your License Number"
-            className="form-control"
-          />
-          <input
-            type="password"
-            placeholder="Create your Password"
-            className="form-control"
-          />
-          <input
-            type="password"
-            placeholder="Confirm your Password"
-            className="form-control"
-          />
-        </>
-      )}
-
-      {/* Register Button */}
-      <button
-        className="btn text-white w-100 mt-2"
-        style={{ backgroundColor: '#015D82' }}
-      >
-        Register
-      </button>
-
-      {/* Back Button */}
-      <button
-        type="button"
-        className="btn btn-outline-secondary w-100"
-        onClick={() => setRole(null)}
-      >
-        ← Back
-      </button>
-
-      <p className="small mt-2">
-        Already have an account?{' '}
-        <a href="/login" className="fw-bold" style={{ color: '#015D82' }}>
-          Sign in here
-        </a>
-      </p>
-    </form>
   );
 }
 
