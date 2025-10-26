@@ -1,20 +1,21 @@
 import React from 'react';
 import styles from "../../styles/Sidebar.module.css";
-// import DoctorPatients from '../../pages/Doctor/DoctorPatients';
+import { Link } from 'react-router-dom';
 const doctorSidebar = () => {
   return (
      <div className={styles.sidebar}>
       <div className={styles.top}>
         <p className={`${styles.logo} primary-text`}>IClinic</p>
         <ul>
-          <li><a href="../../pages/Doctor/DoctorOverview" className={styles}> Overview</a></li>
-          <li><a href="..."> Appointments</a></li>
-          <li><a href="../../pages/Doctor/DoctorPatients"> Patients</a></li>
-          <li><a href="..."> Messages</a></li>
-          <li><a href="..."> Setting</a></li>
-          <li><a href="..." className={styles.logout}> Logout</a></li>
+          <li><Link to="/doctor/overview" className={styles}>Overview</Link></li>
+          <li><Link to="/doctor/appointments">Appointments</Link></li>
+          <li><Link to="/doctor/patients">Patients</Link></li>
+          <li><Link to="/doctor/messages">Messages</Link></li>
+          <li><Link to="/doctor/settings">Settings</Link></li>
+          <li><Link to="..." className={styles.logout}>Logout</Link></li>
+
         </ul>
-      </div>
+      </div>  
     </div>
   );
 };

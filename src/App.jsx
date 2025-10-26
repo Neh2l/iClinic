@@ -31,11 +31,13 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            {/* <Route path='/doctor' element={<Doctor/>}/> */}
             <Route path="/payment" element={<Payment />} />
-            <Route path="/overview" element={<DoctorOverview />} />
-            <Route path="/appoinment" element={<DoctorAppointments />} />
-            <Route path="/patientTable" element={<DoctorPatients />} />
+            
+            {/* Doctor Routes */}
+            <Route path="/doctor/overview" element={<DoctorOverview />} />
+            <Route path="/doctor/appointments" element={<DoctorAppointments />} />
+            <Route path="/doctor/patients" element={<DoctorPatients />} />
+            
             <Route path="*" element={<Error />} />
           </Route>
         </Routes>
