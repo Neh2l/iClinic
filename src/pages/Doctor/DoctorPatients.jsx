@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import DoctorHeader from "../../components/layout/doctorHeader";
 import DoctorSidebar from "../../components/layout/doctorSidebar";
 import img from "../../images/Face.png"
@@ -71,7 +71,7 @@ function SinglePatient({patient,openDropdown, toggleDropdown, handleMessage, han
                 <td className="p-3">{patient.date}</td>
                 <td className="p-3">{patient.patientGender}</td>
                 <td className="p-3">{patient.patientDiseases}</td>
-                <td className="p-3 position-relative">
+                <td className="p-3 position-relative bg-white">
                     <button onClick={()=> toggleDropdown(patient.id)} className="btn btn-sm" style={{fontSize:'20px'}} >⋮ </button>
                     {openDropdown ===patient.id && (
                         <div className="position-absolute bg-white border rounded shadow" 
@@ -92,8 +92,8 @@ function SinglePatient({patient,openDropdown, toggleDropdown, handleMessage, han
                         <small className="text-muted">ID: {patient.patientID}</small>
                     </div>
                     </div>
-                    <div className="position-relative">
-                        <button onClick={() => toggleDropdown(patient.id)} className="btn btn-sm" style={{ fontSize: '20px' }}>⋮ </button>
+                    <div className="position-relative"> 
+                        <button onClick={() => toggleDropdown(patient.id)} className="btn btn-sm" style={{ fontSize: '20px',  backgroundColor: 'white', color: 'black', border: 'none'}}>⋮ </button>
                         
                         {openDropdown === patient.id && (
                             <div className="position-absolute bg-white border rounded shadow" 
@@ -125,20 +125,58 @@ function SinglePatient({patient,openDropdown, toggleDropdown, handleMessage, han
         </>
     );
 }
+
 const DoctorPatients=()=>{
     const [openDropdown, setOpenDropdown]= useState(null);
+    const [showReportModal, setShowReportModal] = useState(false);
+    const [selectedPatient, setSelectedPatient] = useState(null);
+    const [reportReason, setReportReason] = useState('');
+    
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        if (!openDropdown) return;
+        
+        const closeDropdown = () => setOpenDropdown(null);
+        setTimeout(() => document.addEventListener('click', closeDropdown), 0);
+        
+        return () => document.removeEventListener('click', closeDropdown);
+    }, [openDropdown]);
+
+
     const toggleDropdown=(id)=>{
         setOpenDropdown(openDropdown === id ? null: id);
     };
-    const handleMessage = (patient) => {
-        alert(`Opening message for ${patient.patientName}`);
+
+
+    const handleMessage = (patient) => { 
+        window.location.href = '/doctor/messages';
         setOpenDropdown(null);
     };
 
+    
     const handleReport = (patient) => {
-        alert(`Opening report for ${patient.patientName}`);
+        setSelectedPatient(patient);
+        setShowReportModal(true);
         setOpenDropdown(null);
     };
+
+    const submitReport = () => {
+        if (reportReason.trim()) {
+            alert(`Report submitted for ${selectedPatient.patientName}\nReason: ${reportReason}`);
+            setShowReportModal(false);
+            setReportReason('');
+            setSelectedPatient(null);
+        } else {
+            alert('Please enter a reason for the report');
+        }
+    };
+
+    const closeReportModal = () => {
+        setShowReportModal(false);
+        setReportReason('');
+        setSelectedPatient(null);
+    };
+
     return(
         <div className="d-flex flex-column" >
                 <DoctorHeader />
@@ -160,10 +198,10 @@ const DoctorPatients=()=>{
                                 <h3 className="mb-0">patients list</h3>
                             </div>
                             {/* Desktop Table */}
-                            <div className="d-none d-md-block table-responsive">
+                            <div className="d-none d-md-block overflow-visible">
                                 <table className="table table-hover mb-0">
                                     <thead>
-                                        <tr className="primary-color">
+                                        <tr>
                                             <th className="p-3">Patient name</th>
                                             <th className="p-3">Patient ID</th>
                                             <th className="p-3">Date</th>
@@ -205,8 +243,35 @@ const DoctorPatients=()=>{
                 </div>
             </div>
 
+            {/* Report Modal */}
+            {showReportModal && (
+                <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" 
+                     style={{ backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999 }}>
+                    <div className="bg-white rounded shadow-lg p-4" style={{ maxWidth: '500px', width: '90%' }}>
+                        <h4 className="mb-3">Report Patient</h4>
+                        <div className="mb-3">
+                            <label className="form-label fw-bold">Patient Name:</label>
+                            <p>{selectedPatient?.patientName}</p>
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label fw-bold">Reason for Report:</label>
+                            <textarea 
+                                className="form-control" 
+                                rows="5" 
+                                placeholder="Enter the reason for reporting this patient..."
+                                value={reportReason}
+                                onChange={(e) => setReportReason(e.target.value)}
+                            ></textarea>
+                        </div>
+                        <div className="d-flex justify-content-end gap-2">
+                            <button className="btn btn-secondary" onClick={closeReportModal}>Cancel</button>
+                            <button className="btn btn-primary" onClick={submitReport}>Submit Report</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }
 export default DoctorPatients;
-
