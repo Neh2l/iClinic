@@ -9,7 +9,7 @@ import styles from '../styles/landing.module.css';
 import { useNavigate } from 'react-router-dom';
 import Aos from 'aos';
 import { FaBars } from "react-icons/fa";
-import DoctorAppoinments from './Doctor/DoctorAppoinments';
+
 
 
 

@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import DoctorHeader from "../../components/layout/doctorHeader";
 import DoctorSidebar from "../../components/layout/doctorSidebar";
-import Footer from "../../components/layout/Footer";
 import img from "../../images/Face.png"
 
 const initialPatients = [
@@ -205,7 +204,7 @@ const DoctorPatients=()=>{
                     </div>
                 </div>
             </div>
-            <Footer />
+
         </div>
     );
 }
