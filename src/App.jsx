@@ -13,6 +13,7 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 import DoctorAppointments from "./pages/Doctor/DoctorAppoinments";
 import DoctorOverview from "./pages/Doctor/DoctorOverview";
+import DoctorPatients from "./pages/Doctor/DoctorPatients"
 
 function App() {
   useEffect(() => {
@@ -32,8 +33,9 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             {/* <Route path='/doctor' element={<Doctor/>}/> */}
             <Route path="/payment" element={<Payment />} />
-            <Route path="/appoinment" element={<DoctorAppointments />} />
             <Route path="/overview" element={<DoctorOverview />} />
+            <Route path="/appoinment" element={<DoctorAppointments />} />
+            <Route path="/patientTable" element={<DoctorPatients />} />
             <Route path="*" element={<Error />} />
           </Route>
         </Routes>
