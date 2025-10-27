@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DoctorLayout from '../DoctorLayout';
 import img from '../../../images/Face.png';
 
+
 const initialPatients = [
   {
     id: 1,
@@ -10,7 +11,6 @@ const initialPatients = [
     date: 'Des 04.12',
     patientGender: 'Female',
     patientDiseases: 'Diabates',
-    patientStatus: 'In-Treatment',
     image: img
   },
   {
@@ -20,7 +20,6 @@ const initialPatients = [
     date: 'Des 04.12',
     patientGender: 'Female',
     patientDiseases: 'Diabates',
-    patientStatus: 'In-Treatment',
     image: img
   },
   {
@@ -30,7 +29,6 @@ const initialPatients = [
     date: 'Des 04.12',
     patientGender: 'Female',
     patientDiseases: 'Diabates',
-    patientStatus: 'In-Treatment',
     image: img
   },
   {
@@ -40,7 +38,6 @@ const initialPatients = [
     date: 'Des 04.12',
     patientGender: 'Female',
     patientDiseases: 'Diabates',
-    patientStatus: 'In-Treatment',
     image: img
   },
   {
@@ -50,20 +47,14 @@ const initialPatients = [
     date: 'Des 04.12',
     patientGender: 'Female',
     patientDiseases: 'Diabates',
-    patientStatus: 'In-Treatment',
     image: img
   }
 ];
 
-function SinglePatient({
-  patient,
-  openDropdown,
-  toggleDropdown,
-  handleMessage,
-  handleReport
-}) {
+function SinglePatient({patient, openDropdown, toggleDropdown, handleMessage, handleReport}) {
   return (
     <>
+      {/* Desktop/Tablet Table Row */}
       <tr className="d-none d-md-table-row border-bottom">
         <td className="p-3">
           <div className="d-flex align-items-center">
@@ -71,8 +62,7 @@ function SinglePatient({
               src={patient.image}
               alt={patient.patientName}
               className="rounded-circle me-2"
-              style={{ width: '40px', height: '40px' }}
-            />
+              style={{ width: '40px', height: '40px' }}/>
             <span>{patient.patientName}</span>
           </div>
         </td>
@@ -84,26 +74,21 @@ function SinglePatient({
           <button
             onClick={() => toggleDropdown(patient.id)}
             className="btn btn-sm"
-            style={{ fontSize: '20px' }}
-          >
-            {' '}
-            vertical ellipsis{' '}
+            style={{ fontSize: '20px' }}>
+            ⋮
           </button>
           {openDropdown === patient.id && (
             <div
               className="position-absolute bg-white border rounded shadow"
-              style={{ right: 0, top: '100%', zIndex: 1000, minWidth: '150px' }}
-            >
+              style={{ right: 0, top: '100%', zIndex: 1000, minWidth: '150px' }}>
               <button
                 onClick={() => handleMessage(patient)}
-                className="btn btn-sm w-100 text-start px-3 py-2 border-bottom"
-              >
+                className="btn btn-sm w-100 text-start px-3 py-2 border-bottom">
                 Message
               </button>
               <button
                 onClick={() => handleReport(patient)}
-                className="btn btn-sm w-100 text-start px-3 py-2"
-              >
+                className="btn btn-sm w-100 text-start px-3 py-2">
                 Report
               </button>
             </div>
@@ -111,6 +96,7 @@ function SinglePatient({
         </td>
       </tr>
 
+      {/* Mobile Card View */}
       <div className="d-md-none border rounded p-3 mb-3">
         <div className="d-flex justify-content-between align-items-start mb-3">
           <div className="d-flex align-items-center">
@@ -118,8 +104,7 @@ function SinglePatient({
               src={patient.image}
               alt={patient.patientName}
               className="rounded-circle me-2"
-              style={{ width: '50px', height: '50px' }}
-            />
+              style={{ width: '50px', height: '50px' }}/>
             <div>
               <h6 className="mb-0">{patient.patientName}</h6>
               <small className="text-muted">ID: {patient.patientID}</small>
@@ -134,10 +119,8 @@ function SinglePatient({
                 backgroundColor: 'white',
                 color: 'black',
                 border: 'none'
-              }}
-            >
-              {' '}
-              vertical ellipsis{' '}
+              }}>
+              ⋮
             </button>
             {openDropdown === patient.id && (
               <div
@@ -147,24 +130,22 @@ function SinglePatient({
                   top: '100%',
                   zIndex: 1000,
                   minWidth: '150px'
-                }}
-              >
+                }}>
                 <button
                   onClick={() => handleMessage(patient)}
-                  className="btn btn-sm w-100 text-start px-3 py-2 border-bottom"
-                >
+                  className="btn btn-sm w-100 text-start px-3 py-2 border-bottom">
                   Message
                 </button>
                 <button
                   onClick={() => handleReport(patient)}
-                  className="btn btn-sm w-100 text-start px-3 py-2"
-                >
+                  className="btn btn-sm w-100 text-start px-3 py-2">
                   Report
                 </button>
               </div>
             )}
           </div>
         </div>
+
         <div className="d-flex justify-content-between mb-2">
           <strong>Date:</strong>
           <span>{patient.date}</span>
@@ -177,12 +158,6 @@ function SinglePatient({
           <strong>Disease:</strong>
           <span>{patient.patientDiseases}</span>
         </div>
-        <div className="d-flex justify-content-between mb-2">
-          <strong>Status:</strong>
-          <span className="badge bg-info text-dark">
-            {patient.patientStatus}
-          </span>
-        </div>
       </div>
     </>
   );
@@ -194,101 +169,116 @@ const DoctorPatients = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [reportReason, setReportReason] = useState('');
 
+  // Handle click outside to close dropdown
   useEffect(() => {
     if (!openDropdown) return;
-    const close = () => setOpenDropdown(null);
-    setTimeout(() => document.addEventListener('click', close), 0);
-    return () => document.removeEventListener('click', close);
+
+    const handleClickOutside = () => setOpenDropdown(null);
+
+    // Delay adding listener to avoid immediate trigger
+    setTimeout(() => document.addEventListener('click', handleClickOutside), 0);
+
+    return () => document.removeEventListener('click', handleClickOutside);
   }, [openDropdown]);
 
-  const toggleDropdown = (id) =>
+  
+  const toggleDropdown = (id) => {
     setOpenDropdown((prev) => (prev === id ? null : id));
+  };
+
   const handleMessage = (patient) => {
     window.location.href = '/doctor/messages';
     setOpenDropdown(null);
   };
+
   const handleReport = (patient) => {
     setSelectedPatient(patient);
     setShowReportModal(true);
     setOpenDropdown(null);
   };
+
+  const closeReportModal = () => {
+    setShowReportModal(false);
+    setReportReason('');
+    setSelectedPatient(null);
+  };
+
   const submitReport = () => {
     if (reportReason.trim()) {
       alert(
         `Report submitted for ${selectedPatient.patientName}\nReason: ${reportReason}`
       );
-      setShowReportModal(false);
-      setReportReason('');
-      setSelectedPatient(null);
-    } else alert('Please enter a reason');
+      closeReportModal();
+    } else {
+      alert('Please enter a reason for the report');
+    }
   };
 
   return (
     <DoctorLayout>
+      {/* Search */}
       <div className="mb-4 desc">
         <input
           type="text"
           className="form-control rounded-4"
           placeholder="Search"
-          style={{ maxWidth: '400px' }}
-        />
+          style={{ maxWidth: '400px' }}/>
       </div>
 
-      <div className="bg-white rounded shadow-sm">
+      <div>
         <div className="p-3">
           <h3 className="mb-0">patients list</h3>
         </div>
 
+        {/* Desktop Table */}
         <div className="d-none d-md-block overflow-visible">
           <table className="table table-hover mb-0">
             <thead>
               <tr>
-                <th className="p-3">Patient name</th>
-                <th className="p-3">Patient ID</th>
-                <th className="p-3">Date</th>
-                <th className="p-3">Gender</th>
-                <th className="p-3">Diseases</th>
-                <th className="p-3">Action</th>
+                <th className="p-3 text-white" style={{ backgroundColor: '#015D82' }}>Patient name</th>
+                <th className="p-3 text-white" style={{ backgroundColor: '#015D82' }}>Patient ID</th>
+                <th className="p-3 text-white" style={{ backgroundColor: '#015D82' }}>Date</th>
+                <th className="p-3 text-white" style={{ backgroundColor: '#015D82' }}>Gender</th>
+                <th className="p-3 text-white" style={{ backgroundColor: '#015D82' }}>Diseases</th>
+                <th className="p-3 text-white" style={{ backgroundColor: '#015D82' }}>Action</th>
               </tr>
             </thead>
             <tbody>
-              {initialPatients.map((p) => (
+              {initialPatients.map((patient) => (
                 <SinglePatient
-                  key={p.id}
-                  patient={p}
+                  key={patient.id}
+                  patient={patient}
                   openDropdown={openDropdown}
                   toggleDropdown={toggleDropdown}
                   handleMessage={handleMessage}
-                  handleReport={handleReport}
-                />
+                  handleReport={handleReport}/>
               ))}
             </tbody>
           </table>
         </div>
 
+        {/* Mobile Cards */}
         <div className="d-md-none p-3">
-          {initialPatients.map((p) => (
+          {initialPatients.map((patient) => (
             <SinglePatient
-              key={p.id}
-              patient={p}
+              key={patient.id}
+              patient={patient}
               openDropdown={openDropdown}
               toggleDropdown={toggleDropdown}
               handleMessage={handleMessage}
-              handleReport={handleReport}
-            />
+              handleReport={handleReport}/>
           ))}
         </div>
       </div>
 
+      {/* Report Modal */}
       {showReportModal && (
         <div
           className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-          style={{ backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999 }}
-        >
+          style={{ backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999 }}>
           <div
             className="bg-white rounded shadow-lg p-4"
-            style={{ maxWidth: '500px', width: '90%' }}
-          >
+            style={{ maxWidth: '500px', width: '90%' }} >
             <h4 className="mb-3">Report Patient</h4>
             <div className="mb-3">
               <label className="form-label fw-bold">Patient Name:</label>
@@ -299,16 +289,13 @@ const DoctorPatients = () => {
               <textarea
                 className="form-control"
                 rows="5"
-                placeholder="Enter reason..."
+                placeholder="Enter the reason for reporting this patient..."
                 value={reportReason}
-                onChange={(e) => setReportReason(e.target.value)}
-              ></textarea>
+                onChange={(e) => setReportReason(e.target.value)}>
+              </textarea>
             </div>
             <div className="d-flex justify-content-end gap-2">
-              <button
-                className="btn btn-secondary"
-                onClick={() => setShowReportModal(false)}
-              >
+              <button className="btn btn-secondary" onClick={closeReportModal}>
                 Cancel
               </button>
               <button className="btn btn-primary" onClick={submitReport}>
