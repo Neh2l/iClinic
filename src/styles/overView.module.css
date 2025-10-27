@@ -5,6 +5,10 @@ body {
   margin: 0;
   padding: 0;
 }
+.icon { 
+  width: 20px;
+  height: 20px;
+}
 
 .profilePage {
   width: 1200px;
@@ -140,23 +144,24 @@ body {
 .appointment {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 100px;
   background: var(--background-color);
   border-radius: 10px;
   padding: 5px 20px;
+  cursor: pointer;
 }
-
+.appointment:hover {
+  background: #0e79a3;
+  color: var(--white-color);
+  transition: 0.3s ease;
+}
 .smallAvatar {
   width: 50px;
   height: 50px;
   border-radius: 50%;
 }
 
-.callIcon {
-  color: var(--secondary-color);
-  font-size: 18px;
-  cursor: pointer;
-}
+
 @media (max-width: 1024px) {
   .profilePage {
     width: 90%;
@@ -173,4 +178,7 @@ body {
   .experienceCard {
     order: 3;
   }
+ .appointment{
+    gap: 20px;
+ }
 }
