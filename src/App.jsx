@@ -1,20 +1,21 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Register from './pages/Auth/Register';
-import Layout from './components/layout/Layout';
-import Login from './pages/Auth/Login';
-import Chat from './pages/Chat';
-import Dashboard from './pages/Dashboard';
-import Home from './pages/Home';
-import Payment from './pages/Payment';
-import Error from './pages/Error';
-import { ToastContainer } from 'react-toastify';
-import Aos from 'aos';
-import 'aos/dist/aos.css';
-import { useEffect } from 'react';
-import DoctorAppointments from './pages/Doctor/Dashboard/DoctorAppoinments';
-import DoctorOverview from './pages/Doctor/Dashboard/DoctorOverview';
-import DoctorPatients from './pages/Doctor/Dashboard/DoctorPatients';
-import DoctorMessages from './pages/Doctor/Dashboard/DoctorMessages';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Register from "./pages/Auth/Register";
+import Layout from "./components/layout/Layout";
+import Login from "./pages/Auth/Login";
+import Chat from "./pages/Chat";
+import Dashboard from "./pages/Dashboard";
+import Home from "./pages/Home";
+import Payment from "./pages/Payment";
+import Error from "./pages/Error";
+import { ToastContainer } from "react-toastify";
+import Aos from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+import DoctorAppointments from "./pages/Doctor/Dashboard/DoctorAppoinments";
+import DoctorOverview from "./pages/Doctor/Dashboard/DoctorOverview";
+import DoctorPatients from "./pages/Doctor/Dashboard/DoctorPatients";
+import DoctorMessages from "./pages/Doctor/Dashboard/DoctorMessages";
+import Setting from "./pages/Doctor/Dashboard/Setting";
 
 function App() {
   useEffect(() => {
@@ -23,7 +24,7 @@ function App() {
   return (
     <BrowserRouter>
       <ToastContainer position="top-center" autoClose={3000} />
-      <div style={{ backgroundColor: '#F5F5F5' }}>
+      <div style={{ backgroundColor: "#F5F5F5" }}>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
@@ -41,6 +42,7 @@ function App() {
             />
             <Route path="/doctor/patients" element={<DoctorPatients />} />
             <Route path="/doctor/messages" element={<DoctorMessages />} />
+            <Route path="/doctor/settings" element={<Setting />} />
 
             <Route path="*" element={<Error />} />
           </Route>
