@@ -78,35 +78,13 @@ const Setting = () => {
           <h4 className={styles.cardName}> {doctor.name} </h4>
           <p className={styles.cardTitle}> {doctor.title} </p>
           <p>
-            <FaPhone
-              style={{
-                marginRight: "8px",
-                color: "white",
-                stroke: "black",
-                strokeWidth: "40px",
-              }}
-            />
+            <FaPhone className={styles.icons} />
             Phone number <br />
             {doctor.phone}
             <br />
-            <FaEnvelope
-              style={{
-                marginRight: "8px",
-                color: "white",
-                stroke: "black",
-                strokeWidth: "40px",
-              }}
-            />
+            <FaEnvelope className={styles.icons} />
             Email Address <br /> {doctor.email}
-            <br />{" "}
-            <FaMapMarkerAlt
-              style={{
-                marginRight: "8px",
-                color: "white",
-                stroke: "black",
-                strokeWidth: "40px",
-              }}
-            />
+            <br /> <FaMapMarkerAlt className={styles.icons} />
             Location <br /> {doctor.location}
           </p>
           <button onClick={() => setShowModal(true)} className={styles.edit}>
