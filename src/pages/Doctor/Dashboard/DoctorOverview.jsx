@@ -17,13 +17,13 @@ const DoctorOverview = () => {
 
           <div className={styles.info}>
             <p>
-              <FaPhone /> <span>+ (555) 765-1098</span>
+              <FaPhone className={styles.icon}/> <span>+ (555) 765-1098</span>
             </p>
             <p>
-              <FaEnvelope /> <span>jessica212@gmail.com</span>
+              <FaEnvelope className={styles.icon}/> <span>jessica212@gmail.com</span>
             </p>
             <p>
-              <FaMapMarkerAlt /> <span>23 Maples Street, Springfield USA</span>
+              <FaMapMarkerAlt className={styles.icon} /> <span>23 Maples Street, Springfield USA</span>
             </p>
           </div>
 
@@ -87,7 +87,6 @@ const DoctorOverview = () => {
                     </p>
                     <p>Monday 9:00 AM</p>
                   </div>
-                  <FaPhone className={styles.callIcon} />
                 </div>
               ))}
             </div>
