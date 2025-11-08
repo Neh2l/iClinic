@@ -1,0 +1,20 @@
+.patientCard{
+    background: linear-gradient(to right,#015D82,#00A6CE);
+
+}
+.patientImage{
+    width:200px;
+    height:200px;
+    object-fit: cover;
+    display: block;
+    background: white;
+    display: block;
+    border: none; 
+}
+.image-wrapper {
+    position: relative;
+    display: inline-block;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(50px);
+}
