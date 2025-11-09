@@ -1,6 +1,5 @@
 .patientCard{
     background: linear-gradient(to right,#015D82,#00A6CE);
-
 }
 .patientImage{
     width:200px;
@@ -17,4 +16,60 @@
     padding: 8px;
     background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(50px);
+}
+.patientDetails{
+    display:inline-block;
+    color:rgba(255, 255, 255, 0.937);
+}
+
+.svg-info{
+   background: rgba(255, 255, 255, 0.19);
+   backdrop-filter: blur(50px);
+   border-radius:20%;
+   padding:5px;
+   
+}
+.another-info{
+    color:white;
+}
+.info p{
+    display: inline;
+    font-size: 19px;
+    padding-left:15px;
+}
+.patientInfo p{
+    display:inline;
+    font-size: 21px;
+    margin-top:9px;
+}
+.info{
+    background: rgba(255, 255, 255, 0.238);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+@media (max-width: 767px) {
+    .patientDetails {
+        display:block;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        min-height: 200px;
+    }
+    
+    .image-wrapper {
+        margin: 0 auto;
+        justify-content: center;
+    }
+    .image-container{
+        display: flex;
+        justify-content: center;
+    }
+}
+
+/* Medium screens and up - 764px and above */
+@media (min-width: 764px) {
+    .patientDetails {
+        text-align: left;
+        justify-content: flex-start;
+    }
 }
