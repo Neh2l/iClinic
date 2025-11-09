@@ -17,6 +17,7 @@ import DoctorPatients from "./pages/Doctor/Dashboard/DoctorPatients";
 import DoctorMessages from "./pages/Doctor/Dashboard/DoctorMessages";
 import Setting from "./pages/Doctor/Dashboard/Setting";
 import PatientProfile from "./pages/Patient/Dashboard/PatientProfile";
+import DoctorProfile from "./pages/Patient/Dashboard/DoctorProfile";
 function App() {
   useEffect(() => {
     Aos.init({ duration: 1000 });
@@ -42,7 +43,8 @@ function App() {
             <Route path="/doctor/settings" element={<Setting />} />
              
             <Route path="/patient/patientProfile" element={<PatientProfile/>}/>
-            
+            <Route path="/patient/doctorProfile" element={<DoctorProfile/>}/>
+
             <Route path="*" element={<Error />} />
           </Route>
         </Routes>
