@@ -19,9 +19,11 @@
 }
 .patientDetails{
     display:inline-block;
-    color:rgba(255, 255, 255, 0.937);
+    color:white;
 }
-
+#patientName{
+    font-weight: bolder;
+}
 .svg-info{
    background: rgba(255, 255, 255, 0.19);
    backdrop-filter: blur(50px);
@@ -32,21 +34,44 @@
 .another-info{
     color:white;
 }
-.info p{
-    display: inline;
-    font-size: 19px;
+.title{
+    display:inline;
+    font-size: 20px;
     padding-left:15px;
 }
+.title2{
+    font-size: 20px;
+    margin-top: 5px;
+}
+
+.answer{
+    display: block;
+    font-size: 30px;
+    font-weight: bold;
+}
+.answer2{
+    display: block;
+    font-size: 35px;
+    font-weight: bold;
+}
 .patientInfo p{
-    display:inline;
     font-size: 21px;
     margin-top:9px;
+    display: inline;
 }
+
 .info{
-    background: rgba(255, 255, 255, 0.238);
+    background: rgba(255, 255, 255, 0.253);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
 }
+.score{
+    background-color:#ffffff !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    height:200px;
+}
+
+
 @media (max-width: 767px) {
     .patientDetails {
         display:block;
