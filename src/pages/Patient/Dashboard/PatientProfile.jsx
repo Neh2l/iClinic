@@ -1,6 +1,7 @@
 import PatientLayout from '../PatientLayout';
 import img from '../../../images/Patient.png';
 import '../../../styles/PatientProfile.css'
+import img2 from '../../../images/dr.png';
 
 export default function PatientProfile() {
 
@@ -108,8 +109,41 @@ export default function PatientProfile() {
                         <p className="title2">Streak Days</p>
                         <p className="mt-3 ms-4 answer2">45</p>
                     </div>
-
                 </div>
+                <div className="patient-appointments mb-5">
+                    <div className="appointments-title">
+                        <h1>My Appointments</h1>
+                        <p>Keep track of upcoming visits</p>
+                    </div>
+                    <div className="appointments-cards row mt-3 g-3">
+                        <div className="appointment-card col-12 rounded-4 p-4">
+                            <div class="row m-2 g-3">
+                                    <div className="col-12 col-lg-3 dr-image-div">
+                                        <img className="doctorImage rounded-5" src={img2} alt="doctor"/>
+                                    </div>
+                                    <div className="col-12 col-lg-6 appointment-details">
+                                        <h2>Dr.Jessica Venkata</h2>
+                                        <p className="field-name">Cardiology</p>
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="#087f9a" className="bi bi-calendar-check svg-another-info" viewBox="0 0 16 16">
+                                            <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+                                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                                            </svg>
+                                            <p>November 15, 20205</p>
+                                        </span>
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="#087f9a" className="bi bi-clock" viewBox="0 0 16 16">
+                                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+                                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
+                                            </svg>
+                                            <p>10:00 AM </p>
+                                        </span>
+                                    </div>
+                                </div>
+                        </div>
+
+                    </div>
+               </div>
 
         </div>
         </PatientLayout>
