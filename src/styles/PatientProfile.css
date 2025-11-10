@@ -5,10 +5,13 @@
     width:200px;
     height:200px;
     object-fit: cover;
-    display: block;
     background: white;
     display: block;
     border: none; 
+    transition: all 0.3s ease;
+}
+.patientImage:hover{
+    transform: scale(1.05);
 }
 .image-wrapper {
     position: relative;
@@ -69,9 +72,71 @@
     background-color:#ffffff !important;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     height:200px;
+    transition: all 0.3s ease;
 }
-
-
+.score:hover{
+    transform: translateY(-10px);
+}
+.appointments-title h1{
+    color: #087f9a;
+    font-size: 40px;
+    font-weight: bold;
+}
+.appointments-title p{
+    color: #4b4d4fe7;
+    font-size: 20px;
+}
+.appointment-card{
+    border:1px solid rgba(0, 0, 0, 0.205);
+    border-left:10px solid  #0a96b9 ;
+    padding-left: 20px;
+}
+.appointment-details{
+    display:inline;
+}
+.appointment-details h2{
+    font-weight: bold;
+}
+.field-name{
+    color: #585d5fe7;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+.appointment-details span{
+    background-color: #9bd1ddd9;
+    padding: 15px;
+    margin:0px 10px 0px 0px;
+    border-radius: 10px;
+}
+.appointment-details span p{
+    display: inline;
+    color: #353637e7 ;
+    font-size: 15px;
+    margin-left: 5px;
+}
+.appointment-details svg{
+    width:30px;
+    height: 30px;
+}
+.doctorImage{
+    width:200px;
+    height:200px;
+    object-fit: cover;
+    background: white;
+    display: block;
+    border: none; 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+.doctorImage:hover{
+     transform: translateY(-10px);
+}
+.dr-image-div{
+    position: relative;
+    display: inline-block;
+    
+}
 @media (max-width: 767px) {
     .patientDetails {
         display:block;
