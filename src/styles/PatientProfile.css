@@ -147,12 +147,6 @@
     font-size: 20px;
     font-weight: bold;
 }
-.state button{
-  border:none;
-  font-size: 20px;
-  color:#0a8c7f;
-  background-color: inherit;
-}
 .edit-profile button{
     padding: 2px 10px 5px 10px;
     max-width: 200px;
@@ -167,6 +161,155 @@
     margin-right:10px;
     width:20px;
     height:20px;
+}
+/* Modal Overlay - Dark background covering entire screen */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Modal Container - White box with the form */
+.modal-container {
+    background-color: white;
+    border-radius: 15px;
+    padding: 40px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Modal Title */
+.modal-title {
+    color: #087f9a;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Form Styling */
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #087f9a;
+    box-shadow: 0 0 0 3px rgba(8, 127, 154, 0.1);
+}
+
+/* Modal Buttons */
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+.cancel-btn,
+.save-btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cancel-btn {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.cancel-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.save-btn {
+    background-color: #087f9a;
+    color: white;
+}
+
+.save-btn:hover {
+    background-color: #065e73;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(8, 127, 154, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 576px) {
+    .modal-container {
+        padding: 25px;
+        width: 95%;
+    }
+
+    .modal-title {
+        font-size: 24px;
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+    }
+
+    .cancel-btn,
+    .save-btn {
+        width: 100%;
+    }
 }
 @media (max-width: 767px) {
     .patientDetails {
