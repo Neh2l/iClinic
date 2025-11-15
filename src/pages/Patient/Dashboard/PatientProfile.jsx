@@ -281,69 +281,32 @@ export default function PatientProfile() {
               <div className="modal-form">
                 <div className="form-group">
                   <label>Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                  />
+                  <input type="text" name="name" value={formData.name} onChange={handleInputChange} />
                 </div>
 
                 <div className="form-group">
                   <label>Phone Number</label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                  />
+                  <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} />
                 </div>
 
                 <div className="form-group">
                   <label>Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                  />
+                  <input type="email" name="email" value={formData.email} onChange={handleInputChange} />
                 </div>
 
                 <div className="form-group">
                   <label>Address</label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleInputChange}
-                  />
+                  <input type="text" name="address" value={formData.address} onChange={handleInputChange} />
                 </div>
 
                 <div className="form-group">
                   <label>Date of Birth</label>
-                  <input
-                    type="text"
-                    name="dateOfBirth"
-                    value={formData.dateOfBirth}
-                    onChange={handleInputChange}
-                  />
+                  <input type="text" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleInputChange} />
                 </div>
 
                 <div className="modal-buttons">
-                  <button 
-                    type="button" 
-                    className="cancel-btn" 
-                    onClick={closeModal}
-                  >
-                    Cancel
-                  </button>
-                  <button 
-                    type="button" 
-                    className="save-btn" 
-                    onClick={handleSubmit}
-                  >
-                    Save
-                  </button>
+                  <button  type="button"  className="cancel-btn" onClick={closeModal}>Cancel </button>
+                  <button type="button" className="save-btn" onClick={handleSubmit}> Save</button>
                 </div>
               </div>
             </div>
