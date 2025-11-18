@@ -17,8 +17,8 @@ function Checkout() {
 
       <div className="row g-4">
 
-        <div className="col-lg-8">
-          <div className="border rounded p-4">
+        <div className="col-lg-8 shadow">
+          <div className=" rounded p-4">
 
             <h5 className="fw-bold mb-3">Select payment method</h5>
 
@@ -57,7 +57,7 @@ function Checkout() {
         </div>
 
         <div className="col-lg-4">
-          <div className="border rounded p-5 text-center">
+          <div className=" border rounded p-5 text-center">
 
             <h5 className="fw-bold">{plan.name}</h5>
             <h2 className="fw-bold my-2">{plan.price} L.E</h2>
