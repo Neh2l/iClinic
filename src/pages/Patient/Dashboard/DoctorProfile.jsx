@@ -37,9 +37,9 @@ function DoctorProfile() {
     <div>
       <PatientLayout>
         <div className={style.doctorProfile}>
-          <a href="...">
-            <button className={style.backBtn}>← Back</button>
-          </a>
+         
+            <button onClick={()=>navigate("/patient/doctorslist")} className={style.backBtn}>← Back</button>
+         
 
           <div className={style.profileHeader}>
             <div className={style.profileLeft}>
@@ -51,7 +51,7 @@ function DoctorProfile() {
                   <b>Dr. Nick Willford </b>
                 </p>
                 <p>+(949) 678-8706</p>
-                <button className={style.btnPrimary}>Message</button>
+                <button onClick={()=>navigate("/doctor/messages")} className={style.btnPrimary}>Message</button>
               </div>
             </div>
 
