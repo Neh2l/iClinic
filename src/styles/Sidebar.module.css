@@ -6,8 +6,8 @@
   flex-direction: column;
   justify-content: space-between;
   position: sticky;  
-  top: 65px;      
-  height: calc(100vh - 60px); 
+  top: 70px;      
+  height: calc(100vh - 70px); 
   overflow-y: auto;  
 }
 

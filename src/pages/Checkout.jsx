@@ -57,7 +57,7 @@ function Checkout() {
         </div>
 
         <div className="col-lg-4">
-          <div className="border rounded p-4 text-center">
+          <div className="border rounded p-5 text-center">
 
             <h5 className="fw-bold">{plan.name}</h5>
             <h2 className="fw-bold my-2">{plan.price} L.E</h2>
@@ -78,7 +78,7 @@ function Checkout() {
               </li>
             </ul>
 
-            <button className="btn btn-primary w-100 mt-3">Checkout</button>
+            <button className="primary-btn w-100 mt-3">Checkout</button>
           </div>
         </div>
       </div>
