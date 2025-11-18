@@ -1,8 +1,38 @@
 import React from "react";
 import style from "../../../styles/DoctorProfile.module.css";
 import PatientLayout from "../PatientLayout";
+import { useNavigate } from "react-router-dom";
+
+
+const plans = [
+  {
+    id: 1,
+    name: "Basic Plan",
+    price: 10,
+    serviceFees: 2,
+    total: 12,
+  },
+  {
+    id: 2,
+    name: "Standard Plan",
+    price: 20,
+    serviceFees: 3,
+    total: 23,
+  },
+  {
+    id: 3,
+    name: "Premium Plan",
+    price: 30,
+    serviceFees: 4,
+    total: 34,
+  },
+];
 
 function DoctorProfile() {
+  let navigate=useNavigate();
+   const selectPlan = (plan) => {
+    navigate("/checkout", { state: plan });
+  };
   return (
     <div>
       <PatientLayout>
@@ -75,27 +105,22 @@ function DoctorProfile() {
 
           {/*  plans Section */}
           <div className={style.plansSection}>
-            <h4>Consultation Plans</h4>
-            <div className={style.plans}>
-              <div className={style.planCard}>
-                <h5>Basic Plan</h5>
-                <p className={style.priceText}>10$ / month</p>
-                <button className={style.btnPlan}>Choose Basic</button>
-              </div>
-
-              <div className={style.planCard}>
-                <h5>Standard Plan</h5>
-                <p className={style.priceText}>20$ / month</p>
-                <button className={style.btnPlan}>Upgrade to Standard</button>
-              </div>
-
-              <div className={style.planCard}>
-                <h5>Premium Plan</h5>
-                <p className={style.priceText}>30$ / month</p>
-                <button className={style.btnPlan}>Go Premium</button>
-              </div>
-            </div>
+      <h4>Consultation Plans</h4>
+      <div className={style.plans}>
+        {plans.map((plan) => (
+          <div key={plan.id} className={style.planCard}>
+            <h5>{plan.name}</h5>
+            <p className={style.priceText}>{plan.price}$ / month</p>
+            <button 
+              className={style.btnPlan}
+              onClick={() => selectPlan(plan)}
+            >
+              Choose {plan.name}
+            </button>
           </div>
+        ))}
+      </div>
+    </div>
 
           {/* reviews Section */}
           <div className={style.reviewsSection}>
