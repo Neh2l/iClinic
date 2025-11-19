@@ -1,0 +1,351 @@
+:root {
+  --primary-color: #015D82;
+  --secondary-color: #00A6CE;
+  --hero-span-primary: #75b0be;
+  --hero-span-secondary: #015d82;
+  --background-color: #F5F5F5;
+  --text-color: #333333;
+  --white-color: #FFFFFF;
+  --gray-color: #cdcaca7f;
+}
+body {
+  margin: 0;
+  background-color: var(--background-color);
+  font-family: Arial, sans-serif;
+}
+html {
+  scroll-behavior: smooth;
+}
+/* Navbar */
+nav {
+  position: fixed; 
+  top: 0;
+  width: 100%; 
+  z-index: 1000; 
+  box-sizing: border-box; 
+  background-color: var(--background-color); 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 0 0 12px 12px;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.navLinks a {
+  margin: 0 0.8rem;
+  text-decoration: none;
+  color: var(--text-color);
+  position: relative; 
+  padding-bottom: 0.2rem;
+  transition: color 0.3s ease;
+}
+
+.navLinks a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--primary-color);
+  transition: width 0.3s ease;
+}
+
+.navLinks a:hover::after,
+.navLinks a.active::after {
+  width: 100%; 
+}
+.navButtons button {
+  margin-left: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+.login{
+  background-color: var(--gray-color);
+
+}
+.signup{
+  background-color: var(--primary-color);
+  color: var(--background-color);
+}
+.navButtons .signup:hover{
+  background-color: #0e79a3;
+  transition:  0.3s ease;
+}
+.navButtons .login:hover
+ {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  transition:  0.3s ease;
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem;
+  margin-top: 70px;/* علشان الفكسد بيطلع الناف برا مجال الصفحه فوق الناف ف بنحل المشكله بمسافه بينه وبين الهيرو*/
+}
+
+.heroText {
+  max-width: 50%;
+}
+
+.heroText h1 {
+  font-size: 4rem;
+  margin-top: 10px;
+}
+
+.heroText .primary {
+  color: var(--hero-span-primary);
+}
+
+.heroText .secondary {
+  color: var(--hero-span-secondary);
+}
+
+.heroText p {
+  margin: 1rem 0;
+  color: var(--text-color);
+  line-height: 1.5;
+}
+
+/*explore arrow and btn*/
+
+.exploreContainer {
+  display: inline-flex;
+  align-items: center; 
+  gap: 12px;
+  text-decoration: none;
+}
+
+.exploreContainer img {
+  height: 45px; 
+  width: auto;
+  display: block; /*يشيل اي فراغات تحت الصورة */
+  margin-bottom: 30px;
+  border: none;
+  border-radius: 50%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.exploreContainer img:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+.exploreBtn {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  padding: 0.7rem 1.4rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 45px; 
+  width: 200px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.exploreBtn:hover{
+  background-color:#0e79a3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+.heroImg img {
+  width: 650px; 
+  max-width: 100%;
+  height: auto;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Stats */
+.stats {
+  display: flex;
+  justify-content: space-around;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 10px;
+  padding: 1.5rem 2rem;
+  margin: 2rem;
+  width: 1465px;
+  margin-top: 0px;
+  box-sizing: border-box;
+  position: relative;
+  margin-top: -50px; 
+  z-index: 10;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.stat h1 {
+  margin: 0;
+  color: var(--background-color);
+  font-size: 2.5rem;
+}
+
+.stat p {
+  margin: 0;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  color: var(--background-color);
+  font-size: small;
+}
+.SideIcon {
+  display: none; 
+}
+.navMobilButtons {
+  display: none; 
+}
+
+/* Responsive Design */
+/* (تابلت + أجهزة وسط */
+@media (max-width: 1024px) {
+  .SideIcon {
+    display: block; 
+    cursor: pointer;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+  }
+  nav {
+    padding: 0.8rem 1rem;
+  }
+
+  .navLinks {
+    display: none; 
+    flex-direction: column;
+    background: var(--white-color);
+    position: absolute;
+    top: 70px;
+    right: 0;
+    width: 240px;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    padding: 1rem;
+    z-index: 1000;
+  }
+
+  .navLinks.show {
+    display: flex;
+    flex-direction: column;
+  }
+  .navLinks a {
+    padding: 0.75rem 1rem;
+    margin: 0;
+    border-bottom: 1px solid #eee;
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .navLinks a:last-child {
+    border-bottom: none;
+  }
+
+  .navLinks a:hover {
+    background: var(--primary-color);
+    color: var(--white-color);
+  }
+  .navButtons {
+    display: none;
+  }
+  .navLinks.show {
+    display: flex; /* تظهر الأزرار جوا السايد */
+  }
+  .navMobilButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+  }
+  .navMobilButtons button {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Hero */
+  .hero {
+    flex-direction: column-reverse;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .heroText {
+    max-width: 100%;
+  }
+
+  .heroText h1 {
+    font-size: 2.2rem;
+  }
+
+  .heroImg {
+    width: 100%;
+    text-align: center;
+  }
+
+  .heroImg img {
+    width: 100%;
+    max-width: 400px; 
+    margin: 0 auto;
+  }
+
+  /* Stats */
+  .stats {
+    flex-direction: row; 
+    justify-content: space-around;
+    gap: 0.5rem;
+    width: 95%;
+    margin: 1rem auto;
+    padding: 1rem;
+  }
+
+  .stat h1 {
+    font-size: 1.6rem;
+  }
+
+  .stat p {
+    font-size: 0.85rem;
+  }
+}
+
+/* موبايلات صغيرة  */
+@media (max-width: 480px) {
+  .heroText h1 {
+    font-size: 1.6rem;
+  }
+
+  .stat h1 {
+    font-size: 1.2rem;
+  }
+
+  .stat p {
+    font-size: 0.7rem;
+  }
+
+  .exploreBtn {
+    width: 120px;
+    font-size: 0.8rem;
+  }
+}
