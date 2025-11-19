@@ -1,54 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import DoctorLayout from '../DoctorLayout';
-import img from '../../../images/Face.png';
-
-const initialPatients = [
-  {
-    id: 1,
-    patientName: 'Albert Flores',
-    patientID: '123445',
-    date: 'Des 04.12',
-    patientGender: 'Female',
-    patientDiseases: 'Diabates',
-    image: img
-  },
-  {
-    id: 2,
-    patientName: 'Albert Flores',
-    patientID: '123445',
-    date: 'Des 04.12',
-    patientGender: 'Female',
-    patientDiseases: 'Diabates',
-    image: img
-  },
-  {
-    id: 3,
-    patientName: 'Albert Flores',
-    patientID: '123445',
-    date: 'Des 04.12',
-    patientGender: 'Female',
-    patientDiseases: 'Diabates',
-    image: img
-  },
-  {
-    id: 4,
-    patientName: 'Albert Flores',
-    patientID: '123445',
-    date: 'Des 04.12',
-    patientGender: 'Female',
-    patientDiseases: 'Diabates',
-    image: img
-  },
-  {
-    id: 5,
-    patientName: 'Albert Flores',
-    patientID: '123445',
-    date: 'Des 04.12',
-    patientGender: 'Female',
-    patientDiseases: 'Diabates',
-    image: img
-  }
-];
 
 function SinglePatient({
   patient,
@@ -59,32 +10,34 @@ function SinglePatient({
 }) {
   return (
     <>
-      {/* Desktop/Tablet Table Row */}
+      {/* Desktop Table Row */}
       <tr className="d-none d-md-table-row border-bottom">
         <td className="p-3">
           <div className="d-flex align-items-center">
             <img
-              src={patient.image}
-              alt={patient.patientName}
+              src={patient.photo}
+              alt={patient.name}
               className="rounded-circle me-2"
               style={{ width: '40px', height: '40px' }}
             />
-            <span>{patient.patientName}</span>
+            <span>{patient.name}</span>
           </div>
         </td>
-        <td className="p-3">{patient.patientID}</td>
-        <td className="p-3">{patient.date}</td>
-        <td className="p-3">{patient.patientGender}</td>
-        <td className="p-3">{patient.patientDiseases}</td>
+        <td className="p-3">{patient._id}</td>
+        <td className="p-3">
+          {new Date(patient.createdAt).toLocaleDateString()}
+        </td>
+        <td className="p-3">{patient.gender}</td>
+        <td className="p-3">{patient.diseases}</td>
         <td className="p-3 position-relative bg-white">
           <button
-            onClick={() => toggleDropdown(patient.id)}
+            onClick={() => toggleDropdown(patient._id)}
             className="btn btn-sm"
             style={{ fontSize: '20px' }}
           >
             ⋮
           </button>
-          {openDropdown === patient.id && (
+          {openDropdown === patient._id && (
             <div
               className="position-absolute bg-white border rounded shadow"
               style={{ right: 0, top: '100%', zIndex: 1000, minWidth: '150px' }}
@@ -106,24 +59,25 @@ function SinglePatient({
         </td>
       </tr>
 
-      {/* Mobile Card View */}
+      {/* Mobile View */}
       <div className="d-md-none border rounded p-3 mb-3">
         <div className="d-flex justify-content-between align-items-start mb-3">
           <div className="d-flex align-items-center">
             <img
-              src={patient.image}
-              alt={patient.patientName}
+              src={patient.photo}
+              alt={patient.name}
               className="rounded-circle me-2"
               style={{ width: '50px', height: '50px' }}
             />
             <div>
-              <h6 className="mb-0">{patient.patientName}</h6>
-              <small className="text-muted">ID: {patient.patientID}</small>
+              <h6 className="mb-0">{patient.name}</h6>
+              <small className="text-muted">ID: {patient._id}</small>
             </div>
           </div>
+
           <div className="position-relative">
             <button
-              onClick={() => toggleDropdown(patient.id)}
+              onClick={() => toggleDropdown(patient._id)}
               className="btn btn-sm"
               style={{
                 fontSize: '20px',
@@ -134,7 +88,7 @@ function SinglePatient({
             >
               ⋮
             </button>
-            {openDropdown === patient.id && (
+            {openDropdown === patient._id && (
               <div
                 className="position-absolute bg-white border rounded shadow"
                 style={{
@@ -163,15 +117,15 @@ function SinglePatient({
 
         <div className="d-flex justify-content-between mb-2">
           <strong>Date:</strong>
-          <span>{patient.date}</span>
+          <span>{new Date(patient.createdAt).toLocaleDateString()}</span>
         </div>
         <div className="d-flex justify-content-between mb-2">
           <strong>Gender:</strong>
-          <span>{patient.patientGender}</span>
+          <span>{patient.gender}</span>
         </div>
         <div className="d-flex justify-content-between mb-2">
           <strong>Disease:</strong>
-          <span>{patient.patientDiseases}</span>
+          <span>{patient.diseases}</span>
         </div>
       </div>
     </>
@@ -179,21 +133,43 @@ function SinglePatient({
 }
 
 const DoctorPatients = () => {
+  const [patients, setPatients] = useState([]);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [showReportModal, setShowReportModal] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [reportReason, setReportReason] = useState('');
 
-  // Handle click outside to close dropdown
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const response = await fetch(
+          'https://iclinc-backend-gs97.onrender.com/api/v1/doctors/myPatients',
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+          }
+        );
+
+        const data = await response.json();
+        console.log('API RESPONSE:', data);
+
+        setPatients(data.data?.patients || []);
+      } catch (error) {
+        console.error('Error loading patients:', error);
+        setPatients([]);
+      }
+    };
+
+    fetchPatients();
+  }, []);
+
   useEffect(() => {
     if (!openDropdown) return;
 
-    const handleClickOutside = () => setOpenDropdown(null);
-
-    // Delay adding listener to avoid immediate trigger
-    setTimeout(() => document.addEventListener('click', handleClickOutside), 0);
-
-    return () => document.removeEventListener('click', handleClickOutside);
+    const close = () => setOpenDropdown(null);
+    setTimeout(() => document.addEventListener('click', close), 0);
+    return () => document.removeEventListener('click', close);
   }, [openDropdown]);
 
   const toggleDropdown = (id) => {
@@ -220,7 +196,7 @@ const DoctorPatients = () => {
   const submitReport = () => {
     if (reportReason.trim()) {
       alert(
-        `Report submitted for ${selectedPatient.patientName}\nReason: ${reportReason}`
+        `Report submitted for ${selectedPatient.name}\nReason: ${reportReason}`
       );
       closeReportModal();
     } else {
@@ -244,7 +220,7 @@ const DoctorPatients = () => {
                   className="p-3 text-white"
                   style={{ backgroundColor: '#015D82' }}
                 >
-                  Patient name
+                  Patient Name
                 </th>
                 <th
                   className="p-3 text-white"
@@ -279,9 +255,9 @@ const DoctorPatients = () => {
               </tr>
             </thead>
             <tbody>
-              {initialPatients.map((patient) => (
+              {patients.map((patient) => (
                 <SinglePatient
-                  key={patient.id}
+                  key={patient._id}
                   patient={patient}
                   openDropdown={openDropdown}
                   toggleDropdown={toggleDropdown}
@@ -295,9 +271,9 @@ const DoctorPatients = () => {
 
         {/* Mobile Cards */}
         <div className="d-md-none p-3">
-          {initialPatients.map((patient) => (
+          {patients.map((patient) => (
             <SinglePatient
-              key={patient.id}
+              key={patient._id}
               patient={patient}
               openDropdown={openDropdown}
               toggleDropdown={toggleDropdown}
@@ -321,7 +297,7 @@ const DoctorPatients = () => {
             <h4 className="mb-3">Report Patient</h4>
             <div className="mb-3">
               <label className="form-label fw-bold">Patient Name:</label>
-              <p>{selectedPatient?.patientName}</p>
+              <p>{selectedPatient?.name}</p>
             </div>
             <div className="mb-3">
               <label className="form-label fw-bold">Reason for Report:</label>
