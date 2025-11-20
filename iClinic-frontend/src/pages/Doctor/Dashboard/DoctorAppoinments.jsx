@@ -1,176 +1,147 @@
-import React, { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import DoctorLayout from '../DoctorLayout';
-import img from '../../../images/Shape.png';
-
-const initialAppointments = [
-  {
-    name: 'Michael James',
-    date: '27 Aug 2025, 10:00 AM',
-    type: 'Clinic consulting',
-    img
-  },
-  {
-    name: 'Emily Rose',
-    date: '28 Aug 2025, 2:30 PM',
-    type: 'Clinic consulting',
-    img
-  },
-  {
-    name: 'Emily Rose',
-    date: '28 Aug 2025, 2:30 PM',
-    type: 'Clinic consulting',
-    img
-  },
-  {
-    name: 'Emily Rose',
-    date: '28 Aug 2025, 2:30 PM',
-    type: 'Clinic consulting',
-    img
-  },
-  {
-    name: 'Emily Rose',
-    date: '28 Aug 2025, 2:30 PM',
-    type: 'Clinic consulting',
-    img
-  },
-  {
-    name: 'Emily Rose',
-    date: '28 Aug 2025, 2:30 PM',
-    type: 'Clinic consulting',
-    img
-  },
-  {
-    name: 'Emily Rose',
-    date: '28 Aug 2025, 2:30 PM',
-    type: 'Clinic consulting',
-    img
-  }
-];
-
-function SinglePatient({ name, date, type, img, onAccept, onDecline }) {
-  return (
-    <div className="d-flex align-items-center justify-content-between p-3 border mb-2 rounded bg-white">
-      <div className="d-flex align-items-center">
-        <img
-          src={img}
-          alt={name}
-          width="50"
-          height="50"
-          className="rounded-circle me-3 border"
-        />
-        <div>
-          <div className="fw-bold">{name}</div>
-          <div>{type}</div>
-          <div className="text-secondary">Requested Date: {date}</div>
-        </div>
-      </div>
-      <div>
-        <button className="accept-btn me-2" onClick={onAccept}>
-          Accept
-        </button>
-        <button className="decline-btn" onClick={onDecline}>
-          Decline
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function ConfirmToast({ message, onConfirm, onCancel }) {
-  return (
-    <div>
-      <p>{message || 'Are you sure?'}</p>
-      <button className="btn btn-sm btn-danger me-2" onClick={onConfirm}>
-        Confirm
-      </button>
-      <button className="btn btn-sm btn-secondary" onClick={onCancel}>
-        Cancel
-      </button>
-    </div>
-  );
-}
+import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import DoctorLayout from "../DoctorLayout";
 
 const DoctorAppointments = () => {
-  const [appointments, setAppointments] = useState(initialAppointments);
+  const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const showConfirmToast = (message, onConfirm) => {
-    toast.info(
-      <ConfirmToast
-        message={message}
-        onConfirm={() => {
-          toast.dismiss();
-          onConfirm();
-        }}
-        onCancel={() => toast.dismiss()}
-      />,
-      { autoClose: false, closeOnClick: false, draggable: false }
-    );
+  // ============================
+  // 🔵 Get Doctor Appointments
+  // ============================
+  const fetchAppointments = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(
+        "https://iclinc-backend-gs97.onrender.com/api/v1/appointments/doctorAppointments",
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const data = await res.json();
+
+      const apps = Array.isArray(data.data?.appointments)
+        ? data.data.appointments
+        : [];
+
+      setAppointments(apps);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to load appointments");
+      setLoading(false);
+    }
   };
 
-  const handleDecline = (index) => {
-    showConfirmToast(
-      `Are you sure to remove ${appointments[index].name}?`,
-      () => {
-        setAppointments((apps) => apps.filter((_, i) => i !== index));
+  const updateStatus = async (id, action) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const status = action === "accepted" ? "confirmed" : "canceled";
+
+      const res = await fetch(
+        `https://iclinc-backend-gs97.onrender.com/api/v1/appointments/${id}/status`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ status }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok && status === "confirmed") {
+        toast.success("Appointment Accepted");
+        setAppointments((prev) =>
+          prev.map((app) =>
+            app._id === id ? { ...app, status: "confirmed" } : app
+          )
+        );
+      } else if (res.ok && status === "canceled") {
+        toast.success("Appointment Declined");
+        setAppointments((prev) => prev.filter((app) => app._id !== id));
+      } else {
+        toast.error(data.message || "Failed to update status");
       }
+    } catch (err) {
+      console.log(err);
+      toast.error("Error updating appointment");
+    }
+  };
+
+  const SinglePatient = ({ app }) => {
+    const isConfirmed = app.status === "confirmed";
+
+    return (
+      <div
+        className={`d-flex align-items-center justify-content-between p-3 mb-2 rounded ${
+          isConfirmed
+            ? "bg-primary bg-opacity-25 border-success"
+            : "bg-white border"
+        }`}
+      >
+        <div className="d-flex align-items-center">
+          <img
+            src={app.patient?.profileImg || "/profile.jpg"}
+            width="50"
+            height="50"
+            className="rounded-circle me-3 border"
+            alt={app.patient?.name || "patient"}
+          />
+          <div>
+            <div className="fw-bold">{app.patient?.name || "Unknown"}</div>
+            <div>Type: {app.type || "Clinic"}</div>
+            <div>
+              Date: {new Date(app.date).toLocaleDateString()} - {app.time}
+            </div>
+            <div>Status: {app.status}</div>
+          </div>
+        </div>
+
+        {!isConfirmed && (
+          <div>
+            <button
+              className="accept-btn me-2"
+              onClick={() => updateStatus(app._id, "accepted")}
+            >
+              Accept
+            </button>
+
+            <button
+              className="decline-btn"
+              onClick={() => updateStatus(app._id, "declined")}
+            >
+              Decline
+            </button>
+          </div>
+        )}
+      </div>
     );
   };
 
-  const handleAccept = (index) => {
-    showConfirmToast(
-      `Are you sure to accept ${appointments[index].name}?`,
-      () => {
-        toast.success(`Accepted! ${appointments[index].name}`, {
-          position: 'top-right'
-        });
-        setAppointments((apps) => apps.filter((_, i) => i !== index));
-      }
-    );
-  };
-
-  const handleAcceptAll = () => {
-    showConfirmToast('Are you sure to accept all?', () => {
-      toast.success('All were Accepted!', { position: 'top-right' });
-      setAppointments([]);
-    });
-  };
-
-  const handleDeclineAll = () => {
-    showConfirmToast('Are you sure to remove all?', () => {
-      setAppointments([]);
-    });
-  };
+  // ============================
+  useEffect(() => {
+    fetchAppointments();
+  }, []);
 
   return (
     <DoctorLayout>
       <ToastContainer />
-      <div className="row justify-content-between align-items-center mb-3">
-        <div className="col-12 col-lg-8">
-          <h2 className="fw-bold">Appointments</h2>
-          <p>View and manage appointment requests from your patients</p>
-        </div>
-        <div className="col-12 col-lg-4 text-lg-end mt-3 mt-lg-0">
-          <button className="accept-btn-all me-2" onClick={handleAcceptAll}>
-            Accept All
-          </button>
-          <button className="decline-btn-all" onClick={handleDeclineAll}>
-            Decline All
-          </button>
-        </div>
-      </div>
+      <h2 className="fw-bold">Appointments</h2>
+      <p>View and manage appointment requests from your patients</p>
 
-      {appointments.length === 0 ? (
+      {loading ? (
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={{ height: "70vh" }}
+        >
+          <div className="spinner-border text-primary" role="status"></div>
+        </div>
+      ) : appointments.length === 0 ? (
         <div className="text-muted">No appointments available</div>
       ) : (
-        appointments.map((app, i) => (
-          <SinglePatient
-            key={i}
-            {...app}
-            onAccept={() => handleAccept(i)}
-            onDecline={() => handleDecline(i)}
-          />
-        ))
+        appointments.map((app) => <SinglePatient key={app._id} app={app} />)
       )}
     </DoctorLayout>
   );

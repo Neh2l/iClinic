@@ -3,6 +3,7 @@ import dr from "../../../images/dr.png";
 import { useState } from "react";
 import dr2 from "../../../images/dr2.png";
 import { FaMedal } from "react-icons/fa";
+import PatientLayout from "../PatientLayout";
 
 const DoctorsList = () => {
   const [tab, setTab] = useState("All doctors");
@@ -72,6 +73,7 @@ const DoctorsList = () => {
       : doctors.filter((doc) => doc.speciality === tab);
 
   return (
+    <PatientLayout>
     <div>
       <div className={styles.buttons}>
         <button
@@ -155,6 +157,7 @@ const DoctorsList = () => {
         ))}
       </div>
     </div>
+    </PatientLayout>
   );
 };
 

@@ -9,7 +9,7 @@
   background-color: #ffffff;
   border: none;
   border-radius: 15px;
-  width: 190px;
+  width: 300px;
   height: fit-content;
   padding: 30px;
 }
@@ -50,7 +50,7 @@
   background-color: #015d82;
   color: white;
   margin-top: 20px;
-  width: 70px;
+  width: 100%;
   transition: background-color 0.25s ease, transform 0.1s ease;
 }
 .edit:hover,
@@ -63,7 +63,7 @@
   background-color: white;
   border: none;
   border-radius: 15px;
-  width: 700px;
+  width: 1000px;
   height: fit-content;
   padding: 30px;
 }
@@ -76,8 +76,10 @@
   border: none;
   background-color: white;
   border-radius: 5px;
-  padding: 5px;
+  padding: 5px 1rem;
+  
 }
+
 .btn:hover {
   background-color: #015d82;
   color: white;

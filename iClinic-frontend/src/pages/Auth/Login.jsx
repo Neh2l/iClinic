@@ -9,7 +9,7 @@ import Pic from '../../images/image 9 (1).png';
 const darkColor = '#015D82';
 
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api/v1',
+  baseURL: 'https://iclinc-backend-gs97.onrender.com/api/v1',
   withCredentials: true
 });
 

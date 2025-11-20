@@ -9,20 +9,24 @@
   background-color: white;
 }
 .btn {
-  margin-right: 20px;
+  margin-right: 3.5rem;
   border: none;
   background-color: white;
-  border-radius: 10px;
-  padding: 5px;
-  padding-right: 10px;
+  /* border-radius: 10px; */
+  padding: .5rem 0rem;
+  /* padding-right: 10px; */
 }
 .btn:hover {
-  background-color: #015d82;
-  color: white;
+  /* background-color: #015d82; */
+  border-bottom: 3px solid #015d82;
+  color: #015d82;
+  font-weight: 700;
+
 }
 .active {
-  background-color: #015d82;
-  color: white;
+ border-bottom: 3px solid #015d82;
+  color: #015d82;
+  font-weight: 700;
 }
 .container {
   display: grid;
@@ -38,7 +42,7 @@
   border: none;
   border-radius: 15px;
   height: fit-content;
-  width: 230px;
+  width: 300px;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
@@ -95,31 +99,35 @@
 .drName {
   font-weight: bold;
   margin-top: 8px;
-  font-size: small;
+  font-size: 1.3rem;
   background-color: white;
 }
 .speciality {
   color: #999999;
-  font-size: smaller;
+  font-size: 1rem;
 }
 .rate {
   color: #ffc107;
+  
 }
 .btn2 {
   border-radius: 5px;
   border: none;
-  padding: 5px;
+  padding: .5rem 0rem;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  background-color: hsl(197, 98%, 26%);
-  color: white;
+  background-color:transparent;
+  border: 1px solid hsl(197, 98%, 26%);
+  box-shadow: 0 0 2px hsl(197, 98%, 26%) ;
+  color: rgba(0, 0, 0, 0.685);
   margin-top: 15px;
-  width: 100px;
+  width: 80%;
   margin-bottom: 30px;
 }
 .btn2:hover {
   background-color: hsl(192, 100%, 20%);
+  color: #f5f5f5;
 }
 
 .dropdown {
