@@ -7,7 +7,6 @@ const PatientSidebar = () => {
       <div className={styles.top}>
         <p className={`${styles.logo} primary-text`}>IClinic</p>
         <ul>
-       
           <li>
             <Link to="/patient/patientProfile" className={styles}>
               Overview

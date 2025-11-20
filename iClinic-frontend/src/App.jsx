@@ -21,6 +21,7 @@ import DoctorProfile from './pages/Patient/Dashboard/DoctorProfile';
 import DoctorsList from './pages/Patient/Dashboard/DoctorsList';
 import Checkout from './pages/Checkout';
 import PatientSetting from './pages/Patient/Dashboard/PatientSetting';
+import PatientMessages from './pages/Patient/Dashboard/PatientMessages';
 function App() {
   useEffect(() => {
     Aos.init({ duration: 1000 });
@@ -37,7 +38,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/checkout" element={<Checkout/>} />
+            <Route path="/checkout" element={<Checkout />} />
 
             <Route path="/doctor/overview" element={<DoctorOverview />} />
             <Route
@@ -54,8 +55,8 @@ function App() {
             />
             <Route path="/patient/doctorProfile" element={<DoctorProfile />} />
             <Route path="/patient/doctorslist" element={<DoctorsList />} />
-                        <Route path="/patient/settings" element={<PatientSetting/>} />
-
+            <Route path="/patient/settings" element={<PatientSetting />} />
+            <Route path="/patient/messages" element={<PatientMessages />} />
 
             <Route path="*" element={<Error />} />
           </Route>
