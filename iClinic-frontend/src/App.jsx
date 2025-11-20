@@ -5,7 +5,7 @@ import Login from './pages/Auth/Login';
 import Chat from './pages/Chat';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
-import Payment from './pages/Payment';
+// import Payment from './pages/Payment';
 import Error from './pages/Error';
 import { ToastContainer } from 'react-toastify';
 import Aos from 'aos';
@@ -19,6 +19,8 @@ import Setting from './pages/Doctor/Dashboard/Setting';
 import PatientProfile from './pages/Patient/Dashboard/PatientProfile';
 import DoctorProfile from './pages/Patient/Dashboard/DoctorProfile';
 import DoctorsList from './pages/Patient/Dashboard/DoctorsList';
+import Checkout from './pages/Checkout';
+import PatientSetting from './pages/Patient/Dashboard/PatientSetting';
 function App() {
   useEffect(() => {
     Aos.init({ duration: 1000 });
@@ -35,7 +37,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/payment" element={<Payment />} />
+            <Route path="/checkout" element={<Checkout/>} />
 
             <Route path="/doctor/overview" element={<DoctorOverview />} />
             <Route
@@ -52,6 +54,8 @@ function App() {
             />
             <Route path="/patient/doctorProfile" element={<DoctorProfile />} />
             <Route path="/patient/doctorslist" element={<DoctorsList />} />
+                        <Route path="/patient/settings" element={<PatientSetting/>} />
+
 
             <Route path="*" element={<Error />} />
           </Route>

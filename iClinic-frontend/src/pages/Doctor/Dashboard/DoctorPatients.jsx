@@ -15,7 +15,7 @@ function SinglePatient({
         <td className="p-3">
           <div className="d-flex align-items-center">
             <img
-              src={patient.photo}
+              src={patient.photo|| "/profile.jpg"}
               alt={patient.name}
               className="rounded-circle me-2"
               style={{ width: '40px', height: '40px' }}
@@ -28,7 +28,7 @@ function SinglePatient({
           {new Date(patient.createdAt).toLocaleDateString()}
         </td>
         <td className="p-3">{patient.gender}</td>
-        <td className="p-3">{patient.diseases}</td>
+        <td className="p-3">{patient.patientDisease}</td>
         <td className="p-3 position-relative bg-white">
           <button
             onClick={() => toggleDropdown(patient._id)}

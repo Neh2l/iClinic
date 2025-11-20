@@ -56,6 +56,7 @@ body{
     color: var(--white-color);
     border: none;
     border-radius: .3rem;
+    padding: 0.5rem 2rem;
 }
 .secondary-btn{
     color: var(--white-color);

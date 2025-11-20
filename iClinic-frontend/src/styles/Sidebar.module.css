@@ -7,7 +7,7 @@
   justify-content: space-between;
   position: sticky;  
   top: 65px;      
-  height: calc(100vh - 60px); 
+  height: calc(100vh - 70px); 
   overflow-y: auto;  
 }
 

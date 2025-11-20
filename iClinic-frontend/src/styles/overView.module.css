@@ -5,117 +5,95 @@ body {
   margin: 0;
   padding: 0;
 }
-.icon { 
-  width: 20px;
-  height: 20px;
-}
 
 .profilePage {
-  width: 900px;
+  width: 95%;
   margin: 30px auto;
   display: flex;
   flex-direction: column;
   gap: 30px;
-  font-family: "Poppins", sans-serif;
-  color: var(--text-color);
 }
-
-.profileCard {
-  background: var(--white-color);
-  border-radius: 20px;
-  padding: 30px;
-  text-align: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.profileImage {
-  width: 100px;
-  height: 100px;
-  border: none;
-  border-radius: 50%;
-  object-fit: cover;
-  background-color: var(--gray-color);
-}
-
-.info {
-  margin: 15px 0;
-}
-
-.info p {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  justify-content: center;
-  margin: 5px 0;
-}
-
-.profileButtons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.editBtn, .msgBtn {
-  border: none;
-  padding: 10px 20px;
-  border-radius: 10px;
-  cursor: pointer;
+.heroTitle{
+  font-size: 3rem;
+  color:#0e79a3;
   font-weight: 500;
 }
 
-.editBtn {
-  background-color: var(--gray-color);
+.profileCard {
+  background: linear-gradient(135deg, #0e79a3, #00c6ff);
+  border-radius: 20px;
+  padding: 30px;
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-.msgBtn {
-  background-color: var(--primary-color);
-  color: var(--white-color);
+.profileContent {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+}
+
+.profileImage {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: var(--gray-color);
+  flex-shrink: 0;
+  transition: 1s;
+}
+.profileImage:hover{
+  transform: scale(1.05);
+}
+
+.profileDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+}
+
+.info, .profileDetails p {
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
 }
 
 .bottomSection {
   display: flex;
-  gap: 20px;
   flex-wrap: wrap;
+  gap: 20px;
 }
 
-.profileButtons .msgBtn:hover {
-  background-color: #0e79a3;
-  transition:  0.3s ease;
-}
-.profileButtons .editBtn:hover {
-  background-color: var(--primary-color);
-  color: var(--background-color);
-  transition:  0.3s ease;
-}
-
-.experienceCard, .scheduleCard {
+.experienceCard {
   background: var(--white-color);
   border-radius: 20px;
   padding: 20px;
-  flex: 1;
+  flex: 1 1 48%;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.5rem;
+    /* background-color: rgba(128, 128, 128, 0.205); */
+
 }
 
 .graphImg {
   width: 100%;
   max-width: 300px;
   display: block;
-  margin: auto;
+  margin-bottom: 15px;
 }
 
-.experienceCard ul {
-  list-style-type: "✔   ";
-  padding-left: 20px;
-  line-height: 1.8;
-  margin-top: 60px;
-  margin-left: 30px;
-}
-.scheduleCard {
-  padding: 20px 30px 20px 30px;
-
-}
 .scheduleCard h3 {
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 .days {
@@ -128,6 +106,7 @@ body {
 .days span {
   cursor: pointer;
   color: var(--text-color);
+  margin-left: 3rem;
 }
 
 .days .active {
@@ -144,41 +123,71 @@ body {
 .appointment {
   display: flex;
   align-items: center;
-  gap: 100px;
-  background: var(--background-color);
+  gap: 50px;
+  background: #0e79a33b;
   border-radius: 10px;
-  padding: 5px 20px;
+  /* padding: 10px 15px; */
+  /* width: 1000px; */
+  padding: 1rem 6rem;
+  width: 100%;
   cursor: pointer;
 }
+
 .appointment:hover {
   background: #0e79a3;
-  color: var(--white-color);
+  color: #fff;
   transition: 0.3s ease;
 }
+
 .smallAvatar {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
+.patientInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.viewAllBtn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background-color: #0e79a3;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 500;
+   width: 100%;
+}
+
+.viewAllBtn:hover {
+  background-color: #0c668b;
+  transition: 0.3s ease;
+ 
+}
+.scheduleCard{
+  background-color: rgba(128, 128, 128, 0.205);
+  border-radius: 20px;
+  padding: 50px;
+  flex: 1 1 48%;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;   
+
+}
 
 @media (max-width: 1024px) {
-  .profilePage {
-    width: 90%;
-  }
-
   .bottomSection {
     flex-direction: column;
   }
 
-  .scheduleCard {
-    order: 2;
+  .experienceCard, .scheduleCard {
+    flex: 1 1 100%;
+    background-color: rgba(128, 128, 128, 0.397);
   }
-
-  .experienceCard {
-    order: 3;
-  }
- .appointment{
-    gap: 20px;
- }
 }

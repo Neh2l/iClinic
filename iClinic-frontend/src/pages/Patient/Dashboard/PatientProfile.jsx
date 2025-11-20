@@ -1,8 +1,9 @@
-import PatientLayout from '../PatientLayout';
+// import PatientLayout from '../PatientLayout';
 import img from '../../../images/Patient.png';
 import '../../../styles/PatientProfile.css';
 import img2 from '../../../images/dr.png';
 import { useState } from 'react';
+import PatientLayout from '../PatientLayout';
 
 export default function PatientProfile() {
   // Edit Profile Modal State
@@ -32,8 +33,10 @@ export default function PatientProfile() {
     closeModal();
   };
   return (
+    
+<PatientLayout>
     <div>
-      <PatientLayout>
+    
         {/*Patient Card*/}
         <div className="container patientProfile mt-5">
           <div className="container patientCard rounded-5 w-100 h-100 mb-5 pb-5">
@@ -519,7 +522,8 @@ export default function PatientProfile() {
             </div>
           </div>
         )}
-      </PatientLayout>
+     
     </div>
+    </PatientLayout>
   );
 }
