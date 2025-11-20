@@ -3,17 +3,13 @@ const Patient = require('../models/patientModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
+// Filter allowed fields
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
   Object.keys(obj).forEach((el) => {
     if (allowedFields.includes(el)) newObj[el] = obj[el];
   });
   return newObj;
-};
-
-const mapFullName = (body) => {
-  if (body.fullName) body.name = body.fullName;
-  return body;
 };
 
 // Get all doctors
@@ -45,7 +41,6 @@ exports.getMe = catchAsync(async (req, res, next) => {
   });
 });
 
-// Update doctor profile (except password)
 exports.updateMe = catchAsync(async (req, res, next) => {
   if (req.body.password || req.body.passwordConfirm) {
     return next(
@@ -56,11 +51,9 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     );
   }
 
-  mapFullName(req.body);
-
   const filteredBody = filterObj(
     req.body,
-    'name',
+    'fullName',
     'clinicName',
     'email',
     'phone',
@@ -69,15 +62,34 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     'rate'
   );
 
-  const updatedDoctor = await Doctor.findByIdAndUpdate(
-    req.user._id,
-    filteredBody,
-    { new: true, runValidators: true }
-  );
+  if (filteredBody.location) {
+    if (
+      filteredBody.location.type !== 'Point' ||
+      !Array.isArray(filteredBody.location.coordinates) ||
+      filteredBody.location.coordinates.length !== 2
+    ) {
+      return next(
+        new AppError(
+          'Invalid location format. Must be { type: "Point", coordinates: [lng, lat] }',
+          400
+        )
+      );
+    }
+  }
+
+  const doctor = await Doctor.findByIdAndUpdate(req.user._id, filteredBody, {
+    new: true,
+    runValidators: true,
+    context: 'query'
+  });
+
+  if (!doctor) {
+    return next(new AppError('Doctor not found', 404));
+  }
 
   res.status(200).json({
     status: 'success',
-    data: { doctor: updatedDoctor }
+    data: { doctor }
   });
 });
 
@@ -87,7 +99,7 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   res.status(204).json({ status: 'success', data: null });
 });
 
-// Add patient to doctor (fixed: no passwordConfirm issue)
+// Add patient to doctor
 exports.addPatientToDoctor = catchAsync(async (req, res, next) => {
   const { patientId } = req.body;
 

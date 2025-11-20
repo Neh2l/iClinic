@@ -3,7 +3,7 @@ const Patient = require('../models/patientModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
-// Many to many
+// Many to Many
 exports.linkDoctorPatient = catchAsync(async (req, res, next) => {
   const { doctorId, patientId } = req.body;
 
@@ -22,36 +22,36 @@ exports.linkDoctorPatient = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    message: 'Doctor and Patient linked successfully!',
+    message: 'Doctor and Patient linked successfully!'
   });
 });
 
 // Get all patients of a each doctor
 exports.getDoctorPatients = catchAsync(async (req, res, next) => {
   const doctor = await Doctor.findById(req.params.doctorId).populate(
-    'patients',
+    'patients'
   );
   if (!doctor) return next(new AppError('Doctor not found', 404));
 
   res.status(200).json({
     status: 'success',
     data: {
-      patients: doctor.patients,
-    },
+      patients: doctor.patients
+    }
   });
 });
 
 // Get all doctors of a each patient
 exports.getPatientDoctors = catchAsync(async (req, res, next) => {
   const patient = await Patient.findById(req.params.patientId).populate(
-    'doctors',
+    'doctors'
   );
   if (!patient) return next(new AppError('Patient not found', 404));
 
   res.status(200).json({
     status: 'success',
     data: {
-      doctors: patient.doctors,
-    },
+      doctors: patient.doctors
+    }
   });
 });
