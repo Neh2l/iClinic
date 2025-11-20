@@ -12,18 +12,15 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
-//////////////////////////////////////////
-// 3) DATABASE CONNECTION
-//////////////////////////////////////////
 const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
-  process.env.DATABASE_PASSWORD,
+  process.env.DATABASE_PASSWORD
 );
 
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true
   })
   .then(() => console.log('DB connected successfully'))
   .catch((err) => {
@@ -31,52 +28,63 @@ mongoose
     process.exit(1);
   });
 
-//////////////////////////////////////////
-// 4) CREATE SERVER (HTTP + SOCKET.IO)
-//////////////////////////////////////////
 const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
     origin: '*',
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-  },
+    methods: ['GET', 'POST', 'PATCH', 'DELETE']
+  }
 });
+
 app.set('io', io);
+global.io = io;
 
-//////////////////////////////////////////
-// 5) SOCKET.IO EVENTS
-//////////////////////////////////////////
 io.on('connection', (socket) => {
-  console.log(`New client connected: ${socket.id}`);
+  console.log(`User connected: ${socket.id}`);
 
-  socket.on('driverStatusUpdated', (data) => {
-    console.log('Driver status update received:', data);
-
-    io.emit('dashboardUpdate', data);
+  socket.on('joinUser', ({ userId, role }) => {
+    if (userId) {
+      socket.join(userId.toString());
+      console.log(`${role} ${userId} joined their room`);
+    }
   });
 
-  socket.on('patientAssigned', (data) => {
-    console.log('New patient assigned to doctor:', data);
-    io.emit('doctorPatientUpdate', data);
+  socket.on(
+    'sendMessage',
+    ({ senderId, senderModel, receiverId, receiverModel, message }) => {
+      const messageData = {
+        sender: senderId,
+        senderModel,
+        receiver: receiverId,
+        receiverModel,
+        message,
+        createdAt: new Date()
+      };
+
+      io.to(receiverId.toString()).emit('newMessage', messageData);
+      io.to(senderId.toString()).emit('newMessage', messageData);
+    }
+  );
+
+  socket.on('typing', ({ senderId, receiverId, isTyping }) => {
+    io.to(receiverId.toString()).emit('userTyping', { senderId, isTyping });
   });
 
   socket.on('disconnect', () => {
-    console.log(`Client disconnected: ${socket.id}`);
+    console.log(`User disconnected: ${socket.id}`);
   });
 });
 
-// 6) START SERVER
 const PORT = process.env.PORT || 5000;
+
 server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}...`);
+  console.log(`Server running on port ${PORT}`);
 });
 
-// 7) HANDLE UNHANDLED PROMISE REJECTIONS
 process.on('unhandledRejection', (err) => {
   console.error('💥 UNHANDLED REJECTION 💥');
   console.error(err.name, err.message);
-
   server.close(() => {
     process.exit(1);
   });

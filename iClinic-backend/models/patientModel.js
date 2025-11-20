@@ -5,36 +5,37 @@ const bcrypt = require('bcryptjs');
 const patientSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Please tell us your full name'],
+    required: [true, 'Please tell us your full name']
   },
   email: {
     type: String,
     required: [true, 'Please provide your email address'],
     unique: true,
     lowercase: true,
-    validate: [validator.isEmail, 'Please provide a valid email'],
+    validate: [validator.isEmail, 'Please provide a valid email']
   },
   phone: {
     type: String,
-    required: [true, 'Please provide your phone number'],
+    required: [true, 'Please provide your phone number']
   },
   nationalID: {
     type: String,
     validate: {
       validator: (val) => /^\d{14}$/.test(val),
-      message: 'National ID must be 14 digits',
-    },
+      message: 'National ID must be 14 digits'
+    }
   },
   gender: {
     type: String,
-    enum: ['Male', 'Female'],
+    required: true,
+    enum: ['Male', 'Female']
   },
   patientDisease: String,
   password: {
     type: String,
     required: [true, 'Please provide a password'],
     minlength: 8,
-    select: false,
+    select: false
   },
   passwordConfirm: {
     type: String,
@@ -43,31 +44,31 @@ const patientSchema = new mongoose.Schema({
       validator: function (el) {
         return el === this.password;
       },
-      message: 'Passwords do not match!',
-    },
+      message: 'Passwords do not match!'
+    }
   },
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
   active: {
     type: Boolean,
-    default: true,
+    default: true
   },
   createdAt: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
   role: {
     type: String,
-    default: 'patient',
+    default: 'patient'
   },
 
   doctors: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Doctor',
-    },
-  ],
+      ref: 'Doctor'
+    }
+  ]
 });
 
 // Hash password before saving

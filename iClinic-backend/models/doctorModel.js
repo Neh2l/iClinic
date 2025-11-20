@@ -5,37 +5,37 @@ const bcrypt = require('bcryptjs');
 const doctorSchema = new mongoose.Schema({
   fullName: {
     type: String,
-    required: [true, 'Tell us your name'],
+    required: [true, 'Tell us your name']
   },
   clinicName: {
     type: String,
-    required: [true, 'Provide your clinic name!'],
+    required: [true, 'Provide your clinic name!']
   },
   licenseID: {
     type: String,
-    required: [true, 'Provide your license ID'],
+    required: [true, 'Provide your license ID']
   },
   nationalID: {
     type: String,
     required: [true, 'Provide a valid national ID'],
     validate: {
       validator: (val) => /^\d{14}$/.test(val),
-      message: 'National ID must be 14 digits',
-    },
+      message: 'National ID must be 14 digits'
+    }
   },
   email: {
     type: String,
     required: [true, 'Provide a valid email address'],
     unique: true,
     lowercase: true,
-    validate: [validator.isEmail, 'Please provide a valid email'],
+    validate: [validator.isEmail, 'Please provide a valid email']
   },
   phone: String,
   password: {
     type: String,
     required: [true, 'Provide a password'],
     minlength: 8,
-    select: false,
+    select: false
   },
   passwordConfirm: {
     type: String,
@@ -44,43 +44,42 @@ const doctorSchema = new mongoose.Schema({
       validator: function (el) {
         return el === this.password;
       },
-      message: 'Passwords are not the same!',
-    },
+      message: 'Passwords are not the same!'
+    }
   },
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
   active: {
     type: Boolean,
-    default: true,
+    default: true
   },
   role: {
     type: String,
-    default: 'doctor',
+    default: 'doctor'
   },
   location: {
     type: {
       type: String,
       enum: ['Point'],
-      default: 'Point',
+      default: 'Point'
     },
     coordinates: {
       type: [Number],
-      default: [0, 0],
-    },
+      default: [0, 0]
+    }
   },
   rate: {
     type: Number,
-    default: 4.5,
+    default: 4.5
   },
 
-  // 🔗 Reference to many patients
   patients: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Patient',
-    },
-  ],
+      ref: 'Patient'
+    }
+  ]
 });
 
 doctorSchema.index({ location: '2dsphere' });

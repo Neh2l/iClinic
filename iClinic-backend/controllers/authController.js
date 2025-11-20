@@ -10,16 +10,16 @@ const sendEmail = require('../utils/email');
 
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
+    expiresIn: process.env.JWT_EXPIRES_IN
   });
 
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
   const cookieOptions = {
     expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
-    httpOnly: true,
+    httpOnly: true
   };
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
   res.cookie('jwt', token, cookieOptions);
@@ -35,7 +35,7 @@ exports.signupPatient = catchAsync(async (req, res, next) => {
     coName: req.body.coName,
     nationalID: req.body.nationalID,
     password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm,
+    passwordConfirm: req.body.passwordConfirm
   });
   createSendToken(newPatient, 201, res);
 });
@@ -49,7 +49,7 @@ exports.signupDoctor = catchAsync(async (req, res, next) => {
     phone: req.body.phone,
     nationalID: req.body.nationalID,
     password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm,
+    passwordConfirm: req.body.passwordConfirm
   });
   createSendToken(newDoctor, 201, res);
 });
@@ -58,10 +58,26 @@ exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password)
     return next(new AppError('Please provide email and password', 400));
+
   let user = await Doctor.findOne({ email }).select('+password');
-  if (!user) user = await User.findOne({ email }).select('+password');
+  let userRole = 'doctor';
+
+  if (!user) {
+    user = await User.findOne({ email }).select('+password');
+    userRole = 'patient';
+  }
+
+  if (!user) {
+    user = await Admin.findOne({ email }).select('+password');
+    userRole = 'admin';
+  }
+
   if (!user || !(await user.correctPassword(password, user.password)))
     return next(new AppError('Incorrect email or password', 401));
+
+  // إضافة الـ role للـ user object
+  user.role = userRole;
+
   createSendToken(user, 200, res);
 });
 
@@ -77,9 +93,24 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
-  let currentUser = await Doctor.findById(decoded.id);
-  if (!currentUser) currentUser = await User.findById(decoded.id);
-  if (!currentUser) currentUser = await Admin.findById(decoded.id);
+  // البحث عن المستخدم مع تحديد الـ role
+  let currentUser;
+  let userRole;
+
+  currentUser = await Doctor.findById(decoded.id);
+  if (currentUser) {
+    userRole = 'doctor';
+  } else {
+    currentUser = await User.findById(decoded.id);
+    if (currentUser) {
+      userRole = 'patient';
+    } else {
+      currentUser = await Admin.findById(decoded.id);
+      if (currentUser) {
+        userRole = 'admin';
+      }
+    }
+  }
 
   if (!currentUser) {
     return next(new AppError('This user no longer exists.', 401));
@@ -91,19 +122,14 @@ exports.protect = catchAsync(async (req, res, next) => {
   ) {
     if (currentUser.changedPasswordAfter(decoded.iat)) {
       return next(
-        new AppError('Password changed recently. Please log in again.', 401),
+        new AppError('Password changed recently. Please log in again.', 401)
       );
     }
   }
 
+  // إضافة الـ role بشكل صريح
   req.user = currentUser;
-  let role = 'patient';
-  if (currentUser instanceof Doctor) {
-    role = 'doctor';
-  } else if (currentUser instanceof Admin) {
-    role = 'admin';
-  }
-  req.user.role = role;
+  req.user.role = userRole;
 
   next();
 });
@@ -126,7 +152,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     await sendEmail({
       email: user.email,
       subject: 'Your password reset token',
-      message: `Reset at: ${resetURL}`,
+      message: `Reset at: ${resetURL}`
     });
     res
       .status(200)
@@ -146,7 +172,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     .digest('hex');
   const user = await User.findOne({
     passwordResetToken: hashedToken,
-    passwordResetExpires: { $gt: Date.now() },
+    passwordResetExpires: { $gt: Date.now() }
   });
   if (!user) return next(new AppError('Token invalid or expired', 400));
   user.password = req.body.password;
@@ -186,7 +212,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 exports.logout = (req, res) => {
   res.cookie('jwt', 'loggedout', {
     expires: new Date(Date.now() + 10 * 1000),
-    httpOnly: true,
+    httpOnly: true
   });
   res
     .status(200)

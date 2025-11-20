@@ -16,6 +16,7 @@ const patientRouter = require('./routers/patientRouter');
 const doctorRouter = require('./routers/doctorRouter');
 const adminRouter = require('./routers/adminRouter');
 const appointmentRoutes = require('./routers/appointmentRoutes');
+const msgRouter = require('./routers/msgRouter');
 
 const app = express();
 
@@ -31,7 +32,7 @@ if (process.env.NODE_ENV === 'development') {
 const limiter = rateLimit({
   max: 500,
   windowMs: 60 * 60 * 1000,
-  message: 'Too many requests from this IP, please try again in an hour!',
+  message: 'Too many requests from this IP, please try again in an hour!'
 });
 app.use('/api', limiter);
 
@@ -50,8 +51,8 @@ app.use(
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  }),
+    allowedHeaders: ['Content-Type', 'Authorization']
+  })
 );
 
 app.options('*', cors());
@@ -61,20 +62,6 @@ app.use(mongoSanitize());
 
 // Data sanitization against XSS attacks
 app.use(xss());
-
-// Prevent HTTP parameter pollution
-app.use(
-  hpp({
-    whitelist: [
-      'duration',
-      'maxGroupSize',
-      'ratingQuantity',
-      'ratingAverage',
-      'difficulty',
-      'price',
-    ],
-  }),
-);
 
 // Serve static files (optional)
 app.use(express.static(`${__dirname}/public`));
@@ -93,6 +80,7 @@ app.use('/api/v1/patients', patientRouter);
 app.use('/api/v1/doctors', doctorRouter);
 app.use('/api/v1/admins', adminRouter);
 app.use('/api/v1/appointments', appointmentRoutes);
+app.use('/api/v1/messages', msgRouter);
 
 ////////////////////////////////////////
 // 3) UNHANDLED ROUTES
