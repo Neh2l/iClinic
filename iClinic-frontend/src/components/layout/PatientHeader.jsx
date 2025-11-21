@@ -8,7 +8,7 @@ const PatientHeader = ({ onMenuClick }) => {
           className={`bi bi-list ${styles.menuIcon}`}
           onClick={onMenuClick}
         ></i>
-        <p className={styles.brand}>profile</p>
+        <p className={styles.brand}>Patient Profile</p>
       </div>
     </nav>
   );
