@@ -5,7 +5,7 @@ import PatientSidebar from '../../components/layout/PatientSidebar';
 const PatientLayout = ({ children }) => {
   return (
     <>
-      <PatientHeader/>
+      <PatientHeader />
       <div className="d-flex" style={{ minHeight: '100vh' }}>
         <div
           className="d-none d-lg-block"
@@ -19,14 +19,14 @@ const PatientLayout = ({ children }) => {
             boxShadow: '2px 0 5px rgba(0,0,0,0.1)'
           }}
         >
-       <PatientSidebar/>
+          <PatientSidebar />
         </div>
 
         <main
           className="flex-grow-1 p-4 p-md-5"
           style={{
             backgroundColor: '#f8f9fa',
-            marginTop: '60px'
+            marginTop: '55px'
           }}
         >
           <div className="container-fluid">{children}</div>
