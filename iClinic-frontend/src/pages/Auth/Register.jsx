@@ -42,6 +42,7 @@ function Auth() {
             passwordConfirm: formData.passwordConfirm,
             clinicName: formData.clinicName,
             licenseID: formData.licenseID,
+            address: formData.address,
             specialization: formData.specialization
           }
         : {
@@ -49,6 +50,7 @@ function Auth() {
             email: formData.email,
             nationalID: formData.nationalID,
             phone: formData.phone,
+            address: formData.address,
             password: formData.password,
             passwordConfirm: formData.passwordConfirm
           };
@@ -73,6 +75,7 @@ function Auth() {
           licenseID: '',
           clinicName: '',
           nationalID: '',
+          address: '',
           password: '',
           passwordConfirm: ''
         });
@@ -159,15 +162,34 @@ function Auth() {
               )}
 
               {role === 'patient' && (
-                <input
-                  name="phone"
-                  type="tel"
-                  placeholder="Enter your Phone Number"
-                  className="form-control"
-                  value={formData.phone}
-                  onChange={handleChange}
-                />
+                <div>
+                  <input
+                    name="phone"
+                    type="tel"
+                    placeholder="Enter your Phone Number"
+                    className="form-control"
+                    value={formData.phone}
+                    onChange={handleChange}
+                  />
+                  <input
+                    name="address"
+                    type="address"
+                    placeholder="Enter your address"
+                    className="form-control"
+                    value={formData.address}
+                    onChange={handleChange}
+                  />
+                </div>
               )}
+
+              <select
+                name="Gender"
+                className="form-control"
+                value={formData.gender}
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
 
               <input
                 name="password"

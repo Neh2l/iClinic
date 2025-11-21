@@ -21,6 +21,7 @@ router.patch('/updateMe', patientController.updateMe);
 router.delete('/deleteMe', patientController.deleteMe);
 router.patch('/updateMyPassword', authController.updatePassword);
 
+router.get('/doctors', authController.protect, patientController.getAllDoctors);
 router.get('/myDoctors', patientController.getMyDoctors);
 router.post('/addDoctor', patientController.addDoctorToPatient);
 router.post('/removeDoctor', patientController.removeDoctorFromPatient);
