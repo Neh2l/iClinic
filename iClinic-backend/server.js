@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 const http = require('http');
+const dotenv = require('dotenv');
 const { Server } = require('socket.io');
 const app = require('./app');
+const mongoose = require('mongoose');
 
 dotenv.config({ path: './config.env' });
 

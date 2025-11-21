@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const User = require('../models/patientModel');
-const Doctor = require('../models/doctorModel');
+const Doctor = require('../models/doctorModel').default;
 const Admin = require('../models/adminModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -34,6 +34,7 @@ exports.signupPatient = catchAsync(async (req, res, next) => {
     email: req.body.email,
     coName: req.body.coName,
     nationalID: req.body.nationalID,
+    address: req.body.address,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm
   });
@@ -44,10 +45,12 @@ exports.signupDoctor = catchAsync(async (req, res, next) => {
   const newDoctor = await Doctor.create({
     fullName: req.body.fullName,
     clinicName: req.body.clinicName,
+    gender: req.body.gender,
     licenseID: req.body.licenseID,
     email: req.body.email,
     phone: req.body.phone,
     nationalID: req.body.nationalID,
+    address: req.body.address,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm
   });
@@ -75,7 +78,6 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!user || !(await user.correctPassword(password, user.password)))
     return next(new AppError('Incorrect email or password', 401));
 
-  // إضافة الـ role للـ user object
   user.role = userRole;
 
   createSendToken(user, 200, res);
@@ -93,7 +95,6 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
-  // البحث عن المستخدم مع تحديد الـ role
   let currentUser;
   let userRole;
 
@@ -127,7 +128,6 @@ exports.protect = catchAsync(async (req, res, next) => {
     }
   }
 
-  // إضافة الـ role بشكل صريح
   req.user = currentUser;
   req.user.role = userRole;
 

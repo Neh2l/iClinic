@@ -13,7 +13,7 @@
   border: none;
   background-color: white;
   /* border-radius: 10px; */
-  padding: .5rem 0rem;
+  padding: 0.5rem 0rem;
   /* padding-right: 10px; */
 }
 .btn:hover {
@@ -21,16 +21,15 @@
   border-bottom: 3px solid #015d82;
   color: #015d82;
   font-weight: 700;
-
 }
 .active {
- border-bottom: 3px solid #015d82;
+  border-bottom: 3px solid #015d82;
   color: #015d82;
   font-weight: 700;
 }
 .container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 25px;
   padding: 20px;
   width: 1000px;
@@ -108,18 +107,17 @@
 }
 .rate {
   color: #ffc107;
-  
 }
 .btn2 {
   border-radius: 5px;
   border: none;
-  padding: .5rem 0rem;
+  padding: 0.5rem 0rem;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  background-color:transparent;
+  background-color: transparent;
   border: 1px solid hsl(197, 98%, 26%);
-  box-shadow: 0 0 2px hsl(197, 98%, 26%) ;
+  box-shadow: 0 0 2px hsl(197, 98%, 26%);
   color: rgba(0, 0, 0, 0.685);
   margin-top: 15px;
   width: 80%;

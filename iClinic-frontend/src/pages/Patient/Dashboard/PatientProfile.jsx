@@ -1,44 +1,202 @@
-// import PatientLayout from '../PatientLayout';
 import img from '../../../images/Patient.png';
 import '../../../styles/PatientProfile.css';
 import img2 from '../../../images/dr.png';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PatientLayout from '../PatientLayout';
 
+const API_BASE_URL = 'https://iclinc-backend-gs97.onrender.com/api/v1';
+
 export default function PatientProfile() {
-  // Edit Profile Modal State
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [appointments, setAppointments] = useState([]);
+  const [appointmentsLoading, setAppointmentsLoading] = useState(true);
+
   const [formData, setFormData] = useState({
-    name: 'Tia Andreson',
-    phone: '(+20)123 400 6768',
-    email: 'Tiaaaa@gmail.com',
-    address: '100 St Maadi,Cairo',
-    dateOfBirth: 'March 15, 1985'
+    name: '',
+    phone: '',
+    email: '',
+    address: '',
+    dateOfBirth: '',
+    nationalID: ''
   });
+
+  useEffect(() => {
+    fetchPatientData();
+    fetchAppointments();
+  }, []);
+
+  const fetchPatientData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE_URL}/patients/me`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+      });
+      if (!response.ok) throw new Error('Failed to fetch patient data');
+      const result = await response.json();
+      if (result.status === 'success') {
+        const patient = result.data.patient;
+        setFormData({
+          name: patient.name || '',
+          phone: patient.phone || '',
+          email: patient.email || '',
+          address: patient.address || '',
+          dateOfBirth: patient.dateOfBirth || '',
+          nationalID: patient.nationalID || ''
+        });
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchAppointments = async () => {
+    try {
+      setAppointmentsLoading(true);
+      const token = localStorage.getItem('token');
+      const response = await fetch(
+        `${API_BASE_URL}/appointments/myAppointments`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      if (!response.ok) throw new Error('Failed to fetch appointments');
+      const result = await response.json();
+      if (result.status === 'success') {
+        setAppointments(result.data?.appointments || result.data || []);
+      }
+    } catch (err) {
+      console.error('Error fetching appointments:', err);
+      setAppointments([]);
+    } finally {
+      setAppointmentsLoading(false);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Not specified';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  const formatTime = (timeString) => {
+    if (!timeString) return 'Not specified';
+    return timeString;
+  };
+
+  const getAppointmentStatus = (appointment) => {
+    if (appointment.status) return appointment.status;
+    const appointmentDate = new Date(appointment.date);
+    const today = new Date();
+    return appointmentDate >= today ? 'Upcoming' : 'Completed';
+  };
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  // Add handler functions
-  const handleSubmit = () => {
-    alert('Profile updated successfully!');
-    console.log('Updated data:', formData);
-    closeModal();
+
+  const handleSubmit = async () => {
+    try {
+      setIsSaving(true);
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE_URL}/patients/updateMe`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          address: formData.address,
+          dateOfBirth: formData.dateOfBirth
+        })
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to update profile');
+      }
+      const result = await response.json();
+      if (result.status === 'success') {
+        if (result.data?.patient) {
+          const patient = result.data.patient;
+          setFormData({
+            name: patient.name || '',
+            phone: patient.phone || '',
+            email: patient.email || '',
+            address: patient.address || '',
+            dateOfBirth: patient.dateOfBirth || '',
+            nationalID: patient.nationalID || ''
+          });
+        }
+        alert('Profile updated successfully!');
+        closeModal();
+      }
+    } catch (err) {
+      alert('Error updating profile: ' + err.message);
+    } finally {
+      setIsSaving(false);
+    }
   };
+
+  if (loading) {
+    return (
+      <PatientLayout>
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={{ minHeight: '400px' }}
+        >
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </PatientLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <PatientLayout>
+        <div className="container mt-5">
+          <div className="alert alert-danger" role="alert">
+            <h4>Error loading profile</h4>
+            <p>{error}</p>
+            <button className="btn btn-primary" onClick={fetchPatientData}>
+              Try Again
+            </button>
+          </div>
+        </div>
+      </PatientLayout>
+    );
+  }
+
   return (
     <PatientLayout>
       <div>
-        {/*Patient Card*/}
         <div className="container patientProfile mt-5">
           <div className="container patientCard rounded-5 w-100 h-100 mb-5 pb-5">
-            {/*Patient image, address, email and phone number*/}
             <div className="row mt-2 d-flex p-4">
               <div className="col-12 col-lg-3 image-container">
                 <div className="image-wrapper rounded-5">
@@ -52,7 +210,7 @@ export default function PatientProfile() {
               <div className="col-12 col-lg-9 patientDetails pt-1">
                 <div className="edit-profile-div d-flex justify-content-between align-items-start">
                   <div id="patientName">
-                    <h1>{formData.name}</h1>
+                    <h1>{formData.name || 'Patient Name'}</h1>
                   </div>
                   <div className="edit-profile float-end">
                     <button onClick={openModal}>
@@ -82,7 +240,9 @@ export default function PatientProfile() {
                     >
                       <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
                     </svg>
-                    <p className="phoneNumber ms-3 mt-5">{formData.phone}</p>
+                    <p className="phoneNumber ms-3 mt-5">
+                      {formData.phone || 'Not provided'}
+                    </p>
                   </div>
                   <div className="div-info mb-3">
                     <svg
@@ -95,7 +255,9 @@ export default function PatientProfile() {
                     >
                       <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z" />
                     </svg>
-                    <p className="email ms-3 mt-5">{formData.email}</p>
+                    <p className="email ms-3 mt-5">
+                      {formData.email || 'Not provided'}
+                    </p>
                   </div>
                   <div className="div-info mb-3">
                     <svg
@@ -109,12 +271,13 @@ export default function PatientProfile() {
                       <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10" />
                       <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
                     </svg>
-                    <p className="address ms-3 mt-5">{formData.address}</p>
+                    <p className="address ms-3 mt-5">
+                      {formData.address || 'Not provided'}
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-            {/*Patient date of birt, blood type and allegies*/}
             <div className="another-info row mt-4 d-flex justify-content-evenly g-2">
               <div className="birthDate info col-lg-3 col-12 rounded-4 p-4">
                 <svg
@@ -129,7 +292,9 @@ export default function PatientProfile() {
                   <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
                 </svg>
                 <p className="title">Date of Birth</p>
-                <p className="mt-3 ms-4 answer">{formData.dateOfBirth}</p>
+                <p className="mt-3 ms-4 answer">
+                  {formData.dateOfBirth || 'Not specified'}
+                </p>
               </div>
               <div className="bloodType info col-lg-3 col-12 rounded-4 p-4">
                 <svg
@@ -150,7 +315,7 @@ export default function PatientProfile() {
                   />
                 </svg>
                 <p className="title">Blood Type</p>
-                <p className="mt-3 ms-4 answer ">A+</p>
+                <p className="mt-3 ms-4 answer">A+</p>
               </div>
               <div className="allegies info col-lg-3 col-12 rounded-4 p-4">
                 <svg
@@ -169,9 +334,10 @@ export default function PatientProfile() {
               </div>
             </div>
           </div>
-          {/*Patient scores in thw website*/}
+
+          {/* Scores Section */}
           <div className="scores row mt-4 mb-5 d-flex justify-content-evenly g-2">
-            <div className="health score  col-lg-3 col-12 rounded-4 p-4">
+            <div className="health score col-lg-3 col-12 rounded-4 p-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -220,9 +386,9 @@ export default function PatientProfile() {
                 <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
               </svg>
               <p className="title2">Active Visits</p>
-              <p className="mt-3 ms-4 answer2">12</p>
+              <p className="mt-3 ms-4 answer2">{appointments.length}</p>
             </div>
-            <div className=" streak-days score col-lg-3 col-12 rounded-4 p-4">
+            <div className="streak-days score col-lg-3 col-12 rounded-4 p-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -250,196 +416,115 @@ export default function PatientProfile() {
               <p className="mt-3 ms-4 answer2">45</p>
             </div>
           </div>
-          {/*Patient appointments*/}
+
+          {/* Appointments Section */}
           <div className="patient-appointments mb-5">
             <div className="appointments-title">
               <h1>My Appointments</h1>
               <p>Keep track of upcoming visits</p>
             </div>
-            {/*Patient appointments' cards*/}
             <div className="appointments-cards row mt-3 g-5">
-              <div className="appointment-card col-12 rounded-4 p-4">
-                <div className="row m-2 g-3">
-                  <div className="col-12 col-lg-3 dr-image-div">
-                    <img
-                      className="doctorImage rounded-5"
-                      src={img2}
-                      alt="doctor"
-                    />
-                  </div>
-                  <div className="col-12 col-lg-9 appointment-details">
-                    <div className="d-flex justify-content-between align-items-start mb-3">
-                      <div className="doctor-info">
-                        <h2>Dr.Jessica Venkata</h2>
-                        <p className="field-name">Cardiology</p>
-                      </div>
-                      <div className="state">
-                        <p>Upcoming</p>
-                      </div>
-                    </div>
-                    <span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="11"
-                        height="11"
-                        fill="#087f9a"
-                        className="bi bi-calendar-check svg-another-info"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0" />
-                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
-                      </svg>
-                      <p>November 15, 2025</p>
-                    </span>
-                    <span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="11"
-                        height="11"
-                        fill="#087f9a"
-                        className="bi bi-clock"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
-                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
-                      </svg>
-                      <p>10:00 AM </p>
-                    </span>
-                    <span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="11"
-                        height="11"
-                        fill="#087f9a"
-                        className="bi bi-geo-alt svg-another-info "
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10" />
-                        <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
-                      </svg>
-                      <p>123 Sheraton Street, Cairo. Egypt</p>
+              {appointmentsLoading ? (
+                <div className="col-12 text-center py-4">
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">
+                      Loading appointments...
                     </span>
                   </div>
                 </div>
-              </div>
-              <div className="appointment-card col-12 rounded-4 p-4">
-                <div className="row m-2 g-3">
-                  <div className="col-12 col-lg-3 dr-image-div">
-                    <img
-                      className="doctorImage rounded-5"
-                      src={img2}
-                      alt="doctor"
-                    />
-                  </div>
-                  <div className="col-12 col-lg-9 appointment-details">
-                    <div className="d-flex justify-content-between align-items-start mb-3">
-                      <div className="doctor-info">
-                        <h2>Dr.Tia Thomas</h2>
-                        <p className="field-name">Eye Department</p>
+              ) : appointments.length === 0 ? (
+                <div className="col-12">
+                  <div className="alert alert-info">No appointments found.</div>
+                </div>
+              ) : (
+                appointments.map((appointment, index) => (
+                  <div
+                    key={appointment._id || index}
+                    className="appointment-card col-12 rounded-4 p-4"
+                  >
+                    <div className="row m-2 g-3">
+                      <div className="col-12 col-lg-3 dr-image-div">
+                        <img
+                          className="doctorImage rounded-5"
+                          src={appointment.doctor?.image || img2}
+                          alt="doctor"
+                        />
                       </div>
-                      <div className="state">
-                        <p>Upcoming</p>
+                      <div className="col-12 col-lg-9 appointment-details">
+                        <div className="d-flex justify-content-between align-items-start mb-3">
+                          <div className="doctor-info">
+                            <h2>
+                              Dr.{' '}
+                              {appointment.doctor?.fullName || 'Doctor Name'}
+                            </h2>
+                            <p className="field-name">
+                              {appointment.doctor?.specialization ||
+                                appointment.specialization ||
+                                'Specialization'}
+                            </p>
+                          </div>
+                          <div className="state">
+                            <p>{getAppointmentStatus(appointment)}</p>
+                          </div>
+                        </div>
+                        <span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="11"
+                            height="11"
+                            fill="#087f9a"
+                            className="bi bi-calendar-check svg-another-info"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0" />
+                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
+                          </svg>
+                          <p>{formatDate(appointment.date)}</p>
+                        </span>
+                        <span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="11"
+                            height="11"
+                            fill="#087f9a"
+                            className="bi bi-clock"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
+                          </svg>
+                          <p>{formatTime(appointment.time)}</p>
+                        </span>
+                        {(appointment.location ||
+                          appointment.doctor?.address) && (
+                          <span>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="11"
+                              height="11"
+                              fill="#087f9a"
+                              className="bi bi-geo-alt svg-another-info"
+                              viewBox="0 0 16 16"
+                            >
+                              <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10" />
+                              <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+                            </svg>
+                            <p>
+                              {appointment.location ||
+                                appointment.doctor?.address}
+                            </p>
+                          </span>
+                        )}
                       </div>
                     </div>
-                    <span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="11"
-                        height="11"
-                        fill="#087f9a"
-                        className="bi bi-calendar-check svg-another-info"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0" />
-                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
-                      </svg>
-                      <p>November 30, 2025</p>
-                    </span>
-                    <span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="11"
-                        height="11"
-                        fill="#087f9a"
-                        className="bi bi-clock"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
-                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
-                      </svg>
-                      <p>9:00 AM </p>
-                    </span>
-                    <span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="11"
-                        height="11"
-                        fill="#087f9a"
-                        className="bi bi-geo-alt svg-another-info"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10" />
-                        <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
-                      </svg>
-                      <p>123 Sheraton Street, Cairo. Egypt</p>
-                    </span>
                   </div>
-                </div>
-              </div>
-              <div className="appointment-card col-12 rounded-4 p-4">
-                <div className="row m-2 g-3">
-                  <div className="col-12 col-lg-3 dr-image-div">
-                    <img
-                      className="doctorImage rounded-5"
-                      src={img2}
-                      alt="doctor"
-                    />
-                  </div>
-                  <div className="col-12 col-lg-9 appointment-details">
-                    <div className="d-flex justify-content-between align-items-start mb-3">
-                      <div className="doctor-info">
-                        <h2>Dr.Rojana Victor</h2>
-                        <p className="field-name">Dental Department</p>
-                      </div>
-                      <div className="state">
-                        <p>Completed</p>
-                      </div>
-                    </div>
-                    <span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="11"
-                        height="11"
-                        fill="#087f9a"
-                        className="bi bi-calendar-check svg-another-info"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0" />
-                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
-                      </svg>
-                      <p>November 01, 2025</p>
-                    </span>
-                    <span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="11"
-                        height="11"
-                        fill="#087f9a"
-                        className="bi bi-clock"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
-                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
-                      </svg>
-                      <p>11:00 AM </p>
-                    </span>
-                  </div>
-                </div>
-              </div>
+                ))
+              )}
             </div>
           </div>
         </div>
-        {/*Edit profile window*/}
+
+        {/* Edit Profile Modal */}
         {isModalOpen && (
           <div className="modal-overlay" onClick={closeModal}>
             <div
@@ -447,7 +532,6 @@ export default function PatientProfile() {
               onClick={(e) => e.stopPropagation()}
             >
               <h2 className="modal-title">Edit Profile</h2>
-
               <div className="modal-form">
                 <div className="form-group">
                   <label>Name</label>
@@ -458,7 +542,6 @@ export default function PatientProfile() {
                     onChange={handleInputChange}
                   />
                 </div>
-
                 <div className="form-group">
                   <label>Phone Number</label>
                   <input
@@ -468,7 +551,6 @@ export default function PatientProfile() {
                     onChange={handleInputChange}
                   />
                 </div>
-
                 <div className="form-group">
                   <label>Email</label>
                   <input
@@ -478,7 +560,6 @@ export default function PatientProfile() {
                     onChange={handleInputChange}
                   />
                 </div>
-
                 <div className="form-group">
                   <label>Address</label>
                   <input
@@ -488,32 +569,31 @@ export default function PatientProfile() {
                     onChange={handleInputChange}
                   />
                 </div>
-
                 <div className="form-group">
                   <label>Date of Birth</label>
                   <input
-                    type="text"
+                    type="date"
                     name="dateOfBirth"
                     value={formData.dateOfBirth}
                     onChange={handleInputChange}
                   />
                 </div>
-
                 <div className="modal-buttons">
                   <button
                     type="button"
                     className="cancel-btn"
                     onClick={closeModal}
+                    disabled={isSaving}
                   >
-                    Cancel{' '}
+                    Cancel
                   </button>
                   <button
                     type="button"
                     className="save-btn"
                     onClick={handleSubmit}
+                    disabled={isSaving}
                   >
-                    {' '}
-                    Save
+                    {isSaving ? 'Saving...' : 'Save'}
                   </button>
                 </div>
               </div>

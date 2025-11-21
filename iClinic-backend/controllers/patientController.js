@@ -1,5 +1,5 @@
 const Patient = require('../models/patientModel');
-const Doctor = require('../models/doctorModel');
+const Doctor = require('../models/doctorModel').default;
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
@@ -15,12 +15,28 @@ const filterObj = (obj, ...allowedFields) => {
 exports.getAllPatients = catchAsync(async (req, res, next) => {
   const patients = await Patient.find().populate(
     'doctors',
-    'name specialty email',
+    'name specialty email'
   );
   res.status(200).json({
     status: 'success',
     results: patients.length,
-    data: { patients },
+    data: { patients }
+  });
+});
+
+exports.getAllDoctors = catchAsync(async (req, res, next) => {
+  if (!req.user || req.user.role !== 'patient') {
+    return next(new AppError('Only admins can access this data', 403));
+  }
+
+  const doctors = await Doctor.find().populate(
+    'patients',
+    'name email phone patientDisease'
+  );
+  res.status(200).json({
+    status: 'success',
+    results: doctors.length,
+    data: { doctors }
   });
 });
 
@@ -28,13 +44,13 @@ exports.getAllPatients = catchAsync(async (req, res, next) => {
 exports.getMe = catchAsync(async (req, res, next) => {
   const patient = await Patient.findById(req.user.id).populate(
     'doctors',
-    'name email specialty',
+    'name email specialty'
   );
   if (!patient) return next(new AppError('Patient not found', 404));
 
   res.status(200).json({
     status: 'success',
-    data: { patient },
+    data: { patient }
   });
 });
 
@@ -44,8 +60,8 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     return next(
       new AppError(
         'This route is not for password updates. Please use /updateMyPassword.',
-        400,
-      ),
+        400
+      )
     );
   }
 
@@ -56,7 +72,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     'email',
     'phone',
     'photo',
-    'patientDisease',
+    'patientDisease'
   );
 
   const updatedPatient = await Patient.findByIdAndUpdate(
@@ -64,13 +80,13 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     filteredBody,
     {
       new: true,
-      runValidators: true,
-    },
+      runValidators: true
+    }
   );
 
   res.status(200).json({
     status: 'success',
-    data: { patient: updatedPatient },
+    data: { patient: updatedPatient }
   });
 });
 
@@ -80,7 +96,7 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
 
   res.status(204).json({
     status: 'success',
-    data: null,
+    data: null
   });
 });
 
@@ -109,7 +125,7 @@ exports.addDoctorToPatient = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     message: 'Doctor added successfully',
-    data: { patient },
+    data: { patient }
   });
 });
 
@@ -125,7 +141,7 @@ exports.removeDoctorFromPatient = catchAsync(async (req, res, next) => {
 
   patient.doctors = patient.doctors.filter((id) => id.toString() !== doctorId);
   doctor.patients = doctor.patients.filter(
-    (id) => id.toString() !== patient._id.toString(),
+    (id) => id.toString() !== patient._id.toString()
   );
 
   await patient.save();
@@ -133,7 +149,7 @@ exports.removeDoctorFromPatient = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    message: 'Doctor removed successfully',
+    message: 'Doctor removed successfully'
   });
 });
 
@@ -141,7 +157,7 @@ exports.removeDoctorFromPatient = catchAsync(async (req, res, next) => {
 exports.getMyDoctors = catchAsync(async (req, res, next) => {
   const patient = await Patient.findById(req.user._id).populate(
     'doctors',
-    'fullName clinicName email phone',
+    'fullName clinicName email phone'
   );
 
   if (!patient) return next(new AppError('Patient not found', 404));
@@ -149,6 +165,6 @@ exports.getMyDoctors = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     results: patient.doctors.length,
-    data: { doctors: patient.doctors },
+    data: { doctors: patient.doctors }
   });
 });

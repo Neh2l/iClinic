@@ -11,6 +11,10 @@ const doctorSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Provide your clinic name!']
   },
+  gender: {
+    enum: ['Male', 'Female'],
+    required: [true, 'Provide your gender']
+  },
   licenseID: {
     type: String,
     required: [true, 'Provide your license ID']
@@ -58,16 +62,9 @@ const doctorSchema = new mongoose.Schema({
     type: String,
     default: 'doctor'
   },
-  location: {
-    type: {
-      type: String,
-      enum: ['Point'],
-      default: 'Point'
-    },
-    coordinates: {
-      type: [Number],
-      default: [0, 0]
-    }
+  address: {
+    type: String,
+    require: [true, 'Provide your address']
   },
   rate: {
     type: Number,
@@ -82,7 +79,7 @@ const doctorSchema = new mongoose.Schema({
   ]
 });
 
-doctorSchema.index({ location: '2dsphere' });
+// doctorSchema.index({ location: '2dsphere' });
 
 doctorSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
