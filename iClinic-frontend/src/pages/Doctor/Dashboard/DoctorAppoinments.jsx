@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import DoctorLayout from "../DoctorLayout";
+import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import DoctorLayout from '../DoctorLayout';
 
 const DoctorAppointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -11,9 +11,9 @@ const DoctorAppointments = () => {
   // ============================
   const fetchAppointments = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       const res = await fetch(
-        "https://iclinc-backend-gs97.onrender.com/api/v1/appointments/doctorAppointments",
+        'https://iclinc-back.onrender.com/api/v1/appointments/doctorAppointments',
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const data = await res.json();
@@ -26,72 +26,72 @@ const DoctorAppointments = () => {
       setLoading(false);
     } catch (err) {
       console.log(err);
-      toast.error("Failed to load appointments");
+      toast.error('Failed to load appointments');
       setLoading(false);
     }
   };
 
   const updateStatus = async (id, action) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
 
-      const status = action === "accepted" ? "confirmed" : "canceled";
+      const status = action === 'accepted' ? 'confirmed' : 'canceled';
 
       const res = await fetch(
-        `https://iclinc-backend-gs97.onrender.com/api/v1/appointments/${id}/status`,
+        `https://iclinc-back.onrender.com/api/v1/appointments/${id}/status`,
         {
-          method: "PATCH",
+          method: 'PATCH',
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
           },
-          body: JSON.stringify({ status }),
+          body: JSON.stringify({ status })
         }
       );
 
       const data = await res.json();
 
-      if (res.ok && status === "confirmed") {
-        toast.success("Appointment Accepted");
+      if (res.ok && status === 'confirmed') {
+        toast.success('Appointment Accepted');
         setAppointments((prev) =>
           prev.map((app) =>
-            app._id === id ? { ...app, status: "confirmed" } : app
+            app._id === id ? { ...app, status: 'confirmed' } : app
           )
         );
-      } else if (res.ok && status === "canceled") {
-        toast.success("Appointment Declined");
+      } else if (res.ok && status === 'canceled') {
+        toast.success('Appointment Declined');
         setAppointments((prev) => prev.filter((app) => app._id !== id));
       } else {
-        toast.error(data.message || "Failed to update status");
+        toast.error(data.message || 'Failed to update status');
       }
     } catch (err) {
       console.log(err);
-      toast.error("Error updating appointment");
+      toast.error('Error updating appointment');
     }
   };
 
   const SinglePatient = ({ app }) => {
-    const isConfirmed = app.status === "confirmed";
+    const isConfirmed = app.status === 'confirmed';
 
     return (
       <div
         className={`d-flex align-items-center justify-content-between p-3 mb-2 rounded ${
           isConfirmed
-            ? "bg-primary bg-opacity-25 border-success"
-            : "bg-white border"
+            ? 'bg-primary bg-opacity-25 border-success'
+            : 'bg-white border'
         }`}
       >
         <div className="d-flex align-items-center">
           <img
-            src={app.patient?.profileImg || "/profile.jpg"}
+            src={app.patient?.profileImg || '/profile.jpg'}
             width="50"
             height="50"
             className="rounded-circle me-3 border"
-            alt={app.patient?.name || "patient"}
+            alt={app.patient?.name || 'patient'}
           />
           <div>
-            <div className="fw-bold">{app.patient?.name || "Unknown"}</div>
-            <div>Type: {app.type || "Clinic"}</div>
+            <div className="fw-bold">{app.patient?.name || 'Unknown'}</div>
+            <div>Type: {app.type || 'Clinic'}</div>
             <div>
               Date: {new Date(app.date).toLocaleDateString()} - {app.time}
             </div>
@@ -103,14 +103,14 @@ const DoctorAppointments = () => {
           <div>
             <button
               className="accept-btn me-2"
-              onClick={() => updateStatus(app._id, "accepted")}
+              onClick={() => updateStatus(app._id, 'accepted')}
             >
               Accept
             </button>
 
             <button
               className="decline-btn"
-              onClick={() => updateStatus(app._id, "declined")}
+              onClick={() => updateStatus(app._id, 'declined')}
             >
               Decline
             </button>
@@ -120,7 +120,6 @@ const DoctorAppointments = () => {
     );
   };
 
-  // ============================
   useEffect(() => {
     fetchAppointments();
   }, []);
@@ -134,7 +133,7 @@ const DoctorAppointments = () => {
       {loading ? (
         <div
           className="d-flex justify-content-center align-items-center"
-          style={{ height: "70vh" }}
+          style={{ height: '70vh' }}
         >
           <div className="spinner-border text-primary" role="status"></div>
         </div>

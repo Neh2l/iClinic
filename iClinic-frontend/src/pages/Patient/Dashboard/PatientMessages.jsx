@@ -12,7 +12,7 @@ const PatientMessages = () => {
   const messagesEndRef = useRef(null);
 
   const token = localStorage.getItem('token');
-  const API_BASE = 'https://iclinc-backend-gs97.onrender.com/api/v1';
+  const API_BASE = 'https://iclinc-back.onrender.com/api/v1';
 
   // Fetch patient's doctors
   useEffect(() => {
