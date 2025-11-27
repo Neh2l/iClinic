@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
-import DoctorHeader from '../../components/layout/DoctorHeader';
-import DoctorSidebar from '../../components/layout/DoctorSidebar';
+import DoctorHeader from '../../components/layout/doctorHeader';
+import DoctorSidebar from '../../components/layout/doctorSidebar';
 import { FaBars } from 'react-icons/fa';
 
 const DoctorLayout = ({ children }) => {
@@ -11,24 +10,23 @@ const DoctorLayout = ({ children }) => {
     <>
       <DoctorHeader />
 
-<button
-  className="d-lg-none"
-  style={{
-    position: 'fixed',
-    top: '20px',
-    left: '20px',
-    zIndex: 2000,
-    // background: '#015D82',
-    color: '#000',
-    padding: '8px 10px',
-    borderRadius: '8px',
-    border: 'none'
-  }}
-  onClick={() => setIsOpen(true)}
->
-  <FaBars size={6} />
-</button>
-
+      <button
+        className="d-lg-none"
+        style={{
+          position: 'fixed',
+          top: '20px',
+          left: '20px',
+          zIndex: 2000,
+          // background: '#015D82',
+          color: '#000',
+          padding: '8px 10px',
+          borderRadius: '8px',
+          border: 'none'
+        }}
+        onClick={() => setIsOpen(true)}
+      >
+        <FaBars size={6} />
+      </button>
 
       {isOpen && (
         <div
