@@ -1,11 +1,50 @@
-import React from 'react';
-import DoctorHeader from '../../components/layout/doctorHeader';
-import DoctorSidebar from '../../components/layout/doctorSidebar';
+
+import React, { useState } from 'react';
+import DoctorHeader from '../../components/layout/DoctorHeader';
+import DoctorSidebar from '../../components/layout/DoctorSidebar';
+import { FaBars } from 'react-icons/fa';
 
 const DoctorLayout = ({ children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <>
       <DoctorHeader />
+
+<button
+  className="d-lg-none"
+  style={{
+    position: 'fixed',
+    top: '20px',
+    left: '20px',
+    zIndex: 2000,
+    // background: '#015D82',
+    color: '#000',
+    padding: '8px 10px',
+    borderRadius: '8px',
+    border: 'none'
+  }}
+  onClick={() => setIsOpen(true)}
+>
+  <FaBars size={6} />
+</button>
+
+
+      {isOpen && (
+        <div
+          onClick={() => setIsOpen(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            background: 'rgba(0,0,0,0.4)',
+            zIndex: 1500
+          }}
+        ></div>
+      )}
+
       <div className="d-flex" style={{ minHeight: '100vh' }}>
         <div
           className="d-none d-lg-block"
@@ -22,11 +61,27 @@ const DoctorLayout = ({ children }) => {
           <DoctorSidebar />
         </div>
 
+        <div
+          className={`d-lg-none`}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: isOpen ? '0' : '-260px',
+            width: '240px',
+            height: '100vh',
+            background: '#fff',
+            zIndex: 2001,
+            transition: 'left 0.3s ease'
+          }}
+        >
+          <DoctorSidebar closeSidebar={() => setIsOpen(false)} />
+        </div>
+
         <main
           className="flex-grow-1 p-4 p-md-5"
           style={{
             backgroundColor: '#f8f9fa',
-            marginTop: '60px'
+            marginTop: '55px'
           }}
         >
           <div className="container-fluid">{children}</div>

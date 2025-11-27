@@ -2,10 +2,13 @@
   flex: 1;
   display: flex;
   gap: 10px;
-  width: 1100px;
+  width: 100%; /* بدل 1100px */
+  max-width: 1100px;
   min-height: calc(100vh - 65px);
   padding: 10px;
+  margin: auto;
 }
+
 .doctor {
   background-color: #ffffff;
   border: none;
@@ -14,6 +17,7 @@
   height: fit-content;
   padding: 30px;
 }
+
 .icons {
   flex-shrink: 0;
   font-size: 20px !important;
@@ -24,6 +28,7 @@
   stroke: black;
   stroke-width: 40px;
 }
+
 .pic {
   background-color: #f5f5f5;
   border-radius: 50%;
@@ -32,15 +37,18 @@
   margin-left: auto;
   margin-right: auto;
 }
+
 .cardName {
   text-align: center;
   font-weight: bold;
   margin-top: 10px;
 }
+
 .cardTitle {
   text-align: center;
   color: #999999;
 }
+
 .edit {
   border-radius: 5px;
   border: none;
@@ -54,24 +62,29 @@
   width: 100%;
   transition: background-color 0.25s ease, transform 0.1s ease;
 }
+
 .edit:hover,
 .editProfile:hover,
 .pass button:hover {
   background-color: #014760;
   transform: scale(1.03);
 }
+
 .contentCard {
   background-color: white;
   border: none;
   border-radius: 15px;
   width: 1000px;
+  max-width: 100%;
   height: fit-content;
   padding: 30px;
 }
+
 .contentButtons {
   padding: 15px;
   margin-bottom: 5px;
 }
+
 .btn {
   margin-right: 20px;
   border: none;
@@ -84,46 +97,57 @@
   background-color: #015d82;
   color: white;
 }
+
 .active {
   background-color: #015d82;
   color: white;
 }
+
 .content {
   padding: 15px;
 }
+
 .profileContent h5 {
   font-weight: bolder;
   font-size: 1em;
   margin-bottom: 15px;
   margin-top: 20px;
 }
+
 .profileContent p {
   color: #333333;
   margin-bottom: 20px;
   font-size: 1em;
 }
+
 .profileContent li::marker {
   color: #015d82;
   font-size: 1.4em;
 }
+
 .ex {
   margin-left: 25px;
 }
+
 .exp {
   margin-left: 15px;
 }
+
 .exp li::marker {
   color: black;
   font-size: 1em;
 }
+
 .pass h4 {
   margin-bottom: 20px;
   font-weight: bold;
 }
+
 .pass label {
   margin-bottom: 5px;
   color: #333333;
 }
+
 .pass input {
   width: 250px;
   height: 35px;
@@ -133,6 +157,7 @@
   border: 1px solid #333333;
   border-radius: 5px;
 }
+
 .pass button {
   margin-right: 20px;
   border: none;
@@ -146,6 +171,7 @@
   margin-bottom: 20px;
   transition: background-color 0.25s ease, transform 0.1s ease;
 }
+
 .modalOverlay {
   position: fixed;
   inset: 0;
@@ -155,6 +181,7 @@
   align-items: center;
   z-index: 999;
 }
+
 .modal {
   background-color: #ffffff;
   color: #333333;
@@ -170,6 +197,7 @@
   text-align: center;
   margin-bottom: 20px;
 }
+
 .modal label {
   display: block;
   font-weight: 500;
@@ -226,6 +254,7 @@
 .modalButtons button:last-child:hover {
   background-color: #e0e0e0;
 }
+
 .profileOverlay {
   position: fixed;
   inset: 0;
@@ -249,6 +278,7 @@
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.25);
   animation: scaleIn 0.3s ease-in-out;
 }
+
 .modalProfile h3 {
   text-align: center;
   margin-bottom: 25px;
@@ -256,11 +286,13 @@
   font-size: 20px;
   font-weight: 600;
 }
+
 .modalGrid {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
+
 .modalField label {
   display: block;
   margin-bottom: 6px;
@@ -299,6 +331,7 @@
   background-color: rgba(1, 93, 130, 0.5);
   border-radius: 4px;
 }
+
 .editProfile {
   margin-right: 20px;
   border: none;
@@ -313,13 +346,10 @@
   cursor: pointer;
   transition: background-color 0.25s ease, transform 0.1s ease;
 }
+
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes scaleIn {
@@ -332,40 +362,34 @@
     opacity: 1;
   }
 }
+
+/* ==========================
+      RESPONSIVE
+========================== */
+
 @media screen and (max-width: 1024px) {
   .cards {
     flex-direction: column;
     align-items: center;
-    padding: 15px;
   }
 
   .doctor {
-    width: 60%;
-    margin: 10px auto;
+    width: 70%;
   }
 
   .contentCard {
-    margin: 10px auto 20px auto;
-    width: 850px;
+    width: 90%;
   }
 }
-@media screen and (max-width: 768px) {
-  .cards {
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-  }
 
+@media screen and (max-width: 768px) {
   .doctor {
     width: 90%;
-    margin: 10px auto;
     padding: 20px;
-    text-align: center;
   }
 
   .contentCard {
     width: 95%;
-    margin: 10px auto 20px auto;
     padding: 20px;
   }
 
@@ -382,34 +406,22 @@
     width: 90%;
     padding: 20px;
   }
-
-  .modalButtons {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .modalButtons button {
-    width: 100%;
-  }
 }
+
 @media screen and (max-width: 480px) {
   .doctor,
   .contentCard {
     width: 100%;
-    margin: 10px 0;
     padding: 15px;
-    text-align: center;
   }
 
   .modal,
   .modalProfile {
     width: 90%;
-    padding: 20px;
   }
 
   .modalButtons {
     flex-direction: column;
-    align-items: stretch;
     gap: 8px;
   }
 

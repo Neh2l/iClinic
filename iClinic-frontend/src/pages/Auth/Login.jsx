@@ -370,7 +370,7 @@ const Login = () => {
               className="btn w-100"
               style={{ backgroundColor: darkColor, color: 'white' }}
             >
-              Log In as {userType === 'doctor' ? 'Doctor' : 'Patient'}
+              LogIn
             </button>
             <button
               type="button"
@@ -383,7 +383,7 @@ const Login = () => {
           </form>
         </div>
         <div className="col-lg-6 text-center">
-          <img src={Pic} alt="Welcome" className="img-fluid" />
+          <img src="/log3.jpeg" alt="Welcome"  className="img-fluid d-none d-lg-block" />
         </div>
       </div>
     </div>
