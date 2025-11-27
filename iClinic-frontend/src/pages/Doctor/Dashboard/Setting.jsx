@@ -1,40 +1,40 @@
-import React, { useState, useEffect } from "react";
-import DoctorLayout from "../DoctorLayout";
-import styles from "../../../styles/setting.module.css";
-import dr from "../../../images/dr.png";
-import { FaMapMarkerAlt, FaEnvelope, FaPhone } from "react-icons/fa";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import DoctorLayout from '../DoctorLayout';
+import styles from '../../../styles/setting.module.css';
+import dr from '../../../images/dr.png';
+import { FaMapMarkerAlt, FaEnvelope, FaPhone } from 'react-icons/fa';
+import axios from 'axios';
 
 const Setting = () => {
-  const [tab, setTab] = useState("Profile");
+  const [tab, setTab] = useState('Profile');
 
   // Password states
-  const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [error, setError] = useState("");
+  const [password, setPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [error, setError] = useState('');
 
   // Doctor info
   const [doctor, setDoctor] = useState({
-    fullName: "",
-    clinicName: "",
-    email: "",
-    licenseID: "",
-    nationalID: "",
-    phone: "",
-    title: "",
-    location: { coordinates: [] },
+    fullName: '',
+    clinicName: '',
+    email: '',
+    licenseID: '',
+    nationalID: '',
+    phone: '',
+    title: '',
+    location: { coordinates: [] }
   });
 
   // Local profile info
   const [profileInfo, setProfileInfo] = useState({
-    about: "",
-    specialties: "",
-    designation: "",
-    experienceDate: "",
-    experience: "",
-    experienceDetails: "",
-    education: "",
+    about: '',
+    specialties: '',
+    designation: '',
+    experienceDate: '',
+    experience: '',
+    experienceDetails: '',
+    education: ''
   });
 
   // Modals
@@ -45,34 +45,34 @@ const Setting = () => {
   useEffect(() => {
     const fetchDoctor = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem('token');
         if (!token) return;
 
         const res = await axios.get(
-          "https://iclinc-backend-gs97.onrender.com/api/v1/doctors/me",
+          'https://iclinc-back.onrender.com/api/v1/doctors/me',
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
         const doc = res.data.data.doctor;
 
         setDoctor({
-          fullName: doc.fullName || "",
-          clinicName: doc.clinicName || "",
-          email: doc.email || "",
-          licenseID: doc.licenseID || "",
-          nationalID: doc.nationalID || "",
-          phone: doc.phone || "",
-          title: doc.title || "",
-          location: doc.location || { coordinates: [] },
+          fullName: doc.fullName || '',
+          clinicName: doc.clinicName || '',
+          email: doc.email || '',
+          licenseID: doc.licenseID || '',
+          nationalID: doc.nationalID || '',
+          phone: doc.phone || '',
+          title: doc.title || '',
+          location: doc.location || { coordinates: [] }
         });
       } catch (err) {
-        console.log("Error fetching doctor:", err.response?.data || err);
+        console.log('Error fetching doctor:', err.response?.data || err);
       }
     };
 
     fetchDoctor();
 
-    const savedProfile = localStorage.getItem("profileInfo");
+    const savedProfile = localStorage.getItem('profileInfo');
     if (savedProfile) setProfileInfo(JSON.parse(savedProfile));
   }, []);
 
@@ -81,10 +81,10 @@ const Setting = () => {
     const { name, value } = e.target;
 
     // For location
-    if (name === "location") {
+    if (name === 'location') {
       return setDoctor({
         ...doctor,
-        location: { coordinates: value.split(",").map(Number) },
+        location: { coordinates: value.split(',').map(Number) }
       });
     }
 
@@ -93,31 +93,30 @@ const Setting = () => {
 
   // Save doctor info (local for now)
   const handleSaveDoctor = async () => {
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) return alert("No token found");
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return alert('No token found');
 
-    const res = await axios.patch(
-      "https://iclinc-backend-gs97.onrender.com/api/v1/doctors/updateMe",
-      {
-        fullName: doctor.fullName,
-        title: doctor.title,
-        phone: doctor.phone,
-        email: doctor.email,
-        location: doctor.location,
-      },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
+      const res = await axios.patch(
+        'https://iclinc-back.onrender.com/api/v1/doctors/updateMe',
+        {
+          fullName: doctor.fullName,
+          title: doctor.title,
+          phone: doctor.phone,
+          email: doctor.email,
+          location: doctor.location
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-    setDoctor(res.data.data.doctor); 
-    setShowEditModal(false);
-    alert("Profile updated successfully!");
-  } catch (err) {
-    console.log("Error updating doctor:", err.response?.data || err);
-    alert("Failed to update profile!");
-  }
-};
-
+      setDoctor(res.data.data.doctor);
+      setShowEditModal(false);
+      alert('Profile updated successfully!');
+    } catch (err) {
+      console.log('Error updating doctor:', err.response?.data || err);
+      alert('Failed to update profile!');
+    }
+  };
 
   // Update profile inputs
   const handleProfileChange = (e) => {
@@ -127,46 +126,45 @@ const Setting = () => {
 
   // Save profile info locally
   const handleProfileSave = () => {
-    localStorage.setItem("profileInfo", JSON.stringify(profileInfo));
+    localStorage.setItem('profileInfo', JSON.stringify(profileInfo));
     setShowProfileModal(false);
-    alert("Profile info updated!");
+    alert('Profile info updated!');
   };
 
   // Change password backend
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
 
-    if (newPassword !== confirm) return setError("Passwords do not match!");
-    if (newPassword.length < 6) return setError("Password is weak!");
+    if (newPassword !== confirm) return setError('Passwords do not match!');
+    if (newPassword.length < 6) return setError('Password is weak!');
 
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
 
       await axios.patch(
-        "https://iclinc-backend-gs97.onrender.com/api/v1/doctors/updateMyPassword",
+        'https://iclinc-back.onrender.com/api/v1/doctors/updateMyPassword',
         {
           passwordCurrent: password,
           password: newPassword,
-          passwordConfirm: confirm,
+          passwordConfirm: confirm
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      setPassword("");
-      setNewPassword("");
-      setConfirm("");
-      setError("");
+      setPassword('');
+      setNewPassword('');
+      setConfirm('');
+      setError('');
 
-      alert("Password changed successfully!");
+      alert('Password changed successfully!');
     } catch (err) {
-      setError(err.response?.data?.message || "Error changing password");
+      setError(err.response?.data?.message || 'Error changing password');
     }
   };
 
   return (
     <DoctorLayout>
       <div className={styles.cards}>
-
         {/* LEFT CARD */}
         <div className={styles.doctor}>
           <img src={dr} alt="doctor" className={styles.pic} />
@@ -175,10 +173,10 @@ const Setting = () => {
           <p className={styles.cardTitle}>{doctor.title}</p>
 
           <p>
-            <FaPhone className={styles.icons} /> {doctor.phone || "-"} <br />
+            <FaPhone className={styles.icons} /> {doctor.phone || '-'} <br />
             <FaEnvelope className={styles.icons} /> {doctor.email} <br />
-            <FaMapMarkerAlt className={styles.icons} />{" "}
-            {doctor.location?.coordinates?.join(", ") || "-"}
+            <FaMapMarkerAlt className={styles.icons} />{' '}
+            {doctor.location?.coordinates?.join(', ') || '-'}
           </p>
 
           <button
@@ -226,7 +224,7 @@ const Setting = () => {
               <label>Location (lng,lat)</label>
               <input
                 name="location"
-                value={doctor.location.coordinates.join(",")}
+                value={doctor.location.coordinates.join(',')}
                 onChange={handleDoctorChange}
               />
 
@@ -243,27 +241,27 @@ const Setting = () => {
           <div className={styles.contentButtons}>
             <button
               className={`${styles.btn} ${
-                tab === "Profile" ? styles.active : ""
+                tab === 'Profile' ? styles.active : ''
               }`}
-              onClick={() => setTab("Profile")}
+              onClick={() => setTab('Profile')}
             >
               My profile
             </button>
 
             <button
               className={`${styles.btn} ${
-                tab === "password" ? styles.active : ""
+                tab === 'password' ? styles.active : ''
               }`}
-              onClick={() => setTab("password")}
+              onClick={() => setTab('password')}
             >
               Change password
             </button>
 
             <button
               className={`${styles.btn} ${
-                tab === "privacy" ? styles.active : ""
+                tab === 'privacy' ? styles.active : ''
               }`}
-              onClick={() => setTab("privacy")}
+              onClick={() => setTab('privacy')}
             >
               Privacy & Security
             </button>
@@ -271,16 +269,16 @@ const Setting = () => {
 
           {/* PROFILE TAB */}
           <div className={styles.content}>
-            {tab === "Profile" && (
+            {tab === 'Profile' && (
               <div className={styles.profileContent}>
                 <h5>About Me</h5>
                 <p>{profileInfo.about}</p>
 
                 <h5>Specialities</h5>
                 <ul>
-                  {profileInfo.specialties
-                    .split(",")
-                    .map((item, i) => <li key={i}>{item.trim()}</li>)}
+                  {profileInfo.specialties.split(',').map((item, i) => (
+                    <li key={i}>{item.trim()}</li>
+                  ))}
                 </ul>
 
                 <h5>Designation</h5>
@@ -289,18 +287,20 @@ const Setting = () => {
                 </ul>
 
                 <h5>Experience</h5>
-                <p>{profileInfo.experienceDate} - {profileInfo.experience}</p>
+                <p>
+                  {profileInfo.experienceDate} - {profileInfo.experience}
+                </p>
                 <ul>
-                  {profileInfo.experienceDetails
-                    .split(",")
-                    .map((item, i) => <li key={i}>{item.trim()}</li>)}
+                  {profileInfo.experienceDetails.split(',').map((item, i) => (
+                    <li key={i}>{item.trim()}</li>
+                  ))}
                 </ul>
 
                 <h5>Education</h5>
                 <ul>
-                  {profileInfo.education
-                    .split(",")
-                    .map((item, i) => <li key={i}>{item.trim()}</li>)}
+                  {profileInfo.education.split(',').map((item, i) => (
+                    <li key={i}>{item.trim()}</li>
+                  ))}
                 </ul>
 
                 <button
@@ -386,7 +386,7 @@ const Setting = () => {
             )}
 
             {/* PASSWORD TAB */}
-            {tab === "password" && (
+            {tab === 'password' && (
               <div className={styles.pass}>
                 <h4>Change password</h4>
                 <br />
@@ -409,7 +409,7 @@ const Setting = () => {
                     placeholder="new password"
                     onChange={(e) => setNewPassword(e.target.value)}
                   />
-                   <br />
+                  <br />
 
                   <label>Confirm password</label>
                   <br />
@@ -420,7 +420,7 @@ const Setting = () => {
                     onChange={(e) => setConfirm(e.target.value)}
                   />
 
-                  <p style={{ color: "red" }}>{error}</p>
+                  <p style={{ color: 'red' }}>{error}</p>
 
                   <button type="submit">Save</button>
                 </form>
@@ -428,7 +428,7 @@ const Setting = () => {
             )}
 
             {/* PRIVACY TAB */}
-            {tab === "privacy" && (
+            {tab === 'privacy' && (
               <div className={styles.privacy}>
                 <h3>Privacy policy</h3>
 
@@ -439,10 +439,19 @@ const Setting = () => {
 
                 <h5>1. Information We Collect</h5>
                 <ul>
-                  <li><b>Professional Details:</b> Name, license ID, specialization...</li>
-                  <li><b>Contact Information:</b> Phone, email, clinic address...</li>
-                  <li><b>Account Information:</b> Login credentials...</li>
-                  <li><b>Consultation Data:</b> Notes, prescriptions...</li>
+                  <li>
+                    <b>Professional Details:</b> Name, license ID,
+                    specialization...
+                  </li>
+                  <li>
+                    <b>Contact Information:</b> Phone, email, clinic address...
+                  </li>
+                  <li>
+                    <b>Account Information:</b> Login credentials...
+                  </li>
+                  <li>
+                    <b>Consultation Data:</b> Notes, prescriptions...
+                  </li>
                 </ul>
 
                 <h5>2. How We Use Your Information</h5>

@@ -4,7 +4,7 @@ import img2 from '../../../images/dr.png';
 import { useState, useEffect } from 'react';
 import PatientLayout from '../PatientLayout';
 
-const API_BASE_URL = 'https://iclinc-backend-gs97.onrender.com/api/v1';
+const API_BASE_URL = 'https://iclinc-back.onrender.com/api/v1';
 
 export default function PatientProfile() {
   const [loading, setLoading] = useState(true);

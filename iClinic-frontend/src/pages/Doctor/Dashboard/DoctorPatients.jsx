@@ -15,7 +15,7 @@ function SinglePatient({
         <td className="p-3">
           <div className="d-flex align-items-center">
             <img
-              src={patient.photo|| "/profile.jpg"}
+              src={patient.photo || '/profile.jpg'}
               alt={patient.name}
               className="rounded-circle me-2"
               style={{ width: '40px', height: '40px' }}
@@ -143,7 +143,7 @@ const DoctorPatients = () => {
     const fetchPatients = async () => {
       try {
         const response = await fetch(
-          'https://iclinc-backend-gs97.onrender.com/api/v1/doctors/myPatients',
+          'https://iclinc-back.onrender.com/api/v1/doctors/myPatients',
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`

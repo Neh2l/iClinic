@@ -11,7 +11,7 @@ import {
 import axios from 'axios';
 import img from '../../../images/Patient.png';
 
-const API_BASE_URL = 'https://iclinc-backend-gs97.onrender.com/api/v1';
+const API_BASE_URL = 'https://iclinc-back.onrender.com/api/v1';
 
 const PatientSetting = () => {
   const [tab, setTab] = useState('Profile');

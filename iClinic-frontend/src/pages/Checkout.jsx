@@ -43,18 +43,17 @@ function Checkout() {
       const token = localStorage.getItem('token');
 
       const response = await fetch(
-        'https://iclinc-backend-gs97.onrender.com/api/v1/patients/addDoctor',
+        'https://iclinc-back.onrender.com/api/v1/patients/addDoctor',
         {
-          method: 'POST', // or 'PUT' depending on your API
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}` // If auth is required
+            Authorization: `Bearer ${token}`
           },
           body: JSON.stringify({
             doctorId: doctor._id,
             planId: plan.id,
             planName: plan.name
-            // Add any other required fields
           })
         }
       );
@@ -80,12 +79,7 @@ function Checkout() {
       // Show success message (optional)
       alert('Subscription successful! You can now message the doctor.');
 
-      // Navigate back to doctor profile with subscription status
-      navigate(-1); // Go back to doctor profile
-      // Or navigate explicitly:
-      // navigate(`/doctor/${doctor._id}`, {
-      //   state: { doctor, subscribed: true }
-      // });
+      navigate(-1);
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.');
     } finally {
