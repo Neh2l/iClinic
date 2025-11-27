@@ -1,31 +1,35 @@
 import React from 'react';
 import styles from '../../styles/Sidebar.module.css';
 import { Link } from 'react-router-dom';
-const PatientSidebar = () => {
+
+const PatientSidebar = ({ closeSidebar }) => {
   return (
     <div className={styles.sidebar}>
       <div className={styles.top}>
         <p className={`${styles.logo} primary-text`}>IClinic</p>
         <ul>
           <li>
-            <Link to="/patient/patientProfile" className={styles}>
+            <Link to="/patient/patientProfile" onClick={closeSidebar}>
               Overview
             </Link>
           </li>
-          {/* <li>
-            <Link to="/patient/appointments">Appointments</Link>
-          </li> */}
           <li>
-            <Link to="/patient/doctorslist">Doctors</Link>
+            <Link to="/patient/doctorslist" onClick={closeSidebar}>
+              Doctors
+            </Link>
           </li>
           <li>
-            <Link to="/patient/messages">Messages</Link>
+            <Link to="/patient/messages" onClick={closeSidebar}>
+              Messages
+            </Link>
           </li>
           <li>
-            <Link to="/patient/settings">Settings</Link>
+            <Link to="/patient/settings" onClick={closeSidebar}>
+              Settings
+            </Link>
           </li>
           <li>
-            <Link to="..." className={styles.logout}>
+            <Link className={styles.logout} onClick={closeSidebar}>
               Logout
             </Link>
           </li>

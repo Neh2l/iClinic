@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from '../../styles/Navbar2.module.css';
-const doctorHeader = ({ onMenuClick }) => {
+const DoctorHeader = ({ onMenuClick }) => {
   return (
     <nav className={styles.navbar}>
       <div className={styles.left}>
         <i
-          className={`bi bi-list ${styles.menuIcon}`}
+          // className={`bi bi-list ${styles.menuIcon}`}
           onClick={onMenuClick}
         ></i>
         <p className={styles.brand}>Doctor profile</p>
@@ -14,4 +14,4 @@ const doctorHeader = ({ onMenuClick }) => {
   );
 };
 
-export default doctorHeader;
+export default DoctorHeader;

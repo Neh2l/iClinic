@@ -15,6 +15,7 @@ import {
   Filler,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import "../../../styles/DoctorOverview.css"
 
 ChartJS.register(
   CategoryScale,

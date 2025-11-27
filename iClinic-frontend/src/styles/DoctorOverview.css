@@ -1,0 +1,133 @@
+/* ====== Global Fixes ====== */
+
+/* يمنع أي scroll أفقي نهائياً */
+html, body {
+  overflow-x: hidden !important;
+  width: 100% !important;
+}
+
+/* يمنع أي عنصر يخرج برا الشاشة */
+* {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+/* ====== Layout Fix ====== */
+.container-fluid,
+.row,
+.col-md-2,
+.col-md-10 {
+  overflow-x: hidden !important;
+}
+
+/* ====== Doctor Card Fix ====== */
+.col-md-2 {
+  padding: 0 10px;
+}
+
+/* منع خروج الكارد أو الصورة */
+.col-md-2 .card {
+  overflow: hidden !important;
+  text-align: center;
+  border-radius: 12px;
+}
+
+/* صورة الدكتور */
+.col-md-2 img,
+.doctor-card img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+  margin: 0 auto;
+  border-radius: 50%;
+}
+
+/* حجم مناسب على الأجهزة الكبيرة */
+.col-md-2 img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+}
+
+/* ====== Info Section ====== */
+.col-md-10 {
+  padding: 10px 20px;
+}
+
+/* منع خروج البيانات في اللست */
+.list-group-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* ====== Responsive Fixes ====== */
+
+/* --- الأجهزة المتوسطة والصغيرة جداً --- */
+@media (max-width: 1200px) {
+  .col-md-2 {
+    width: 100% !important;
+    margin-bottom: 20px;
+  }
+
+  .col-md-2 img {
+    width: 130px !important;
+    height: 130px !important;
+  }
+}
+
+/* --- الموبايل الحقيقي --- */
+@media (max-width: 768px) {
+
+  /* منع أي خروج من الشاشة */
+  html, body {
+    overflow-x: hidden !important;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .col-md-10 {
+    width: 100% !important;
+    padding: 10px 10px;
+  }
+
+  .col-md-2 img {
+    width: 120px !important;
+    height: 120px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .col-md-2 img {
+    width: 100px !important;
+    height: 100px !important;
+  }
+}
+/* ===== Fix Go to Appointments button on small screens ===== */
+@media (max-width: 768px) {
+  .appointments-header, 
+  .btn-appointments,
+  .search-container {
+    position: static !important;
+    margin: 10px 0 !important;
+    width: 100% !important;
+    text-align: left !important;
+  }
+
+  /* زرار Go to Appointments يبقى Full width */
+  .btn-appointments {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  /* السيرش */
+  .search-container input {
+    width: 100% !important;
+  }
+}
+
+

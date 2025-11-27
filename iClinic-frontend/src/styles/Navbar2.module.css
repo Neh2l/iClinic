@@ -15,7 +15,8 @@
   font-weight: bold;
   font-size: 1.2rem;
   color: var(--text-color);
-  margin-top: 15px;
+  margin-top: 25px;
+  margin-left: 50px;
 }
 
 .navbar .user {
@@ -47,3 +48,5 @@
     display: block;
   }
 }
+
+

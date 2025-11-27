@@ -62,8 +62,8 @@
   background-color: crimson;
 }
 
-@media (max-width: 1024px) {
+/* @media (max-width: 1024px) {
   .sidebar {
     display: none;
   }
-}
+} */
