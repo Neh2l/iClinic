@@ -8,13 +8,11 @@ import axios from 'axios';
 const Setting = () => {
   const [tab, setTab] = useState('Profile');
 
-  // Password states
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState('');
 
-  // Doctor info
   const [doctor, setDoctor] = useState({
     fullName: '',
     clinicName: '',
@@ -26,7 +24,6 @@ const Setting = () => {
     location: { coordinates: [] }
   });
 
-  // Local profile info
   const [profileInfo, setProfileInfo] = useState({
     about: '',
     specialties: '',
@@ -37,11 +34,9 @@ const Setting = () => {
     education: ''
   });
 
-  // Modals
   const [showEditModal, setShowEditModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
 
-  // FETCH DOCTOR DATA FROM BACKEND
   useEffect(() => {
     const fetchDoctor = async () => {
       try {
@@ -76,11 +71,9 @@ const Setting = () => {
     if (savedProfile) setProfileInfo(JSON.parse(savedProfile));
   }, []);
 
-  // Update doctor inputs
   const handleDoctorChange = (e) => {
     const { name, value } = e.target;
 
-    // For location
     if (name === 'location') {
       return setDoctor({
         ...doctor,
@@ -91,7 +84,6 @@ const Setting = () => {
     setDoctor({ ...doctor, [name]: value });
   };
 
-  // Save doctor info (local for now)
   const handleSaveDoctor = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -118,20 +110,17 @@ const Setting = () => {
     }
   };
 
-  // Update profile inputs
   const handleProfileChange = (e) => {
     const { name, value } = e.target;
     setProfileInfo({ ...profileInfo, [name]: value });
   };
 
-  // Save profile info locally
   const handleProfileSave = () => {
     localStorage.setItem('profileInfo', JSON.stringify(profileInfo));
     setShowProfileModal(false);
     alert('Profile info updated!');
   };
 
-  // Change password backend
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
 
@@ -165,7 +154,6 @@ const Setting = () => {
   return (
     <DoctorLayout>
       <div className={styles.cards}>
-        {/* LEFT CARD */}
         <div className={styles.doctor}>
           <img src={dr} alt="doctor" className={styles.pic} />
 
@@ -187,7 +175,6 @@ const Setting = () => {
           </button>
         </div>
 
-        {/* EDIT MODAL */}
         {showEditModal && (
           <div className={styles.modalOverlay}>
             <div className={styles.modal}>
@@ -236,7 +223,6 @@ const Setting = () => {
           </div>
         )}
 
-        {/* RIGHT MAIN CONTENT */}
         <div className={styles.contentCard}>
           <div className={styles.contentButtons}>
             <button
@@ -267,7 +253,6 @@ const Setting = () => {
             </button>
           </div>
 
-          {/* PROFILE TAB */}
           <div className={styles.content}>
             {tab === 'Profile' && (
               <div className={styles.profileContent}>
@@ -312,7 +297,6 @@ const Setting = () => {
               </div>
             )}
 
-            {/* PROFILE EDIT MODAL */}
             {showProfileModal && (
               <div className={styles.profileOverlay}>
                 <div className={styles.modalProfile}>
@@ -385,7 +369,6 @@ const Setting = () => {
               </div>
             )}
 
-            {/* PASSWORD TAB */}
             {tab === 'password' && (
               <div className={styles.pass}>
                 <h4>Change password</h4>
@@ -427,7 +410,6 @@ const Setting = () => {
               </div>
             )}
 
-            {/* PRIVACY TAB */}
             {tab === 'privacy' && (
               <div className={styles.privacy}>
                 <h3>Privacy policy</h3>

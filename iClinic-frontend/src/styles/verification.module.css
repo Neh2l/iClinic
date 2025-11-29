@@ -55,7 +55,6 @@ input[type="text"]:focus {
   box-shadow: 0 0 3px #0073a8;
 }
 
-/* Image Styling */
 .rightPanel {
   flex: 1;
   display: flex;
@@ -69,7 +68,6 @@ input[type="text"]:focus {
   height: auto;
 }
 
-/* Button Styling */
 .verifyBtn{
   background-color:  #015D82;
   color: white;
@@ -89,7 +87,6 @@ input[type="text"]:focus {
   background-color: #146a8f;
 }
 
-/* Links */
 .resend {
   margin-left: 30px;
 }
@@ -113,7 +110,6 @@ a:hover {
 p:last-of-type {
   margin-top: 1rem;
 }
-/* Media Query for smaller screens */
 @media (max-width: 768px) {
   .optContainer {
     flex-direction: column; 
@@ -164,7 +160,6 @@ p:last-of-type {
     margin-top: 10px;
   }
 }
-/* very small screens (extra small) */
 @media (max-width: 400px) {
   .optContainer {
     padding: 10px;

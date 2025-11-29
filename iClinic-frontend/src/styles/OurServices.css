@@ -22,12 +22,12 @@
     background-color: #cecece;
     position: absolute;
     padding:5px;
-    top: -20px; /* Half the height of the circle */
+    top: -20px; 
     left: 4%;
-    transform: translateX(-50%); /* Center horizontally */
+    transform: translateX(-50%); 
     width: 70px;
     height:70px;
-    border-radius: 50%; /* Makes it circular */
+    border-radius: 50%; 
     display: flex;
     align-items: center;
     justify-content: center;

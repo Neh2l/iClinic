@@ -335,7 +335,6 @@ export default function PatientProfile() {
             </div>
           </div>
 
-          {/* Scores Section */}
           <div className="scores row mt-4 mb-5 d-flex justify-content-evenly g-2">
             <div className="health score col-lg-3 col-12 rounded-4 p-4">
               <svg

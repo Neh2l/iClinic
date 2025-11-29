@@ -14,7 +14,6 @@ const DoctorMessages = () => {
   const token = localStorage.getItem('token');
   const API_BASE = 'https://iclinc-back.onrender.com/api/v1';
 
-  // Fetch doctor's patients
   useEffect(() => {
     fetchPatients();
   }, []);
@@ -30,7 +29,6 @@ const DoctorMessages = () => {
     }
   };
 
-  // Select a patient and fetch conversation
   const selectPatient = async (patient) => {
     setSelectedPatient(patient);
     setShowChatList(false);
@@ -67,7 +65,6 @@ const DoctorMessages = () => {
     }
   };
 
-  // Scroll to bottom when messages update
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -78,7 +75,6 @@ const DoctorMessages = () => {
         className="d-flex h-100"
         style={{ minHeight: 'calc(100vh - 140px)' }}
       >
-        {/* === Patients List === */}
         <div
           className={`border-end bg-white ${
             showChatList ? 'd-block' : 'd-none d-lg-block'
@@ -144,7 +140,6 @@ const DoctorMessages = () => {
           </div>
         </div>
 
-        {/* === Chat Area === */}
         <div
           className={`flex-grow-1 d-flex flex-column ${
             !showChatList ? 'd-flex' : 'd-none d-lg-flex'
@@ -152,7 +147,6 @@ const DoctorMessages = () => {
         >
           {selectedPatient ? (
             <>
-              {/* Header */}
               <div
                 className="p-3 border-bottom d-flex align-items-center shadow-sm"
                 style={{ backgroundColor: '#015D82' }}
@@ -179,7 +173,6 @@ const DoctorMessages = () => {
                 </div>
               </div>
 
-              {/* Messages */}
               <div
                 className="flex-grow-1 p-3 overflow-y-auto"
                 style={{ backgroundColor: '#f5f5f5' }}
@@ -239,7 +232,6 @@ const DoctorMessages = () => {
                 <div ref={messagesEndRef} />
               </div>
 
-              {/* Input */}
               <div className="p-3 bg-white border-top">
                 <div className="d-flex align-items-center gap-2">
                   <input

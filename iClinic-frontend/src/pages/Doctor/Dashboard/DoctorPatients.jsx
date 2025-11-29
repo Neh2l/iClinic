@@ -10,7 +10,6 @@ function SinglePatient({
 }) {
   return (
     <>
-      {/* Desktop Table Row */}
       <tr className="d-none d-md-table-row border-bottom">
         <td className="p-3">
           <div className="d-flex align-items-center">
@@ -59,7 +58,6 @@ function SinglePatient({
         </td>
       </tr>
 
-      {/* Mobile View */}
       <div className="d-md-none border rounded p-3 mb-3">
         <div className="d-flex justify-content-between align-items-start mb-3">
           <div className="d-flex align-items-center">
@@ -211,7 +209,6 @@ const DoctorPatients = () => {
           <h3 className="mb-0">Patients List</h3>
         </div>
 
-        {/* Desktop Table */}
         <div className="d-none d-md-block overflow-visible">
           <table className="table table-hover mb-0">
             <thead>
@@ -269,7 +266,6 @@ const DoctorPatients = () => {
           </table>
         </div>
 
-        {/* Mobile Cards */}
         <div className="d-md-none p-3">
           {patients.map((patient) => (
             <SinglePatient
@@ -284,7 +280,6 @@ const DoctorPatients = () => {
         </div>
       </div>
 
-      {/* Report Modal */}
       {showReportModal && (
         <div
           className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"

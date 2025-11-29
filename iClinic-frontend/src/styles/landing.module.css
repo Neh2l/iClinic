@@ -95,7 +95,7 @@ nav {
   align-items: center;
   justify-content: space-between;
   padding: 2rem;
-  margin-top: 70px;/* علشان الفكسد بيطلع الناف برا مجال الصفحه فوق الناف ف بنحل المشكله بمسافه بينه وبين الهيرو*/
+  margin-top: 70px;
 }
 
 .heroText {
@@ -133,7 +133,7 @@ nav {
 .exploreContainer img {
   height: 45px; 
   width: auto;
-  display: block; /*يشيل اي فراغات تحت الصورة */
+  display: block; 
   margin-bottom: 30px;
   border: none;
   border-radius: 50%;
@@ -216,8 +216,7 @@ nav {
   display: none; 
 }
 
-/* Responsive Design */
-/* (تابلت + أجهزة وسط */
+
 @media (max-width: 1024px) {
   .SideIcon {
     display: block; 
@@ -267,7 +266,7 @@ nav {
     display: none;
   }
   .navLinks.show {
-    display: flex; /* تظهر الأزرار جوا السايد */
+    display: flex;
   }
   .navMobilButtons {
     display: flex;
@@ -330,7 +329,6 @@ nav {
   }
 }
 
-/* موبايلات صغيرة  */
 @media (max-width: 480px) {
   .heroText h1 {
     font-size: 1.6rem;

@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import forget from '../../images/forget.png';
 import CNP from '../../images/verificationimg.png';
-import Pic from '../../images/image 9 (1).png';
+// import Pic from '../../images/image 9 (1).png';
 
 const darkColor = '#015D82';
 
