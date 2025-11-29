@@ -1,4 +1,3 @@
-// src/pages/Doctor/Dashboard/DoctorOverview.jsx
 import React, { useEffect, useMemo, useState } from 'react';
 import DoctorLayout from '../DoctorLayout';
 import axios from 'axios';
@@ -27,7 +26,6 @@ ChartJS.register(
   Filler
 );
 
-// local decorative image (the one you uploaded)
 const DECOR_IMG = '/mnt/data/0e86043f-8b91-4ad4-9bb6-80411beed07f.png';
 
 const monthsLabels = ['Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
@@ -57,13 +55,10 @@ const DoctorOverview = () => {
     fetchDoctor();
   }, []);
 
-  // If doctor has appointments with dates we use them; otherwise build a deterministic series
   const appointmentsSeries = useMemo(() => {
     if (!doctor) return monthsLabels.map(() => 0);
 
-    // If appointments exist as doctor.appointments array with createdAt/date
     if (Array.isArray(doctor.appointments) && doctor.appointments.length > 0) {
-      // Count per month (based on createdAt or date field)
       const counts = monthsLabels.map(() => 0);
       doctor.appointments.forEach((a) => {
         const d = a.date || a.createdAt || a.appointmentDate || a.time;
@@ -72,13 +67,10 @@ const DoctorOverview = () => {
         if (isNaN(dt)) return;
         const monthIndex = dt.getMonth();
       });
-      // Fallback: if above logic not populated, move to below synthetic generation
       if (counts.some((c) => c > 0)) return counts;
     }
 
-    // fallback deterministic series based on patients length so chart always looks meaningful
     const base = Math.max(1, doctor.patients?.length || 0);
-    // produce 7 points with slight progression and variation derived from base
     const series = monthsLabels.map((m, i) =>
       Math.round(
         Math.max(
@@ -107,7 +99,6 @@ const DoctorOverview = () => {
       </div>
     );
 
-  // Chart data & options (animated, smooth gradient line)
   const lineData = {
     labels: monthsLabels,
     datasets: [
@@ -226,9 +217,7 @@ const DoctorOverview = () => {
             </div>
           </div>
 
-          {/* main area */}
           <div className="col-md-10">
-            {/* small overview cards */}
             <div className="row g-3 mb-3">
               <div className="col-md-3">
                 <div className="card p-3 shadow-sm">
@@ -264,7 +253,6 @@ const DoctorOverview = () => {
               </div>
             </div>
 
-            {/* Top row: small pie + top stores (kept simple) */}
             <div className="row g-3 mb-3">
               <div className="col-md-4">
                 <div className="card p-3 shadow-sm text-center">
@@ -330,7 +318,6 @@ const DoctorOverview = () => {
               </div>
             </div>
 
-            {/* Animated Line Chart (top area) */}
             <div className="card p-3 shadow-sm mb-4">
               <div className="d-flex justify-content-between align-items-center mb-2">
                 <div>
@@ -347,7 +334,6 @@ const DoctorOverview = () => {
               </div>
             </div>
 
-            {/* ======= APPOINTMENTS - this is the big full-width section (requested) ======= */}
             <div className="card shadow-sm p-3">
               <div className="d-flex justify-content-between align-items-center mb-3">
                 <div>

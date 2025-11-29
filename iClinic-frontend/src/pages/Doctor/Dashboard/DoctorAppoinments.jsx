@@ -6,9 +6,7 @@ const DoctorAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // ============================
-  // 🔵 Get Doctor Appointments
-  // ============================
+ 
   const fetchAppointments = async () => {
     try {
       const token = localStorage.getItem('token');

@@ -242,7 +242,7 @@ function Auth() {
         </div>
 
         <div className="d-none d-md-flex col-md-6 align-items-center justify-content-center">
-          <img src={RegisterImg} alt="Doctors" className="img-fluid" />
+          <img src="/log3.jpeg" alt="Doctors" className="img-fluid" />
         </div>
       </div>
     </div>
