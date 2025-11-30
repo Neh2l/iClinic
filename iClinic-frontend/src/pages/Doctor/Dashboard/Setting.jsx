@@ -25,17 +25,23 @@ const Setting = () => {
   });
 
   const [profileInfo, setProfileInfo] = useState({
-    about: '',
-    specialties: '',
+    aboutMe: '',
+    specialities: '',
     designation: '',
-    experienceDate: '',
     experience: '',
-    experienceDetails: '',
     education: ''
   });
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
+
+  const specialitiesOptions = [
+    { value: '', label: 'Select your Specialist' },
+    { value: 'Neurology', label: 'Neurology' },
+    { value: 'Cardiology', label: 'Cardiology' },
+    { value: 'Dermatology', label: 'Dermatology' },
+    { value: 'Pediatrics', label: 'Pediatrics' }
+  ];
 
   useEffect(() => {
     const fetchDoctor = async () => {
@@ -60,15 +66,20 @@ const Setting = () => {
           title: doc.title || '',
           location: doc.location || { coordinates: [] }
         });
+
+        setProfileInfo({
+          aboutMe: doc.aboutMe || '',
+          specialities: doc.specialities || '',
+          designation: doc.designation || '',
+          experience: doc.experience || '',
+          education: doc.education || ''
+        });
       } catch (err) {
         console.log('Error fetching doctor:', err.response?.data || err);
       }
     };
 
     fetchDoctor();
-
-    const savedProfile = localStorage.getItem('profileInfo');
-    if (savedProfile) setProfileInfo(JSON.parse(savedProfile));
   }, []);
 
   const handleDoctorChange = (e) => {
@@ -115,10 +126,37 @@ const Setting = () => {
     setProfileInfo({ ...profileInfo, [name]: value });
   };
 
-  const handleProfileSave = () => {
-    localStorage.setItem('profileInfo', JSON.stringify(profileInfo));
-    setShowProfileModal(false);
-    alert('Profile info updated!');
+  const handleProfileSave = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return alert('No token found');
+
+      const res = await axios.patch(
+        'https://iclinc-back.onrender.com/api/v1/doctors/updateMe',
+        {
+          aboutMe: profileInfo.aboutMe,
+          specialities: profileInfo.specialities,
+          designation: profileInfo.designation,
+          experience: profileInfo.experience,
+          education: profileInfo.education
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setProfileInfo({
+        aboutMe: res.data.data.doctor.aboutMe || '',
+        specialities: res.data.data.doctor.specialities || '',
+        designation: res.data.data.doctor.designation || '',
+        experience: res.data.data.doctor.experience || '',
+        education: res.data.data.doctor.education || ''
+      });
+
+      setShowProfileModal(false);
+      alert('Profile info updated successfully!');
+    } catch (err) {
+      console.log('Error updating profile:', err.response?.data || err);
+      alert('Failed to update profile info!');
+    }
   };
 
   const handlePasswordSubmit = async (e) => {
@@ -257,36 +295,25 @@ const Setting = () => {
             {tab === 'Profile' && (
               <div className={styles.profileContent}>
                 <h5>About Me</h5>
-                <p>{profileInfo.about}</p>
+                <p>{profileInfo.aboutMe || 'No information provided'}</p>
 
                 <h5>Specialities</h5>
                 <ul>
-                  {profileInfo.specialties.split(',').map((item, i) => (
-                    <li key={i}>{item.trim()}</li>
-                  ))}
+                  <li>{profileInfo.specialities || 'No specialty selected'}</li>
                 </ul>
 
                 <h5>Designation</h5>
                 <ul>
-                  <li>{profileInfo.designation}</li>
+                  <li>
+                    {profileInfo.designation || 'No designation provided'}
+                  </li>
                 </ul>
 
                 <h5>Experience</h5>
-                <p>
-                  {profileInfo.experienceDate} - {profileInfo.experience}
-                </p>
-                <ul>
-                  {profileInfo.experienceDetails.split(',').map((item, i) => (
-                    <li key={i}>{item.trim()}</li>
-                  ))}
-                </ul>
+                <p>{profileInfo.experience || 'No experience provided'}</p>
 
                 <h5>Education</h5>
-                <ul>
-                  {profileInfo.education.split(',').map((item, i) => (
-                    <li key={i}>{item.trim()}</li>
-                  ))}
-                </ul>
+                <p>{profileInfo.education || 'No education provided'}</p>
 
                 <button
                   onClick={() => setShowProfileModal(true)}
@@ -306,19 +333,27 @@ const Setting = () => {
                     <div className={styles.modalField}>
                       <label>About Me</label>
                       <textarea
-                        name="about"
-                        value={profileInfo.about}
+                        name="aboutMe"
+                        value={profileInfo.aboutMe}
                         onChange={handleProfileChange}
+                        placeholder="Write about yourself"
                       />
                     </div>
 
                     <div className={styles.modalField}>
                       <label>Specialities</label>
-                      <input
-                        name="specialties"
-                        value={profileInfo.specialties}
+                      <select
+                        name="specialities"
+                        value={profileInfo.specialities}
                         onChange={handleProfileChange}
-                      />
+                        className={styles.dropdown}
+                      >
+                        {specialitiesOptions.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
                     </div>
 
                     <div className={styles.modalField}>
@@ -327,25 +362,17 @@ const Setting = () => {
                         name="designation"
                         value={profileInfo.designation}
                         onChange={handleProfileChange}
+                        placeholder="Example: Neurology"
                       />
                     </div>
 
                     <div className={styles.modalField}>
                       <label>Experience</label>
                       <textarea
-                        name="experienceDate"
-                        value={profileInfo.experienceDate}
-                        onChange={handleProfileChange}
-                      />
-                      <textarea
                         name="experience"
                         value={profileInfo.experience}
                         onChange={handleProfileChange}
-                      />
-                      <textarea
-                        name="experienceDetails"
-                        value={profileInfo.experienceDetails}
-                        onChange={handleProfileChange}
+                        placeholder="Write about your experience"
                       />
                     </div>
 
@@ -355,6 +382,7 @@ const Setting = () => {
                         name="education"
                         value={profileInfo.education}
                         onChange={handleProfileChange}
+                        placeholder="Provide your education info"
                       />
                     </div>
                   </div>
@@ -373,7 +401,7 @@ const Setting = () => {
               <div className={styles.pass}>
                 <h4>Change password</h4>
                 <br />
-                <form onSubmit={handlePasswordSubmit}>
+                <div>
                   <label>Current password</label>
                   <br />
                   <input
@@ -405,8 +433,8 @@ const Setting = () => {
 
                   <p style={{ color: 'red' }}>{error}</p>
 
-                  <button type="submit">Save</button>
-                </form>
+                  <button onClick={handlePasswordSubmit}>Save</button>
+                </div>
               </div>
             )}
 

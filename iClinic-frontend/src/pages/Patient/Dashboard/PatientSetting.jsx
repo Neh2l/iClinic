@@ -31,7 +31,7 @@ const PatientSetting = () => {
   });
 
   const [profileInfo, setProfileInfo] = useState({
-    about: '',
+    aboutMe: '',
     medicalHistory: '',
     allergies: '',
     bloodType: '',
@@ -43,10 +43,20 @@ const PatientSetting = () => {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
+  const bloodTypeOptions = [
+    { value: '', label: 'Select Blood Type' },
+    { value: 'A+', label: 'A+' },
+    { value: 'A-', label: 'A-' },
+    { value: 'B+', label: 'B+' },
+    { value: 'B-', label: 'B-' },
+    { value: 'AB+', label: 'AB+' },
+    { value: 'AB-', label: 'AB-' },
+    { value: 'O+', label: 'O+' },
+    { value: 'O-', label: 'O-' }
+  ];
+
   useEffect(() => {
     fetchPatient();
-    const savedProfile = localStorage.getItem('patientProfileInfo');
-    if (savedProfile) setProfileInfo(JSON.parse(savedProfile));
   }, []);
 
   const fetchPatient = async () => {
@@ -65,8 +75,17 @@ const PatientSetting = () => {
         email: pat.email || '',
         phone: pat.phone || '',
         address: pat.address || '',
-        dateOfBirth: pat.dateOfBirth || '',
+        dateOfBirth: pat.dateOfBirth ? pat.dateOfBirth.split('T')[0] : '',
         nationalID: pat.nationalID || ''
+      });
+
+      setProfileInfo({
+        aboutMe: pat.aboutMe || '',
+        medicalHistory: pat.medicalHistory || '',
+        allergies: pat.allergies || '',
+        bloodType: pat.bloodType || '',
+        emergencyContact: pat.emergencyContact || '',
+        insurance: pat.insurance || ''
       });
     } catch (err) {
       console.log('Error fetching patient:', err.response?.data || err);
@@ -85,10 +104,42 @@ const PatientSetting = () => {
     setProfileInfo({ ...profileInfo, [name]: value });
   };
 
-  const handleProfileSave = () => {
-    setShowProfileModal(false);
-    localStorage.setItem('patientProfileInfo', JSON.stringify(profileInfo));
-    alert('Profile info updated locally!');
+  const handleProfileSave = async () => {
+    try {
+      setIsSaving(true);
+      const token = localStorage.getItem('token');
+
+      const res = await axios.patch(
+        `${API_BASE_URL}/patients/updateMe`,
+        {
+          aboutMe: profileInfo.aboutMe,
+          medicalHistory: profileInfo.medicalHistory,
+          allergies: profileInfo.allergies,
+          bloodType: profileInfo.bloodType,
+          emergencyContact: profileInfo.emergencyContact,
+          insurance: profileInfo.insurance
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (res.data.status === 'success') {
+        const updatedPatient = res.data.data.patient;
+        setProfileInfo({
+          aboutMe: updatedPatient.aboutMe || '',
+          medicalHistory: updatedPatient.medicalHistory || '',
+          allergies: updatedPatient.allergies || '',
+          bloodType: updatedPatient.bloodType || '',
+          emergencyContact: updatedPatient.emergencyContact || '',
+          insurance: updatedPatient.insurance || ''
+        });
+        alert('Profile info updated successfully!');
+        setShowProfileModal(false);
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || 'Error updating profile');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handlePatientUpdate = async () => {
@@ -115,7 +166,9 @@ const PatientSetting = () => {
           email: updatedPatient.email || '',
           phone: updatedPatient.phone || '',
           address: updatedPatient.address || '',
-          dateOfBirth: updatedPatient.dateOfBirth || '',
+          dateOfBirth: updatedPatient.dateOfBirth
+            ? updatedPatient.dateOfBirth.split('T')[0]
+            : '',
           nationalID: updatedPatient.nationalID || ''
         });
         alert('Profile updated successfully!');
@@ -242,32 +295,30 @@ const PatientSetting = () => {
             {tab === 'Profile' && (
               <div className={styles.profileContent}>
                 <h5>About Me</h5>
-                <p>{profileInfo.about || 'No information provided'}</p>
+                <p>{profileInfo.aboutMe || 'No information provided'}</p>
+
                 <h5>Medical History</h5>
                 <p>
                   {profileInfo.medicalHistory || 'No medical history recorded'}
                 </p>
+
                 <h5>Allergies</h5>
-                <ul>
-                  {profileInfo.allergies ? (
-                    profileInfo.allergies
-                      .split(',')
-                      .map((item, i) => <li key={i}>{item.trim()}</li>)
-                  ) : (
-                    <li>No allergies recorded</li>
-                  )}
-                </ul>
+                <p>{profileInfo.allergies || 'No allergies recorded'}</p>
+
                 <h5>Blood Type</h5>
                 <p>{profileInfo.bloodType || 'Not specified'}</p>
+
                 <h5>Emergency Contact</h5>
                 <p>
                   {profileInfo.emergencyContact ||
                     'No emergency contact provided'}
                 </p>
+
                 <h5>Insurance Information</h5>
                 <p>
                   {profileInfo.insurance || 'No insurance information provided'}
                 </p>
+
                 <button
                   onClick={() => setShowProfileModal(true)}
                   className={styles.editProfile}
@@ -286,55 +337,77 @@ const PatientSetting = () => {
                     <div className={styles.modalField}>
                       <label>About Me</label>
                       <textarea
-                        name="about"
-                        value={profileInfo.about}
+                        name="aboutMe"
+                        value={profileInfo.aboutMe}
                         onChange={handleProfileChange}
+                        placeholder="Tell us about yourself..."
                       />
                     </div>
+
                     <div className={styles.modalField}>
                       <label>Medical History</label>
                       <textarea
                         name="medicalHistory"
                         value={profileInfo.medicalHistory}
                         onChange={handleProfileChange}
+                        placeholder="Your medical history..."
                       />
                     </div>
+
                     <div className={styles.modalField}>
-                      <label>Allergies (comma separated)</label>
+                      <label>Allergies</label>
                       <input
                         name="allergies"
                         value={profileInfo.allergies}
                         onChange={handleProfileChange}
+                        placeholder="Peanuts, Penicillin, etc..."
                       />
                     </div>
+
                     <div className={styles.modalField}>
                       <label>Blood Type</label>
-                      <input
+                      <select
                         name="bloodType"
                         value={profileInfo.bloodType}
                         onChange={handleProfileChange}
-                      />
+                        className={styles.dropdown}
+                      >
+                        {bloodTypeOptions.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
                     </div>
+
                     <div className={styles.modalField}>
                       <label>Emergency Contact</label>
                       <input
                         name="emergencyContact"
                         value={profileInfo.emergencyContact}
                         onChange={handleProfileChange}
+                        placeholder="Name and phone number..."
                       />
                     </div>
+
                     <div className={styles.modalField}>
                       <label>Insurance Information</label>
                       <textarea
                         name="insurance"
                         value={profileInfo.insurance}
                         onChange={handleProfileChange}
+                        placeholder="Insurance provider and policy number..."
                       />
                     </div>
                   </div>
                   <div className={styles.modalButtons}>
-                    <button onClick={handleProfileSave}>Save</button>
-                    <button onClick={() => setShowProfileModal(false)}>
+                    <button onClick={handleProfileSave} disabled={isSaving}>
+                      {isSaving ? 'Saving...' : 'Save'}
+                    </button>
+                    <button
+                      onClick={() => setShowProfileModal(false)}
+                      disabled={isSaving}
+                    >
                       Cancel
                     </button>
                   </div>
@@ -346,7 +419,7 @@ const PatientSetting = () => {
             {tab === 'password' && (
               <div className={styles.pass}>
                 <h4>Change Password</h4>
-                <form onSubmit={handlePasswordChange}>
+                <div>
                   <label>Current Password</label>
                   <br />
                   <input
@@ -374,8 +447,8 @@ const PatientSetting = () => {
                     onChange={(e) => setConfirm(e.target.value)}
                   />
                   {error && <p style={{ color: 'red' }}>{error}</p>}
-                  <button type="submit">Save</button>
-                </form>
+                  <button onClick={handlePasswordChange}>Save</button>
+                </div>
               </div>
             )}
 

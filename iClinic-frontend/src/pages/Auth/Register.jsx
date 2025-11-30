@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import RegisterImg from '../../images/image 9 (1).png';
 
 function Auth() {
   const [role, setRole] = useState(null);
@@ -11,9 +10,19 @@ function Auth() {
     licenseID: '',
     clinicName: '',
     nationalID: '',
+    address: '',
+    gender: '',
     password: '',
     passwordConfirm: ''
   });
+  const [toast, setToast] = useState({ show: false, message: '', type: '' });
+
+  const showToast = (message, type = 'success') => {
+    setToast({ show: true, message, type });
+    setTimeout(() => {
+      setToast({ show: false, message: '', type: '' });
+    }, 4000);
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,7 +32,17 @@ function Auth() {
     e.preventDefault();
 
     if (!role) {
-      alert('Please select your role (Doctor or Patient).');
+      showToast('Please select your role (Doctor or Patient).', 'error');
+      return;
+    }
+
+    if (!formData.gender) {
+      showToast('Please select your gender.', 'error');
+      return;
+    }
+
+    if (formData.password !== formData.passwordConfirm) {
+      showToast('Passwords do not match!', 'error');
       return;
     }
 
@@ -38,17 +57,20 @@ function Auth() {
             fullName: formData.fullName,
             email: formData.email,
             nationalID: formData.nationalID,
+            gender: formData.gender,
+            phone: formData.phone,
             password: formData.password,
             passwordConfirm: formData.passwordConfirm,
             clinicName: formData.clinicName,
             licenseID: formData.licenseID,
             address: formData.address,
-            specialization: formData.specialization
+            specialities: formData.specialization
           }
         : {
             name: formData.fullName,
             email: formData.email,
             nationalID: formData.nationalID,
+            gender: formData.gender,
             phone: formData.phone,
             address: formData.address,
             password: formData.password,
@@ -66,7 +88,10 @@ function Auth() {
       console.log('Response:', data);
 
       if (data.status === 'success') {
-        alert(`${role} registered successfully!`);
+        showToast(
+          `Registration successful! Welcome to IClinic, ${formData.fullName}!`,
+          'success'
+        );
         setFormData({
           fullName: '',
           email: '',
@@ -76,21 +101,81 @@ function Auth() {
           clinicName: '',
           nationalID: '',
           address: '',
+          gender: '',
           password: '',
           passwordConfirm: ''
         });
-        setRole(null);
+        setTimeout(() => {
+          setRole(null);
+        }, 2000);
       } else {
-        alert(data.message || 'Something went wrong!');
+        showToast(data.message || 'Something went wrong!', 'error');
       }
     } catch (err) {
       console.error('Error:', err);
-      alert('Registration failed!');
+      showToast('Registration failed! Please try again.', 'error');
     }
   };
 
   return (
     <div className="d-flex flex-column min-vh-100">
+      {/* Toast Notification */}
+      {toast.show && (
+        <div
+          style={{
+            position: 'fixed',
+            top: '20px',
+            right: '20px',
+            zIndex: 9999,
+            minWidth: '300px',
+            maxWidth: '500px',
+            backgroundColor: toast.type === 'success' ? '#28a745' : '#dc3545',
+            color: 'white',
+            padding: '16px 24px',
+            borderRadius: '8px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            animation: 'slideIn 0.3s ease-out'
+          }}
+        >
+          <span style={{ fontSize: '20px' }}>
+            {toast.type === 'success' ? '✓' : '✕'}
+          </span>
+          <span style={{ flex: 1 }}>{toast.message}</span>
+          <button
+            onClick={() => setToast({ show: false, message: '', type: '' })}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'white',
+              fontSize: '20px',
+              cursor: 'pointer',
+              padding: '0',
+              lineHeight: '1'
+            }}
+          >
+            ×
+          </button>
+        </div>
+      )}
+
+      <style>
+        {`
+          @keyframes slideIn {
+            from {
+              transform: translateX(100%);
+              opacity: 0;
+            }
+            to {
+              transform: translateX(0);
+              opacity: 1;
+            }
+          }
+        `}
+      </style>
+
       <div className="d-flex flex-grow-1">
         <div className="col-12 col-md-6 d-flex flex-column justify-content-center px-5">
           <Header />
@@ -130,6 +215,40 @@ function Auth() {
                 required
               />
 
+              <input
+                name="phone"
+                type="tel"
+                placeholder="Enter your Phone Number"
+                className="form-control"
+                value={formData.phone}
+                onChange={handleChange}
+                required={role === 'patient'}
+              />
+
+              <input
+                name="address"
+                type="text"
+                placeholder="Enter your address"
+                className="form-control"
+                value={formData.address}
+                onChange={handleChange}
+              />
+
+              <select
+                name="gender"
+                className="form-control"
+                value={formData.gender}
+                onChange={handleChange}
+                required
+                style={{ color: formData.gender ? '#212529' : '#6c757d' }}
+              >
+                <option value="" disabled>
+                  Select your gender
+                </option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+
               {role === 'doctor' && (
                 <>
                   <input
@@ -160,36 +279,6 @@ function Auth() {
                   />
                 </>
               )}
-
-              {role === 'patient' && (
-                <div>
-                  <input
-                    name="phone"
-                    type="tel"
-                    placeholder="Enter your Phone Number"
-                    className="form-control"
-                    value={formData.phone}
-                    onChange={handleChange}
-                  />
-                  <input
-                    name="address"
-                    type="address"
-                    placeholder="Enter your address"
-                    className="form-control"
-                    value={formData.address}
-                    onChange={handleChange}
-                  />
-                </div>
-              )}
-
-              <select
-                name="Gender"
-                className="form-control"
-                value={formData.gender}
-              >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
 
               <input
                 name="password"
@@ -241,8 +330,24 @@ function Auth() {
           )}
         </div>
 
-        <div className="d-none d-md-flex col-md-6 align-items-center justify-content-center">
-          <img src="/log3.jpeg" alt="Doctors" className="img-fluid" />
+        <div
+          className="d-none d-md-flex col-md-6 align-items-center justify-content-center"
+          style={{
+            height: '100vh',
+            overflow: 'hidden',
+            padding: '2rem'
+          }}
+        >
+          <img
+            src="/log3.jpeg"
+            alt="Doctors"
+            className="img-fluid"
+            style={{
+              maxHeight: '90vh',
+              width: 'auto',
+              objectFit: 'contain'
+            }}
+          />
         </div>
       </div>
     </div>

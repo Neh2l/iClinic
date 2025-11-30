@@ -17,11 +17,11 @@ const DoctorSidebar = ({ closeSidebar }) => {
 
       if (closeSidebar) closeSidebar();
 
-      navigate('/login');
+      navigate('/');
     } catch (error) {
       console.error('Logout error:', error);
       localStorage.removeItem('token');
-      navigate('/login');
+      navigate('/');
     }
   };
   return (

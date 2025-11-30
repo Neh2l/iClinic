@@ -9,24 +9,61 @@ const PatientMessages = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [showChatList, setShowChatList] = useState(true);
+  const [loading, setLoading] = useState(true);
   const messagesEndRef = useRef(null);
 
   const token = localStorage.getItem('token');
   const API_BASE = 'https://iclinc-back.onrender.com/api/v1';
 
-  // Fetch patient's doctors
+  // Fetch subscribed doctors only
   useEffect(() => {
-    fetchDoctors();
+    fetchSubscribedDoctors();
   }, []);
 
-  const fetchDoctors = async () => {
+  const fetchSubscribedDoctors = async () => {
+    setLoading(true);
     try {
-      const res = await axios.get(`${API_BASE}/patients/myDoctors`, {
+      // أولاً: جيب كل الدكاترة
+      const doctorsRes = await axios.get(`${API_BASE}/patients/myDoctors`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setDoctors(res.data.data.doctors || []);
+
+      const allDoctors = doctorsRes.data.data.doctors || [];
+
+      if (allDoctors.length === 0) {
+        setDoctors([]);
+        setLoading(false);
+        return;
+      }
+
+      // ثانياً: تشيك على كل دكتور لو المريض مشترك معاه
+      const subscribedDoctors = [];
+
+      for (const doctor of allDoctors) {
+        try {
+          const subscriptionRes = await axios.get(
+            `${API_BASE}/subscriptions/check-access/${doctor._id}`,
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+
+          // لو المريض مشترك، ضيفه للقائمة
+          if (subscriptionRes.data.data?.hasAccess) {
+            subscribedDoctors.push(doctor);
+          }
+        } catch (err) {
+          console.error(
+            `Error checking subscription for doctor ${doctor._id}:`,
+            err
+          );
+        }
+      }
+
+      setDoctors(subscribedDoctors);
     } catch (err) {
       console.error('Failed to fetch doctors', err);
+      setDoctors([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -51,6 +88,12 @@ const PatientMessages = () => {
     if (!newMessage.trim() || !selectedDoctor) return;
 
     try {
+      console.log('🚀 Sending message:', {
+        message: newMessage,
+        receiverId: selectedDoctor._id,
+        token: token ? 'exists' : 'missing'
+      });
+
       const res = await axios.post(
         `${API_BASE}/messages/send`,
         {
@@ -60,10 +103,18 @@ const PatientMessages = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
+      console.log('✅ Message sent successfully:', res.data);
       setMessages((prev) => [...prev, res.data.data.message]);
       setNewMessage('');
     } catch (err) {
-      console.error('Failed to send message', err);
+      console.error('❌ Failed to send message:', err);
+      console.error('Error response:', err.response?.data);
+
+      // Show error to user
+      alert(
+        err.response?.data?.message ||
+          'Failed to send message. Please try again.'
+      );
     }
   };
 
@@ -89,7 +140,7 @@ const PatientMessages = () => {
             className="p-3 border-bottom"
             style={{ backgroundColor: '#015D82' }}
           >
-            <h5 className="mb-3 fw-bold text-white">Doctors</h5>
+            <h5 className="mb-3 fw-bold text-white">My Doctors</h5>
             <input
               type="text"
               className="form-control form-control-sm rounded-pill"
@@ -99,8 +150,26 @@ const PatientMessages = () => {
           </div>
 
           <div style={{ height: 'calc(100% - 90px)', overflowY: 'auto' }}>
-            {doctors.length === 0 ? (
-              <div className="text-center p-4 text-muted">No doctors found</div>
+            {loading ? (
+              <div className="text-center p-4">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                <p className="mt-2 text-muted">Loading your doctors...</p>
+              </div>
+            ) : doctors.length === 0 ? (
+              <div className="text-center p-4">
+                <div className="mb-3">
+                  <i
+                    className="bi bi-inbox"
+                    style={{ fontSize: '3rem', color: '#ccc' }}
+                  ></i>
+                </div>
+                <h6 className="text-muted mb-2">No subscribed doctors</h6>
+                <p className="text-muted small">
+                  Subscribe to a doctor to start messaging
+                </p>
+              </div>
             ) : (
               doctors.map((doctor) => (
                 <div
@@ -128,6 +197,14 @@ const PatientMessages = () => {
                       {doctor.specialization || 'Doctor'}
                     </small>
                   </div>
+
+                  {/* Subscription badge */}
+                  <span
+                    className="badge bg-success"
+                    style={{ fontSize: '0.65rem' }}
+                  >
+                    Subscribed
+                  </span>
                 </div>
               ))
             )}
@@ -181,52 +258,64 @@ const PatientMessages = () => {
                     No messages yet. Start the conversation!
                   </div>
                 ) : (
-                  messages.map((msg, index) => (
-                    <div
-                      key={msg._id || index}
-                      className={`d-flex mb-3 ${
-                        msg.sender === selectedDoctor._id
-                          ? 'justify-content-start'
-                          : 'justify-content-end'
-                      }`}
-                    >
+                  messages.map((msg, index) => {
+                    // Convert to string for comparison
+                    const msgSenderId =
+                      typeof msg.sender === 'object'
+                        ? msg.sender._id || msg.sender.toString()
+                        : msg.sender.toString();
+                    const doctorId = selectedDoctor._id.toString();
+                    const isFromDoctor = msgSenderId === doctorId;
+
+                    console.log('Message debug:', {
+                      msgSenderId,
+                      doctorId,
+                      isFromDoctor,
+                      senderModel: msg.senderModel
+                    });
+
+                    return (
                       <div
-                        className={`p-3 rounded-3 shadow-sm ${
-                          msg.sender === selectedDoctor._id
-                            ? 'bg-white'
-                            : 'text-white'
+                        key={msg._id || index}
+                        className={`d-flex mb-3 ${
+                          isFromDoctor
+                            ? 'justify-content-start'
+                            : 'justify-content-end'
                         }`}
-                        style={{
-                          maxWidth: '70%',
-                          borderRadius: '18px',
-                          borderTopLeftRadius:
-                            msg.sender === selectedDoctor._id ? '4px' : '18px',
-                          borderTopRightRadius:
-                            msg.sender === selectedDoctor._id ? '18px' : '4px',
-                          backgroundColor:
-                            msg.sender === selectedDoctor._id
+                      >
+                        <div
+                          className={`p-3 rounded-3 shadow-sm ${
+                            isFromDoctor ? 'bg-white' : 'text-white'
+                          }`}
+                          style={{
+                            maxWidth: '70%',
+                            borderRadius: '18px',
+                            borderTopLeftRadius: isFromDoctor ? '4px' : '18px',
+                            borderTopRightRadius: isFromDoctor ? '18px' : '4px',
+                            backgroundColor: isFromDoctor
                               ? '#ffffff'
                               : '#015D82'
-                        }}
-                      >
-                        <p className="mb-1 text-break">
-                          {msg.message || msg.text}
-                        </p>
-                        <small
-                          className={
-                            msg.sender === selectedDoctor._id
-                              ? 'text-muted'
-                              : 'text-white opacity-75'
-                          }
+                          }}
                         >
-                          {new Date(msg.createdAt).toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
-                        </small>
+                          <p className="mb-1 text-break">
+                            {msg.message || msg.text}
+                          </p>
+                          <small
+                            className={
+                              isFromDoctor
+                                ? 'text-muted'
+                                : 'text-white opacity-75'
+                            }
+                          >
+                            {new Date(msg.createdAt).toLocaleTimeString([], {
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </small>
+                        </div>
                       </div>
-                    </div>
-                  ))
+                    );
+                  })
                 )}
                 <div ref={messagesEndRef} />
               </div>
@@ -269,6 +358,12 @@ const PatientMessages = () => {
             </>
           ) : (
             <div className="d-flex flex-column align-items-center justify-content-center h-100 text-center px-4">
+              <div className="mb-3">
+                <i
+                  className="bi bi-chat-dots"
+                  style={{ fontSize: '4rem', color: '#015D82', opacity: 0.3 }}
+                ></i>
+              </div>
               <h4 className="mb-2" style={{ color: '#015D82' }}>
                 No doctor selected
               </h4>
