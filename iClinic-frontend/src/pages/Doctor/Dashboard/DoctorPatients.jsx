@@ -3,6 +3,7 @@ import DoctorLayout from '../DoctorLayout';
 
 function SinglePatient({
   patient,
+  patientIndex,
   openDropdown,
   toggleDropdown,
   handleMessage,
@@ -22,7 +23,7 @@ function SinglePatient({
             <span>{patient.name}</span>
           </div>
         </td>
-        <td className="p-3">{patient._id}</td>
+        <td className="p-3">{patientIndex + 1}</td>
         <td className="p-3">
           {new Date(patient.createdAt).toLocaleDateString()}
         </td>
@@ -69,7 +70,7 @@ function SinglePatient({
             />
             <div>
               <h6 className="mb-0">{patient.name}</h6>
-              <small className="text-muted">ID: {patient._id}</small>
+              <small className="text-muted">ID: {patientIndex + 1}</small>
             </div>
           </div>
 
@@ -252,10 +253,11 @@ const DoctorPatients = () => {
               </tr>
             </thead>
             <tbody>
-              {patients.map((patient) => (
+              {patients.map((patient, index) => (
                 <SinglePatient
                   key={patient._id}
                   patient={patient}
+                  patientIndex={index}
                   openDropdown={openDropdown}
                   toggleDropdown={toggleDropdown}
                   handleMessage={handleMessage}
@@ -267,10 +269,11 @@ const DoctorPatients = () => {
         </div>
 
         <div className="d-md-none p-3">
-          {patients.map((patient) => (
+          {patients.map((patient, index) => (
             <SinglePatient
               key={patient._id}
               patient={patient}
+              patientIndex={index}
               openDropdown={openDropdown}
               toggleDropdown={toggleDropdown}
               handleMessage={handleMessage}

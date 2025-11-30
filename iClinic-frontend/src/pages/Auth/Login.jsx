@@ -4,12 +4,11 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import forget from '../../images/forget.png';
 import CNP from '../../images/verificationimg.png';
-// import Pic from '../../images/image 9 (1).png';
 
 const darkColor = '#015D82';
 
 const API = axios.create({
-  baseURL: 'https://iclinc-backend-gs97.onrender.com/api/v1',
+  baseURL: 'https://iclinc-back.onrender.com/api/v1',
   withCredentials: true
 });
 
@@ -109,7 +108,7 @@ const CreateNewPassword = ({ resetToken, userType, goLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirm) return setError('Passwords do not match');
-    if (password.length_spend < 6) return setError('Password too weak');
+    if (password.length < 6) return setError('Password too weak');
 
     setLoading(true);
     try {
@@ -239,6 +238,75 @@ const ForgotPass = ({ goBack, goVerification, userType }) => {
   );
 };
 
+const LoginForm = ({
+  email,
+  setEmail,
+  password,
+  setPassword,
+  userType,
+  setPage,
+  handleLogin
+}) => (
+  <div className="container py-5">
+    <div className="row align-items-center">
+      <div className="col-lg-6 mb-4 mb-lg-0">
+        <div className="text-center text-lg-start">
+          <button
+            onClick={() => setPage('Login')}
+            className="btn btn-link mb-4"
+            style={{ color: darkColor }}
+          >
+            ← Change Role
+          </button>
+          <h2 className="fw-bold mb-3" style={{ color: darkColor }}>
+            Welcome Back {userType === 'doctor' ? 'Doctor' : 'Patient'}
+          </h2>
+        </div>
+        <form onSubmit={handleLogin} className="d-flex flex-column gap-3">
+          <input
+            type="email"
+            className="form-control"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            className="form-control"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button
+            type="submit"
+            className="btn w-100"
+            style={{ backgroundColor: darkColor, color: 'white' }}
+          >
+            LogIn
+          </button>
+          <button
+            type="button"
+            className="btn btn-link"
+            style={{ color: darkColor }}
+            onClick={() => setPage('ForgotPass')}
+          >
+            Forgot Password?
+          </button>
+        </form>
+      </div>
+      <div className="col-lg-6 text-center">
+        <img
+          src="/log3.jpeg"
+          alt="Welcome"
+          className="img-fluid d-none d-lg-block"
+        />
+      </div>
+    </div>
+  </div>
+);
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -332,65 +400,21 @@ const Login = () => {
     );
   }
 
-  const LoginForm = () => (
-    <div className="container py-5">
-      <div className="row align-items-center">
-        <div className="col-lg-6 mb-4 mb-lg-0">
-          <div className="text-center text-lg-start">
-            <button
-              onClick={() => setPage('Login')}
-              className="btn btn-link mb-4"
-              style={{ color: darkColor }}
-            >
-              ← Change Role
-            </button>
-            <h2 className="fw-bold mb-3" style={{ color: darkColor }}>
-              Welcome Back {userType === 'doctor' ? 'Doctor' : 'Patient'}
-            </h2>
-          </div>
-          <form onSubmit={handleLogin} className="d-flex flex-column gap-3">
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <input
-              type="password"
-              className="form-control"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <button
-              type="submit"
-              className="btn w-100"
-              style={{ backgroundColor: darkColor, color: 'white' }}
-            >
-              LogIn
-            </button>
-            <button
-              type="button"
-              className="btn btn-link"
-              style={{ color: darkColor }}
-              onClick={() => setPage('ForgotPass')}
-            >
-              Forgot Password?
-            </button>
-          </form>
-        </div>
-        <div className="col-lg-6 text-center">
-          <img src="/log3.jpeg" alt="Welcome"  className="img-fluid d-none d-lg-block" />
-        </div>
-      </div>
-    </div>
-  );
+  if (page === 'DoctorLogin' || page === 'PatientLogin') {
+    return (
+      <LoginForm
+        email={email}
+        setEmail={setEmail}
+        password={password}
+        setPassword={setPassword}
+        userType={userType}
+        setPage={setPage}
+        handleLogin={handleLogin}
+      />
+    );
+  }
 
-  if (page === 'DoctorLogin' || page === 'PatientLogin') return <LoginForm />;
-  if (page === 'ForgotPass')
+  if (page === 'ForgotPass') {
     return (
       <ForgotPass
         userType={userType}
@@ -403,7 +427,9 @@ const Login = () => {
         }}
       />
     );
-  if (page === 'Verification')
+  }
+
+  if (page === 'Verification') {
     return (
       <Verification
         userType={userType}
@@ -415,7 +441,9 @@ const Login = () => {
         }}
       />
     );
-  if (page === 'CreateNewPassword')
+  }
+
+  if (page === 'CreateNewPassword') {
     return (
       <CreateNewPassword
         userType={userType}
@@ -425,6 +453,7 @@ const Login = () => {
         }
       />
     );
+  }
 
   return null;
 };
