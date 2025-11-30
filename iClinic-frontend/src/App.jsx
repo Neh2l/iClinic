@@ -5,7 +5,6 @@ import Login from './pages/Auth/Login';
 import Chat from './pages/Chat';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
-// import Payment from './pages/Payment';
 import Error from './pages/Error';
 import { ToastContainer } from 'react-toastify';
 import Aos from 'aos';
@@ -22,42 +21,48 @@ import DoctorsList from './pages/Patient/Dashboard/DoctorsList';
 import Checkout from './pages/Checkout';
 import PatientSetting from './pages/Patient/Dashboard/PatientSetting';
 import PatientMessages from './pages/Patient/Dashboard/PatientMessages';
+
 function App() {
   useEffect(() => {
     Aos.init({ duration: 1000 });
   }, []);
+
   return (
     <BrowserRouter>
       <ToastContainer position="top-center" autoClose={3000} />
       <div style={{ backgroundColor: '#F5F5F5' }}>
         <Routes>
           <Route path="/" element={<Layout />}>
+            {/* Public Routes */}
             <Route index element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/checkout" element={<Checkout />} />
+            <Route path="home" element={<Home />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
 
-            <Route path="/doctor/overview" element={<DoctorOverview />} />
-            <Route
-              path="/doctor/appointments"
-              element={<DoctorAppointments />}
-            />
-            <Route path="/doctor/patients" element={<DoctorPatients />} />
-            <Route path="/doctor/messages" element={<DoctorMessages />} />
-            <Route path="/doctor/settings" element={<Setting />} />
+            {/* Common Routes */}
+            <Route path="chat" element={<Chat />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="checkout" element={<Checkout />} />
 
-            <Route
-              path="/patient/patientProfile"
-              element={<PatientProfile />}
-            />
-            <Route path="/patient/doctorProfile" element={<DoctorProfile />} />
-            <Route path="/patient/doctorslist" element={<DoctorsList />} />
-            <Route path="/patient/settings" element={<PatientSetting />} />
-            <Route path="/patient/messages" element={<PatientMessages />} />
+            {/* Doctor Routes */}
+            <Route path="doctor">
+              <Route path="overview" element={<DoctorOverview />} />
+              <Route path="appointments" element={<DoctorAppointments />} />
+              <Route path="patients" element={<DoctorPatients />} />
+              <Route path="messages" element={<DoctorMessages />} />
+              <Route path="settings" element={<Setting />} />
+            </Route>
 
+            {/* Patient Routes */}
+            <Route path="patient">
+              <Route path="patientProfile" element={<PatientProfile />} />
+              <Route path="doctorProfile" element={<DoctorProfile />} />
+              <Route path="doctorslist" element={<DoctorsList />} />
+              <Route path="settings" element={<PatientSetting />} />
+              <Route path="messages" element={<PatientMessages />} />
+            </Route>
+
+            {/* Error Route */}
             <Route path="*" element={<Error />} />
           </Route>
         </Routes>

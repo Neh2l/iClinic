@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import DoctorLayout from '../DoctorLayout';
 import axios from 'axios';
-import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
+import { FaClock } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import {
   Chart as ChartJS,
@@ -66,6 +66,10 @@ const DoctorOverview = () => {
         const dt = new Date(d);
         if (isNaN(dt)) return;
         const monthIndex = dt.getMonth();
+        // زود الـ count للشهر ده
+        if (monthIndex >= 0 && monthIndex < counts.length) {
+          counts[monthIndex]++;
+        }
       });
       if (counts.some((c) => c > 0)) return counts;
     }
