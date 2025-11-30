@@ -53,6 +53,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
 // إضافة getAllDoctors و getAllPatients
 exports.getAllDoctors = catchAsync(async (req, res, next) => {
+  // التحقق إن الـ user admin (افتراضي إنه فيه req.user من middleware زي protect)
   if (!req.user || req.user.role !== 'admin') {
     return next(new AppError('Only admins can access this data', 403));
   }
