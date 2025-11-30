@@ -40,11 +40,21 @@ const DoctorOverview = () => {
     const fetchDoctor = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(
+
+        const doctorRes = await axios.get(
           'https://iclinc-back.onrender.com/api/v1/doctors/me',
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        setDoctor(res.data.data.doctor);
+
+        const patientsRes = await axios.get(
+          'https://iclinc-back.onrender.com/api/v1/doctors/myPatients',
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        const doctorData = doctorRes.data.data.doctor;
+        doctorData.patients = patientsRes.data.data.patients || [];
+
+        setDoctor(doctorData);
       } catch (err) {
         console.error('Error fetching doctor:', err);
       } finally {
