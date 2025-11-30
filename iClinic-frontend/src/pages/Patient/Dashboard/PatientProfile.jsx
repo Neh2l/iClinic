@@ -3,6 +3,7 @@ import '../../../styles/PatientProfile.css';
 import img2 from '../../../images/dr.png';
 import { useState, useEffect } from 'react';
 import PatientLayout from '../PatientLayout';
+import { toast } from 'react-toastify';
 
 const API_BASE_URL = 'https://iclinc-back.onrender.com/api/v1';
 
@@ -151,11 +152,11 @@ export default function PatientProfile() {
             nationalID: patient.nationalID || ''
           });
         }
-        alert('Profile updated successfully!');
+        toast.success('Profile updated successfully!');
         closeModal();
       }
     } catch (err) {
-      alert('Error updating profile: ' + err.message);
+      toast.error('Error updating profile: ' + err.message);
     } finally {
       setIsSaving(false);
     }

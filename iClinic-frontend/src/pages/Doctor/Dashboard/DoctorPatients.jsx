@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DoctorLayout from '../DoctorLayout';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function SinglePatient({
   patient,
@@ -194,12 +196,24 @@ const DoctorPatients = () => {
 
   const submitReport = () => {
     if (reportReason.trim()) {
-      alert(
-        `Report submitted for ${selectedPatient.name}\nReason: ${reportReason}`
-      );
+      toast.success(`Report submitted for ${selectedPatient.name}!`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored"
+      });
       closeReportModal();
     } else {
-      alert('Please enter a reason for the report');
+      toast.error("Please enter a reason for the report", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        theme: "colored"
+      });
     }
   };
 
@@ -214,42 +228,12 @@ const DoctorPatients = () => {
           <table className="table table-hover mb-0">
             <thead>
               <tr>
-                <th
-                  className="p-3 text-white"
-                  style={{ backgroundColor: '#015D82' }}
-                >
-                  Patient Name
-                </th>
-                <th
-                  className="p-3 text-white"
-                  style={{ backgroundColor: '#015D82' }}
-                >
-                  Patient ID
-                </th>
-                <th
-                  className="p-3 text-white"
-                  style={{ backgroundColor: '#015D82' }}
-                >
-                  Date
-                </th>
-                <th
-                  className="p-3 text-white"
-                  style={{ backgroundColor: '#015D82' }}
-                >
-                  Gender
-                </th>
-                <th
-                  className="p-3 text-white"
-                  style={{ backgroundColor: '#015D82' }}
-                >
-                  Diseases
-                </th>
-                <th
-                  className="p-3 text-white"
-                  style={{ backgroundColor: '#015D82' }}
-                >
-                  Action
-                </th>
+                <th className="p-3 text-white" style={{ backgroundColor: '#015D82' }}>Patient Name</th>
+                <th className="p-3 text-white" style={{ backgroundColor: '#015D82' }}>Patient ID</th>
+                <th className="p-3 text-white" style={{ backgroundColor: '#015D82' }}>Date</th>
+                <th className="p-3 text-white" style={{ backgroundColor: '#015D82' }}>Gender</th>
+                <th className="p-3 text-white" style={{ backgroundColor: '#015D82' }}>Diseases</th>
+                <th className="p-3 text-white" style={{ backgroundColor: '#015D82' }}>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -318,6 +302,8 @@ const DoctorPatients = () => {
           </div>
         </div>
       )}
+
+    
     </DoctorLayout>
   );
 };

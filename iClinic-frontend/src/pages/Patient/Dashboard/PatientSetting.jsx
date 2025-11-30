@@ -10,6 +10,7 @@ import {
 } from 'react-icons/fa';
 import axios from 'axios';
 import img from '../../../images/Patient.png';
+import { toast } from 'react-toastify';
 
 const API_BASE_URL = 'https://iclinc-back.onrender.com/api/v1';
 
@@ -132,11 +133,11 @@ const PatientSetting = () => {
           emergencyContact: updatedPatient.emergencyContact || '',
           insurance: updatedPatient.insurance || ''
         });
-        alert('Profile info updated successfully!');
+        toast.success('Profile info updated successfully!');
         setShowProfileModal(false);
       }
     } catch (err) {
-      alert(err.response?.data?.message || 'Error updating profile');
+      toast.error(err.response?.data?.message || 'Error updating profile');
     } finally {
       setIsSaving(false);
     }
@@ -171,11 +172,11 @@ const PatientSetting = () => {
             : '',
           nationalID: updatedPatient.nationalID || ''
         });
-        alert('Profile updated successfully!');
+        toast.success('Profile updated successfully!');
         setShowModal(false);
       }
     } catch (err) {
-      alert(err.response?.data?.message || 'Error updating profile');
+      toast.error(err.response?.data?.message || 'Error updating profile');
     } finally {
       setIsSaving(false);
     }
@@ -205,7 +206,7 @@ const PatientSetting = () => {
       setNewPassword('');
       setConfirm('');
       setError('');
-      alert('Password changed successfully!');
+      toast.success('Password changed successfully!');
     } catch (err) {
       setError(err.response?.data?.message || 'Error changing password');
     }
