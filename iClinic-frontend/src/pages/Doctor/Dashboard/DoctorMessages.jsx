@@ -9,6 +9,7 @@ const DoctorMessages = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [showChatList, setShowChatList] = useState(true);
+  const [loading, setLoading] = useState(true);
   const messagesEndRef = useRef(null);
 
   const token = localStorage.getItem('token');
@@ -19,13 +20,19 @@ const DoctorMessages = () => {
   }, []);
 
   const fetchPatients = async () => {
+    setLoading(true);
     try {
+      // Use the updated endpoint that returns only subscribed patients
       const res = await axios.get(`${API_BASE}/doctors/myPatients`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setPatients(res.data.data.patients || []);
     } catch (err) {
-      console.error('Failed to fetch patients', err);
+      console.error('Failed to fetch patients:', err);
+      console.error('Error details:', err.response?.data);
+      setPatients([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -39,7 +46,8 @@ const DoctorMessages = () => {
       });
       setMessages(res.data.data.messages || []);
     } catch (err) {
-      console.error('Failed to fetch messages', err);
+      console.error('Failed to fetch messages:', err);
+      console.error('Error details:', err.response?.data);
       setMessages([]);
     }
   };
@@ -49,6 +57,11 @@ const DoctorMessages = () => {
     if (!newMessage.trim() || !selectedPatient) return;
 
     try {
+      console.log('Doctor sending message:', {
+        message: newMessage,
+        receiverId: selectedPatient._id
+      });
+
       const res = await axios.post(
         `${API_BASE}/messages/send`,
         {
@@ -58,10 +71,18 @@ const DoctorMessages = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
+      console.log('Message sent successfully:', res.data);
       setMessages((prev) => [...prev, res.data.data.message]);
       setNewMessage('');
     } catch (err) {
-      console.error('Failed to send message', err);
+      console.error('❌ Failed to send message:', err);
+      console.error('Error response:', err.response?.data);
+
+      // Show error to user
+      alert(
+        err.response?.data?.message ||
+          'Failed to send message. Please try again.'
+      );
     }
   };
 
@@ -75,6 +96,7 @@ const DoctorMessages = () => {
         className="d-flex h-100"
         style={{ minHeight: 'calc(100vh - 140px)' }}
       >
+        {/* Patients List */}
         <div
           className={`border-end bg-white ${
             showChatList ? 'd-block' : 'd-none d-lg-block'
@@ -85,7 +107,7 @@ const DoctorMessages = () => {
             className="p-3 border-bottom"
             style={{ backgroundColor: '#015D82' }}
           >
-            <h5 className="mb-3 fw-bold text-white">Patients</h5>
+            <h5 className="mb-3 fw-bold text-white">My Patients</h5>
             <input
               type="text"
               className="form-control form-control-sm rounded-pill"
@@ -93,10 +115,27 @@ const DoctorMessages = () => {
               style={{ backgroundColor: '#f1f3f4' }}
             />
           </div>
+
           <div style={{ height: 'calc(100% - 90px)', overflowY: 'auto' }}>
-            {patients.length === 0 ? (
-              <div className="text-center p-4 text-muted">
-                No patients found
+            {loading ? (
+              <div className="text-center p-4">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                <p className="mt-2 text-muted">Loading your patients...</p>
+              </div>
+            ) : patients.length === 0 ? (
+              <div className="text-center p-4">
+                <div className="mb-3">
+                  <i
+                    className="bi bi-inbox"
+                    style={{ fontSize: '3rem', color: '#ccc' }}
+                  ></i>
+                </div>
+                <h6 className="text-muted mb-2">No subscribed patients</h6>
+                <p className="text-muted small">
+                  Patients who subscribe to you will appear here
+                </p>
               </div>
             ) : (
               patients.map((patient) => (
@@ -134,12 +173,21 @@ const DoctorMessages = () => {
                       {patient.patientDisease || 'No info'}
                     </small>
                   </div>
+
+                  {/* Active subscription badge */}
+                  <span
+                    className="badge bg-success"
+                    style={{ fontSize: '0.65rem' }}
+                  >
+                    Active
+                  </span>
                 </div>
               ))
             )}
           </div>
         </div>
 
+        {/* Chat Area */}
         <div
           className={`flex-grow-1 d-flex flex-column ${
             !showChatList ? 'd-flex' : 'd-none d-lg-flex'
@@ -147,6 +195,7 @@ const DoctorMessages = () => {
         >
           {selectedPatient ? (
             <>
+              {/* Header */}
               <div
                 className="p-3 border-bottom d-flex align-items-center shadow-sm"
                 style={{ backgroundColor: '#015D82' }}
@@ -173,6 +222,7 @@ const DoctorMessages = () => {
                 </div>
               </div>
 
+              {/* Messages */}
               <div
                 className="flex-grow-1 p-3 overflow-y-auto"
                 style={{ backgroundColor: '#f5f5f5' }}
@@ -182,56 +232,71 @@ const DoctorMessages = () => {
                     No messages yet. Start the conversation!
                   </div>
                 ) : (
-                  messages.map((msg, index) => (
-                    <div
-                      key={msg._id || index}
-                      className={`d-flex mb-3 ${
-                        msg.sender === selectedPatient._id
-                          ? 'justify-content-start'
-                          : 'justify-content-end'
-                      }`}
-                    >
+                  messages.map((msg, index) => {
+                    // Convert to string for comparison
+                    const msgSenderId =
+                      typeof msg.sender === 'object'
+                        ? msg.sender._id || msg.sender.toString()
+                        : msg.sender.toString();
+                    const patientId = selectedPatient._id.toString();
+                    const isFromPatient = msgSenderId === patientId;
+
+                    console.log('Message debug:', {
+                      msgSenderId,
+                      patientId,
+                      isFromPatient,
+                      senderModel: msg.senderModel
+                    });
+
+                    return (
                       <div
-                        className={`p-3 rounded-3 shadow-sm ${
-                          msg.sender === selectedPatient._id
-                            ? 'bg-white'
-                            : 'text-white'
+                        key={msg._id || index}
+                        className={`d-flex mb-3 ${
+                          isFromPatient
+                            ? 'justify-content-start'
+                            : 'justify-content-end'
                         }`}
-                        style={{
-                          maxWidth: '70%',
-                          borderRadius: '18px',
-                          borderTopLeftRadius:
-                            msg.sender === selectedPatient._id ? '4px' : '18px',
-                          borderTopRightRadius:
-                            msg.sender === selectedPatient._id ? '18px' : '4px',
-                          backgroundColor:
-                            msg.sender === selectedPatient._id
+                      >
+                        <div
+                          className={`p-3 rounded-3 shadow-sm ${
+                            isFromPatient ? 'bg-white' : 'text-white'
+                          }`}
+                          style={{
+                            maxWidth: '70%',
+                            borderRadius: '18px',
+                            borderTopLeftRadius: isFromPatient ? '4px' : '18px',
+                            borderTopRightRadius: isFromPatient
+                              ? '18px'
+                              : '4px',
+                            backgroundColor: isFromPatient
                               ? '#ffffff'
                               : '#015D82'
-                        }}
-                      >
-                        <p className="mb-1 text-break">
-                          {msg.message || msg.text}
-                        </p>
-                        <small
-                          className={
-                            msg.sender === selectedPatient._id
-                              ? 'text-muted'
-                              : 'text-white opacity-75'
-                          }
+                          }}
                         >
-                          {new Date(msg.createdAt).toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
-                        </small>
+                          <p className="mb-1 text-break">
+                            {msg.message || msg.text}
+                          </p>
+                          <small
+                            className={
+                              isFromPatient
+                                ? 'text-muted'
+                                : 'text-white opacity-75'
+                            }
+                          >
+                            {new Date(msg.createdAt).toLocaleTimeString([], {
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </small>
+                        </div>
                       </div>
-                    </div>
-                  ))
+                    );
+                  })
                 )}
                 <div ref={messagesEndRef} />
               </div>
 
+              {/* Input */}
               <div className="p-3 bg-white border-top">
                 <div className="d-flex align-items-center gap-2">
                   <input
@@ -268,6 +333,12 @@ const DoctorMessages = () => {
             </>
           ) : (
             <div className="d-flex flex-column align-items-center justify-content-center h-100 text-center px-4">
+              <div className="mb-3">
+                <i
+                  className="bi bi-chat-dots"
+                  style={{ fontSize: '4rem', color: '#015D82', opacity: 0.3 }}
+                ></i>
+              </div>
               <h4 className="mb-2" style={{ color: '#015D82' }}>
                 No patient selected
               </h4>
