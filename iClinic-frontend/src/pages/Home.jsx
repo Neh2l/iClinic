@@ -452,7 +452,7 @@ const Hero = () => {
           <div className={styles.heroText}>
             <h1>
               Your Health,
-              <br />
+              {/* <br /> */}
               <span className={styles.primary}>
                 Anytime.
                 <br />
@@ -461,10 +461,10 @@ const Hero = () => {
             </h1>
             <p>
               Connect instantly with trusted doctors online.
-              <br />
-              Book appointments, chats for consultations,
-              <br />
-              and get medical advice across all specialties <br />- all from the
+              {/* <br /> */}
+              Book appointments, <br /> chats for consultations,
+              {/* <br /> */}
+              and get medical advice across all specialties <br /> - all from the
               comfort of your home
             </p>
 

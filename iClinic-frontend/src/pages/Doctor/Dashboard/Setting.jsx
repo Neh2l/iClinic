@@ -4,6 +4,9 @@ import styles from '../../../styles/setting.module.css';
 import dr from '../../../images/dr.png';
 import { FaMapMarkerAlt, FaEnvelope, FaPhone } from 'react-icons/fa';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+
+
 
 const Setting = () => {
   const [tab, setTab] = useState('Profile');
@@ -98,7 +101,7 @@ const Setting = () => {
   const handleSaveDoctor = async () => {
     try {
       const token = localStorage.getItem('token');
-      if (!token) return alert('No token found');
+      if (!token) return toast.error('No token found');
 
       const res = await axios.patch(
         'https://iclinc-back.onrender.com/api/v1/doctors/updateMe',
@@ -114,10 +117,10 @@ const Setting = () => {
 
       setDoctor(res.data.data.doctor);
       setShowEditModal(false);
-      alert('Profile updated successfully!');
+      toast.success('Profile updated successfully!');
     } catch (err) {
       console.log('Error updating doctor:', err.response?.data || err);
-      alert('Failed to update profile!');
+      toast.error('Failed to update profile!');
     }
   };
 
@@ -129,7 +132,7 @@ const Setting = () => {
   const handleProfileSave = async () => {
     try {
       const token = localStorage.getItem('token');
-      if (!token) return alert('No token found');
+      if (!token) return toast.error('No token found');
 
       const res = await axios.patch(
         'https://iclinc-back.onrender.com/api/v1/doctors/updateMe',
@@ -152,10 +155,10 @@ const Setting = () => {
       });
 
       setShowProfileModal(false);
-      alert('Profile info updated successfully!');
+      toast.success('Profile info updated successfully!');
     } catch (err) {
       console.log('Error updating profile:', err.response?.data || err);
-      alert('Failed to update profile info!');
+      toast.error('Failed to update profile info!');
     }
   };
 
@@ -183,7 +186,7 @@ const Setting = () => {
       setConfirm('');
       setError('');
 
-      alert('Password changed successfully!');
+      toast.success('Password changed successfully!');
     } catch (err) {
       setError(err.response?.data?.message || 'Error changing password');
     }

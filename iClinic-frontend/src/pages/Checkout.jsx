@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PatientLayout from './Patient/PatientLayout';
+import { toast } from 'react-toastify';
 
 function Checkout() {
   const { state } = useLocation();
@@ -70,7 +71,7 @@ function Checkout() {
       if (!response.ok) {
         throw new Error(data.message || 'Failed to subscribe');
       }
-      alert(
+      toast.success(
         'Subscription successful! You can now message and book appointments with this doctor.'
       );
 

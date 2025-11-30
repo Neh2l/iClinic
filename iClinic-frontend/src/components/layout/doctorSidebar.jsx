@@ -51,12 +51,13 @@ const DoctorSidebar = ({ closeSidebar }) => {
             <Link to="/doctor/settings" onClick={closeSidebar}>
               Settings
             </Link>
+            </li>
             <li>
               <Link className={styles.logout} onClick={handleLogout}>
                 Logout
               </Link>
             </li>
-          </li>
+          {/* </li> */}
         </ul>
       </div>
     </div>
