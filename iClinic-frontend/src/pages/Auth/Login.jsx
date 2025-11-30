@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -9,97 +9,14 @@ const darkColor = '#015D82';
 
 const API = axios.create({
   baseURL: 'https://iclinc-back.onrender.com/api/v1',
-  withCredentials: true
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
 
-const Verification = ({ goBack, email, userType, goCreateNew }) => {
-  const [otp, setOtp] = useState(Array(6).fill(''));
-  const inputsRef = useRef([]);
-
-  const handleChange = (value, index) => {
-    if (!/^[0-9]?$/.test(value)) return;
-    const newOtp = [...otp];
-    newOtp[index] = value;
-    setOtp(newOtp);
-    if (value && index < 5) inputsRef.current[index + 1].focus();
-  };
-
-  const handleKeyDown = (e, index) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
-      inputsRef.current[index - 1].focus();
-    }
-  };
-
-  const handleSubmit = async () => {
-    if (otp.some((d) => d === '')) return toast.error('Enter all 6 digits');
-
-    try {
-      const res = await API.post(`/${userType}s/verifyResetCode`, {
-        email,
-        code: otp.join('')
-      });
-
-      toast.success('Code verified!');
-      goCreateNew(res.data.resetToken);
-    } catch (err) {
-      toast.error(err.response?.data?.message || 'Invalid code');
-      setOtp(Array(6).fill(''));
-      inputsRef.current[0]?.focus();
-    }
-  };
-
-  return (
-    <div className="container py-5">
-      <div className="row align-items-center">
-        <div className="col-lg-6 mb-4 mb-lg-0 text-center text-lg-start">
-          <h2 className="fw-bold mb-3" style={{ color: darkColor }}>
-            Enter Verification Code
-          </h2>
-          <p className="text-muted mb-4">
-            We've sent a 6-digit code to <strong>{email}</strong>
-          </p>
-          <div className="d-flex justify-content-center justify-content-lg-start gap-2 mb-4">
-            {otp.map((digit, index) => (
-              <input
-                key={index}
-                type="text"
-                value={digit}
-                maxLength={1}
-                onChange={(e) => handleChange(e.target.value, index)}
-                onKeyDown={(e) => handleKeyDown(e, index)}
-                ref={(el) => (inputsRef.current[index] = el)}
-                className="form-control text-center fs-4 border-2"
-                style={{
-                  width: '50px',
-                  height: '50px',
-                  borderColor: darkColor
-                }}
-              />
-            ))}
-          </div>
-          <button
-            onClick={handleSubmit}
-            className="btn w-100 mb-3"
-            style={{ backgroundColor: darkColor, color: 'white' }}
-          >
-            Verify Code
-          </button>
-          <p
-            onClick={goBack}
-            style={{ cursor: 'pointer', color: darkColor, fontWeight: 'bold' }}
-          >
-            ← Back
-          </p>
-        </div>
-        <div className="col-lg-6 text-center">
-          <img src={CNP} alt="Verification" className="img-fluid" />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const CreateNewPassword = ({ resetToken, userType, goLogin }) => {
+// ===== Reset Password with Token Component =====
+const ResetPasswordWithToken = ({ token, userType, goLogin }) => {
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState('');
@@ -107,19 +24,31 @@ const CreateNewPassword = ({ resetToken, userType, goLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password !== confirm) return setError('Passwords do not match');
-    if (password.length < 6) return setError('Password too weak');
+    setError('');
+
+    if (password !== confirm) {
+      return setError('Passwords do not match');
+    }
+
+    if (password.length < 6) {
+      return setError('Password must be at least 6 characters');
+    }
 
     setLoading(true);
+
     try {
-      await API.patch(`/${userType}s/resetPassword/${resetToken}`, {
+      await API.patch(`/${userType}s/resetPassword/${token}`, {
         password,
         passwordConfirm: confirm
       });
+
       toast.success('Password changed successfully!');
-      goLogin();
+      setTimeout(() => goLogin(), 1500);
     } catch (err) {
-      setError(err.response?.data?.message || 'Reset failed');
+      const errorMessage =
+        err.response?.data?.message || 'Reset failed. Please try again.';
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -139,9 +68,10 @@ const CreateNewPassword = ({ resetToken, userType, goLogin }) => {
             <input
               type="password"
               className="form-control"
-              placeholder="New Password"
+              placeholder="New Password (min 6 characters)"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
               required
             />
             <input
@@ -150,24 +80,22 @@ const CreateNewPassword = ({ resetToken, userType, goLogin }) => {
               placeholder="Confirm Password"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
+              disabled={loading}
               required
             />
-            {error && <p className="text-danger">{error}</p>}
+            {error && <p className="text-danger mb-0">{error}</p>}
             <button
               type="submit"
               disabled={loading}
               className="btn w-100"
-              style={{ backgroundColor: darkColor, color: 'white' }}
+              style={{
+                backgroundColor: loading ? '#ccc' : darkColor,
+                color: 'white',
+                cursor: loading ? 'not-allowed' : 'pointer'
+              }}
             >
               {loading ? 'Saving...' : 'Reset Password'}
             </button>
-            <p
-              className="text-center mt-3"
-              style={{ cursor: 'pointer', color: darkColor }}
-              onClick={goLogin}
-            >
-              Back to Login
-            </p>
           </form>
         </div>
       </div>
@@ -175,19 +103,30 @@ const CreateNewPassword = ({ resetToken, userType, goLogin }) => {
   );
 };
 
-const ForgotPass = ({ goBack, goVerification, userType }) => {
+// ===== Forgot Password Component =====
+const ForgotPass = ({ goBack, goResetPassword, userType }) => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
-      await API.post(`/${userType}s/forgotPassword`, { email });
-      toast.success('Code sent to your email!');
-      goVerification(email);
+      const response = await API.post(`/${userType}s/forgotPassword`, {
+        email
+      });
+
+      // Backend returns resetToken directly
+      if (response.data.resetToken) {
+        toast.success('Reset link generated! Redirecting...');
+        setTimeout(() => goResetPassword(response.data.resetToken), 1000);
+      } else {
+        toast.error('Something went wrong. Please try again.');
+      }
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Email not found');
+      const errorMessage = err.response?.data?.message || 'Email not found';
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -203,6 +142,9 @@ const ForgotPass = ({ goBack, goVerification, userType }) => {
           <h3 className="fw-bold mb-3" style={{ color: darkColor }}>
             Forgot Password?
           </h3>
+          <p className="text-muted mb-4">
+            Enter your email to reset your password
+          </p>
           <form onSubmit={handleSubmit}>
             <input
               type="email"
@@ -210,23 +152,29 @@ const ForgotPass = ({ goBack, goVerification, userType }) => {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
               required
             />
             <button
               type="submit"
               disabled={loading}
               className="btn w-100 mb-3"
-              style={{ backgroundColor: darkColor, color: 'white' }}
+              style={{
+                backgroundColor: loading ? '#ccc' : darkColor,
+                color: 'white',
+                cursor: loading ? 'not-allowed' : 'pointer'
+              }}
             >
-              {loading ? 'Sending...' : 'Send Code'}
+              {loading ? 'Processing...' : 'Reset Password'}
             </button>
             <p
-              onClick={goBack}
+              onClick={loading ? null : goBack}
               style={{
-                cursor: 'pointer',
+                cursor: loading ? 'not-allowed' : 'pointer',
                 color: darkColor,
                 fontWeight: 'bold',
-                textAlign: 'center'
+                textAlign: 'center',
+                opacity: loading ? 0.5 : 1
               }}
             >
               ← Back to Login
@@ -238,6 +186,7 @@ const ForgotPass = ({ goBack, goVerification, userType }) => {
   );
 };
 
+// ===== Login Form Component =====
 const LoginForm = ({
   email,
   setEmail,
@@ -245,7 +194,8 @@ const LoginForm = ({
   setPassword,
   userType,
   setPage,
-  handleLogin
+  handleLogin,
+  loading
 }) => (
   <div className="container py-5">
     <div className="row align-items-center">
@@ -255,6 +205,7 @@ const LoginForm = ({
             onClick={() => setPage('Login')}
             className="btn btn-link mb-4"
             style={{ color: darkColor }}
+            disabled={loading}
           >
             ← Change Role
           </button>
@@ -269,6 +220,7 @@ const LoginForm = ({
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled={loading}
             required
           />
           <input
@@ -277,20 +229,27 @@ const LoginForm = ({
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            disabled={loading}
             required
           />
           <button
             type="submit"
             className="btn w-100"
-            style={{ backgroundColor: darkColor, color: 'white' }}
+            disabled={loading}
+            style={{
+              backgroundColor: loading ? '#ccc' : darkColor,
+              color: 'white',
+              cursor: loading ? 'not-allowed' : 'pointer'
+            }}
           >
-            LogIn
+            {loading ? 'Logging in...' : 'LogIn'}
           </button>
           <button
             type="button"
             className="btn btn-link"
             style={{ color: darkColor }}
             onClick={() => setPage('ForgotPass')}
+            disabled={loading}
           >
             Forgot Password?
           </button>
@@ -307,13 +266,14 @@ const LoginForm = ({
   </div>
 );
 
+// ===== Main Login Component =====
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [page, setPage] = useState('Login');
   const [userType, setUserType] = useState(null);
-  const [currentEmail, setCurrentEmail] = useState('');
   const [resetToken, setResetToken] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -324,10 +284,12 @@ const Login = () => {
       return;
     }
 
+    setLoading(true);
+
     try {
       const res = await API.post(`/${userType}s/login`, { email, password });
 
-      toast.success(`Welcome back, ${userType}!`);
+      toast.success(`Welcome back!`);
 
       localStorage.setItem('userType', userType);
 
@@ -341,7 +303,10 @@ const Login = () => {
         navigate('/patient/patientProfile');
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Login failed');
+      const errorMessage = err.response?.data?.message || 'Login failed';
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -359,7 +324,7 @@ const Login = () => {
             <div className="row g-4">
               <div className="col-12 col-sm-6">
                 <div
-                  className="card h-100 text-center border-0 shadow-sm hover-shadow"
+                  className="card h-100 text-center border-0 shadow-sm"
                   style={{ cursor: 'pointer' }}
                   onClick={() => {
                     setUserType('doctor');
@@ -377,7 +342,7 @@ const Login = () => {
               </div>
               <div className="col-12 col-sm-6">
                 <div
-                  className="card h-100 text-center border-0 shadow-sm hover-shadow"
+                  className="card h-100 text-center border-0 shadow-sm"
                   style={{ cursor: 'pointer' }}
                   onClick={() => {
                     setUserType('patient');
@@ -410,6 +375,7 @@ const Login = () => {
         userType={userType}
         setPage={setPage}
         handleLogin={handleLogin}
+        loading={loading}
       />
     );
   }
@@ -421,33 +387,19 @@ const Login = () => {
         goBack={() =>
           setPage(userType === 'doctor' ? 'DoctorLogin' : 'PatientLogin')
         }
-        goVerification={(mail) => {
-          setCurrentEmail(mail);
-          setPage('Verification');
-        }}
-      />
-    );
-  }
-
-  if (page === 'Verification') {
-    return (
-      <Verification
-        userType={userType}
-        email={currentEmail}
-        goBack={() => setPage('ForgotPass')}
-        goCreateNew={(token) => {
+        goResetPassword={(token) => {
           setResetToken(token);
-          setPage('CreateNewPassword');
+          setPage('ResetPassword');
         }}
       />
     );
   }
 
-  if (page === 'CreateNewPassword') {
+  if (page === 'ResetPassword') {
     return (
-      <CreateNewPassword
+      <ResetPasswordWithToken
         userType={userType}
-        resetToken={resetToken}
+        token={resetToken}
         goLogin={() =>
           setPage(userType === 'doctor' ? 'DoctorLogin' : 'PatientLogin')
         }
