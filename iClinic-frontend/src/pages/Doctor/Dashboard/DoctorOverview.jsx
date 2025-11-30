@@ -66,7 +66,6 @@ const DoctorOverview = () => {
         const dt = new Date(d);
         if (isNaN(dt)) return;
         const monthIndex = dt.getMonth();
-        // زود الـ count للشهر ده
         if (monthIndex >= 0 && monthIndex < counts.length) {
           counts[monthIndex]++;
         }
