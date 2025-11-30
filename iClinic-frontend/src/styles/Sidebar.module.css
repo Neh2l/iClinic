@@ -5,12 +5,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: sticky;  
-  top: 65px;      
-  height: calc(100vh - 70px); 
-  overflow-y: auto;  
+  position: sticky;
+  top: 65px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
 }
-
 
 .sidebar .top {
   padding: 20px;
@@ -42,14 +41,14 @@
   padding: 10px 16px;
   border-radius: 8px;
   transition: background 0.2s, color 0.2s;
-} 
+}
 .sidebar a.active {
   background-color: var(--primary-color);
   color: var(--white-color);
 }
-.sidebar a:hover{
-    background-color: #0e79a3;
-    color: var(--white-color);
+.sidebar a:hover {
+  background-color: #0e79a3;
+  color: var(--white-color);
 }
 
 .sidebar .logout {

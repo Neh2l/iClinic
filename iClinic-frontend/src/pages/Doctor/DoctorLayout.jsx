@@ -17,7 +17,6 @@ const DoctorLayout = ({ children }) => {
           top: '20px',
           left: '20px',
           zIndex: 2000,
-          // background: '#015D82',
           color: '#000',
           padding: '8px 10px',
           borderRadius: '8px',
@@ -60,7 +59,7 @@ const DoctorLayout = ({ children }) => {
         </div>
 
         <div
-          className={`d-lg-none`}
+          className="d-lg-none"
           style={{
             position: 'fixed',
             top: 0,
@@ -79,7 +78,8 @@ const DoctorLayout = ({ children }) => {
           className="flex-grow-1 p-4 p-md-5"
           style={{
             backgroundColor: '#f8f9fa',
-            marginTop: '55px'
+            marginTop: '60px',
+            minHeight: 'calc(100vh - 60px)'
           }}
         >
           <div className="container-fluid">{children}</div>

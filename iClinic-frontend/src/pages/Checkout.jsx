@@ -24,6 +24,14 @@ function Checkout() {
   // Check if form is valid
   const isFormValid = cardNumber.trim() && expiryDate.trim() && cvcCode.trim();
 
+  // Map plan names to backend plan types
+  const getPlanType = (planName) => {
+    if (planName.toLowerCase().includes('basic')) return 'basic';
+    if (planName.toLowerCase().includes('standard')) return 'standard';
+    if (planName.toLowerCase().includes('premium')) return 'premium';
+    return 'basic'; // default
+  };
+
   const handleCheckout = async () => {
     if (!isFormValid) {
       setError('Please fill in all card details');
@@ -39,11 +47,11 @@ function Checkout() {
     setError('');
 
     try {
-      // Get token from localStorage (adjust based on how you store auth)
       const token = localStorage.getItem('token');
 
+      // استخدم الـ subscription checkout endpoint الصحيح
       const response = await fetch(
-        'https://iclinc-back.onrender.com/api/v1/patients/addDoctor',
+        'https://iclinc-back.onrender.com/api/v1/subscriptions/checkout',
         {
           method: 'POST',
           headers: {
@@ -52,8 +60,7 @@ function Checkout() {
           },
           body: JSON.stringify({
             doctorId: doctor._id,
-            planId: plan.id,
-            planName: plan.name
+            plan: getPlanType(plan.name) // 'basic', 'standard', or 'premium'
           })
         }
       );
@@ -63,23 +70,16 @@ function Checkout() {
       if (!response.ok) {
         throw new Error(data.message || 'Failed to subscribe');
       }
-
-      // Success! Store subscription in localStorage
-      const subscribedDoctors = JSON.parse(
-        localStorage.getItem('subscribedDoctors') || '[]'
+      alert(
+        'Subscription successful! You can now message and book appointments with this doctor.'
       );
-      if (!subscribedDoctors.includes(doctor._id)) {
-        subscribedDoctors.push(doctor._id);
-        localStorage.setItem(
-          'subscribedDoctors',
-          JSON.stringify(subscribedDoctors)
-        );
-      }
 
-      // Show success message (optional)
-      alert('Subscription successful! You can now message the doctor.');
-
-      navigate(-1);
+      navigate('/patient/doctorProfile', {
+        state: {
+          doctor: doctor,
+          subscribed: true
+        }
+      });
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.');
     } finally {

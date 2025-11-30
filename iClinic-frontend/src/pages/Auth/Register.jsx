@@ -29,8 +29,8 @@ function Auth() {
 
     const url =
       role === 'doctor'
-        ? 'https://iclinc-backend-gs97.onrender.com/api/v1/doctors/signup'
-        : 'https://iclinc-backend-gs97.onrender.com/api/v1/patients/signup';
+        ? 'https://iclinc-back.onrender.com/api/v1/doctors/signup'
+        : 'https://iclinc-back.onrender.com/api/v1/patients/signup';
 
     const payload =
       role === 'doctor'
