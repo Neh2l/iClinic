@@ -1,6 +1,7 @@
 const Message = require('../models/msgModel');
 const Doctor = require('../models/doctorModel');
 const Patient = require('../models/patientModel');
+const Subscription = require('../models/subscriptionModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const mongoose = require('mongoose');
@@ -16,6 +17,20 @@ exports.sendMessage = catchAsync(async (req, res, next) => {
   }
 
   const receiverModel = senderRole === 'doctor' ? 'Patient' : 'Doctor';
+
+  // Subscription Check
+  if (senderRole === 'patient') {
+    const hasAccess = await Subscription.canAccess(req.user._id, receiverId);
+
+    if (!hasAccess) {
+      return next(
+        new AppError(
+          'You need an active subscription to message this doctor. Please subscribe first.',
+          403
+        )
+      );
+    }
+  }
 
   const Receiver = receiverModel === 'Patient' ? Patient : Doctor;
   const receiver = await Receiver.findById(receiverId);
@@ -38,9 +53,24 @@ exports.sendMessage = catchAsync(async (req, res, next) => {
 exports.getConversation = catchAsync(async (req, res, next) => {
   const { otherId } = req.params;
   const myId = req.user._id.toString();
+  const myRole = req.user.role;
 
   if (!mongoose.Types.ObjectId.isValid(otherId)) {
     return next(new AppError('Invalid user id', 400));
+  }
+
+  // Subscription Check
+  if (myRole === 'patient') {
+    const hasAccess = await Subscription.canAccess(myId, otherId);
+
+    if (!hasAccess) {
+      return next(
+        new AppError(
+          'You need an active subscription to access this conversation. Please subscribe first.',
+          403
+        )
+      );
+    }
   }
 
   const messages = await Message.find({
@@ -66,7 +96,7 @@ exports.getConversation = catchAsync(async (req, res, next) => {
 
 exports.getMyChats = catchAsync(async (req, res, next) => {
   const myId = mongoose.Types.ObjectId(req.user._id);
-  const myRole = req.user.role; // 'doctor' or 'patient'
+  const myRole = req.user.role;
 
   const chats = await Message.aggregate([
     {
@@ -84,7 +114,6 @@ exports.getMyChats = catchAsync(async (req, res, next) => {
         message: 1,
         read: 1,
         createdAt: 1,
-        // determine counterpart id and model
         counterpartId: {
           $cond: [{ $eq: ['$sender', myId] }, '$receiver', '$sender']
         },
@@ -171,6 +200,19 @@ exports.getMyChats = catchAsync(async (req, res, next) => {
     },
     { $sort: { lastMessageTime: -1 } }
   ]);
+
+  // If user is patient, add subscription status to each chat
+  if (myRole === 'patient') {
+    for (let chat of chats) {
+      if (chat._id.model === 'Doctor') {
+        const hasSubscription = await Subscription.canAccess(
+          myId.toString(),
+          chat._id.id.toString()
+        );
+        chat.hasActiveSubscription = hasSubscription;
+      }
+    }
+  }
 
   res.status(200).json({
     status: 'success',

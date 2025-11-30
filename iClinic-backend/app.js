@@ -17,6 +17,7 @@ const doctorRouter = require('./routers/doctorRouter');
 const adminRouter = require('./routers/adminRouter');
 const appointmentRoutes = require('./routers/appointmentRoutes');
 const msgRouter = require('./routers/msgRouter');
+const subscriptionRoutes = require('./routers/subscriptionRoutes');
 
 const app = express();
 
@@ -42,11 +43,20 @@ app.use(
   cors({
     origin: function (origin, callback) {
       if (!origin) return callback(null, true);
-      const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000'];
+
+      const allowedOrigins = [
+        'http://localhost:3000',
+        'http://127.0.0.1:3000',
+        'http://localhost:3001',
+        'http://localhost:5173',
+        'http://localhost:5174',
+        process.env.FRONTEND_URL
+      ].filter(Boolean);
+
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error('Not allowed by CORS'));
+        callback(new Error(`Not allowed by CORS: ${origin}`));
       }
     },
     credentials: true,
@@ -81,9 +91,22 @@ app.use('/api/v1/doctors', doctorRouter);
 app.use('/api/v1/admins', adminRouter);
 app.use('/api/v1/appointments', appointmentRoutes);
 app.use('/api/v1/messages', msgRouter);
+app.use('/api/v1/subscriptions', subscriptionRoutes);
 
 ////////////////////////////////////////
-// 3) UNHANDLED ROUTES
+// 3) HEALTH CHECK
+////////////////////////////////////////
+
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    message: 'Server is running',
+    timestamp: new Date().toISOString()
+  });
+});
+
+////////////////////////////////////////
+// 4) UNHANDLED ROUTES
 ////////////////////////////////////////
 
 app.all('*', (req, res, next) => {
@@ -91,7 +114,7 @@ app.all('*', (req, res, next) => {
 });
 
 ////////////////////////////////////////
-// 4) GLOBAL ERROR HANDLER
+// 5) GLOBAL ERROR HANDLER
 ////////////////////////////////////////
 
 app.use(globalErrorHandler);

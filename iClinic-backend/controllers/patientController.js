@@ -1,5 +1,6 @@
 const Patient = require('../models/patientModel');
-const Doctor = require('../models/doctorModel').default;
+const Doctor = require('../models/doctorModel');
+const Subscription = require('../models/subscriptionModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
@@ -65,15 +66,36 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     );
   }
 
-  // Allow only name, email, phone, photo, disease
+  // Allow basic info + profile info
   const filteredBody = filterObj(
     req.body,
     'name',
     'email',
     'phone',
     'photo',
-    'patientDisease'
+    'patientDisease',
+    'address',
+    'dateOfBirth',
+    'aboutMe',
+    'medicalHistory',
+    'allergies',
+    'bloodType',
+    'emergencyContact',
+    'insurance'
   );
+
+  // Validate blood type if provided
+  if (filteredBody.bloodType) {
+    const validBloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+    if (!validBloodTypes.includes(filteredBody.bloodType)) {
+      return next(
+        new AppError(
+          `Invalid blood type. Must be one of: ${validBloodTypes.join(', ')}`,
+          400
+        )
+      );
+    }
+  }
 
   const updatedPatient = await Patient.findByIdAndUpdate(
     req.user.id,
@@ -100,7 +122,7 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
-// Assign doctor to patient (Many-to-Many)
+// Assign doctor to patient (Many-to-Many) - FIXED VERSION
 exports.addDoctorToPatient = catchAsync(async (req, res, next) => {
   const { doctorId } = req.body;
 
@@ -115,21 +137,30 @@ exports.addDoctorToPatient = catchAsync(async (req, res, next) => {
     return next(new AppError('Doctor already assigned to this patient', 400));
   }
 
-  // Add doctor to patient list and patient to doctor list
-  patient.doctors.push(doctorId);
-  doctor.patients.push(patient._id);
+  // Use updateOne to bypass validation
+  await Patient.updateOne(
+    { _id: req.user.id },
+    { $addToSet: { doctors: doctorId } }
+  );
 
-  await patient.save();
-  await doctor.save();
+  await Doctor.updateOne(
+    { _id: doctorId },
+    { $addToSet: { patients: patient._id } }
+  );
+
+  // Fetch updated patient
+  const updatedPatient = await Patient.findById(req.user.id).populate(
+    'doctors'
+  );
 
   res.status(200).json({
     status: 'success',
     message: 'Doctor added successfully',
-    data: { patient }
+    data: { patient: updatedPatient }
   });
 });
 
-// Remove doctor from patient
+// Remove doctor from patient - FIXED VERSION
 exports.removeDoctorFromPatient = catchAsync(async (req, res, next) => {
   const { doctorId } = req.body;
 
@@ -139,13 +170,16 @@ exports.removeDoctorFromPatient = catchAsync(async (req, res, next) => {
   if (!doctor || !patient)
     return next(new AppError('Doctor or patient not found', 404));
 
-  patient.doctors = patient.doctors.filter((id) => id.toString() !== doctorId);
-  doctor.patients = doctor.patients.filter(
-    (id) => id.toString() !== patient._id.toString()
+  // Use updateOne to bypass validation
+  await Patient.updateOne(
+    { _id: req.user.id },
+    { $pull: { doctors: doctorId } }
   );
 
-  await patient.save();
-  await doctor.save();
+  await Doctor.updateOne(
+    { _id: doctorId },
+    { $pull: { patients: patient._id } }
+  );
 
   res.status(200).json({
     status: 'success',
@@ -153,18 +187,34 @@ exports.removeDoctorFromPatient = catchAsync(async (req, res, next) => {
   });
 });
 
-// Get all doctors for a specific patient
 exports.getMyDoctors = catchAsync(async (req, res, next) => {
-  const patient = await Patient.findById(req.user._id).populate(
-    'doctors',
-    'fullName clinicName email phone'
-  );
+  const activeSubscriptions = await Subscription.find({
+    patient: req.user._id,
+    status: 'active',
+    currentPeriodEnd: { $gt: Date.now() }
+  }).select('doctor');
 
-  if (!patient) return next(new AppError('Patient not found', 404));
+  // Extract doctor IDs from active subscriptions
+  const doctorIds = activeSubscriptions.map((sub) => sub.doctor);
+
+  if (doctorIds.length === 0) {
+    return res.status(200).json({
+      status: 'success',
+      results: 0,
+      data: { doctors: [] }
+    });
+  }
+
+  // Get full doctor details for subscribed doctors
+  const doctors = await Doctor.find({
+    _id: { $in: doctorIds }
+  }).select(
+    'fullName clinicName email phone photo specialization specialty active'
+  );
 
   res.status(200).json({
     status: 'success',
-    results: patient.doctors.length,
-    data: { doctors: patient.doctors }
+    results: doctors.length,
+    data: { doctors }
   });
 });
