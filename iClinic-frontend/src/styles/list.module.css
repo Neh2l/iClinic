@@ -12,12 +12,9 @@
   margin-right: 3.5rem;
   border: none;
   background-color: white;
-  /* border-radius: 10px; */
   padding: 0.5rem 0rem;
-  /* padding-right: 10px; */
 }
 .btn:hover {
-  /* background-color: #015d82; */
   border-bottom: 3px solid #015d82;
   color: #015d82;
   font-weight: 700;

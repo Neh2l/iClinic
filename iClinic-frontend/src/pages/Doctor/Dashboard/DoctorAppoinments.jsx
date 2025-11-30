@@ -5,7 +5,7 @@ import DoctorLayout from '../DoctorLayout';
 const DoctorAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('all'); // 'all', 'pending', 'confirmed'
+  const [filter, setFilter] = useState('all');
 
   const fetchAppointments = async () => {
     try {

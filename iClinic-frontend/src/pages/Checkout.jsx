@@ -30,7 +30,7 @@ function Checkout() {
     if (planName.toLowerCase().includes('basic')) return 'basic';
     if (planName.toLowerCase().includes('standard')) return 'standard';
     if (planName.toLowerCase().includes('premium')) return 'premium';
-    return 'basic'; // default
+    return 'basic';
   };
 
   const handleCheckout = async () => {
@@ -50,7 +50,6 @@ function Checkout() {
     try {
       const token = localStorage.getItem('token');
 
-      // استخدم الـ subscription checkout endpoint الصحيح
       const response = await fetch(
         'https://iclinc-back.onrender.com/api/v1/subscriptions/checkout',
         {
@@ -61,7 +60,7 @@ function Checkout() {
           },
           body: JSON.stringify({
             doctorId: doctor._id,
-            plan: getPlanType(plan.name) // 'basic', 'standard', or 'premium'
+            plan: getPlanType(plan.name)
           })
         }
       );

@@ -23,7 +23,6 @@ const PatientMessages = () => {
   const fetchSubscribedDoctors = async () => {
     setLoading(true);
     try {
-      // أولاً: جيب كل الدكاترة
       const doctorsRes = await axios.get(`${API_BASE}/patients/myDoctors`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -36,7 +35,6 @@ const PatientMessages = () => {
         return;
       }
 
-      // ثانياً: تشيك على كل دكتور لو المريض مشترك معاه
       const subscribedDoctors = [];
 
       for (const doctor of allDoctors) {
@@ -46,7 +44,6 @@ const PatientMessages = () => {
             { headers: { Authorization: `Bearer ${token}` } }
           );
 
-          // لو المريض مشترك، ضيفه للقائمة
           if (subscriptionRes.data.data?.hasAccess) {
             subscribedDoctors.push(doctor);
           }
@@ -88,7 +85,7 @@ const PatientMessages = () => {
     if (!newMessage.trim() || !selectedDoctor) return;
 
     try {
-      console.log('🚀 Sending message:', {
+      console.log('Sending message:', {
         message: newMessage,
         receiverId: selectedDoctor._id,
         token: token ? 'exists' : 'missing'
@@ -103,14 +100,13 @@ const PatientMessages = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      console.log('✅ Message sent successfully:', res.data);
+      console.log('Message sent successfully:', res.data);
       setMessages((prev) => [...prev, res.data.data.message]);
       setNewMessage('');
     } catch (err) {
-      console.error('❌ Failed to send message:', err);
+      console.error('Failed to send message:', err);
       console.error('Error response:', err.response?.data);
 
-      // Show error to user
       alert(
         err.response?.data?.message ||
           'Failed to send message. Please try again.'
@@ -129,7 +125,7 @@ const PatientMessages = () => {
         className="d-flex h-100"
         style={{ minHeight: 'calc(100vh - 140px)' }}
       >
-        {/* === Doctors List === */}
+        {/* Doctors List */}
         <div
           className={`border-end bg-white ${
             showChatList ? 'd-block' : 'd-none d-lg-block'
@@ -211,7 +207,7 @@ const PatientMessages = () => {
           </div>
         </div>
 
-        {/* === Chat Area === */}
+        {/* Chat Area */}
         <div
           className={`flex-grow-1 d-flex flex-column ${
             !showChatList ? 'd-flex' : 'd-none d-lg-flex'
