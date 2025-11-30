@@ -50,7 +50,9 @@ export default function PatientProfile() {
           phone: patient.phone || '',
           email: patient.email || '',
           address: patient.address || '',
-          dateOfBirth: patient.dateOfBirth || '',
+          dateOfBirth: patient.dateOfBirth
+            ? patient.dateOfBirth.split('T')[0]
+            : '',
           nationalID: patient.nationalID || ''
         });
       }
@@ -91,11 +93,10 @@ export default function PatientProfile() {
   const formatDate = (dateString) => {
     if (!dateString) return 'Not specified';
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   };
 
   const formatTime = (timeString) => {
