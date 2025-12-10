@@ -84,16 +84,11 @@ html, body {
     width: 120px !important;
     height: 120px !important;
   }
+  .form-control {
+  display: none !important;
 }
-
-@media (max-width: 400px) {
-  .col-md-2 img {
-    width: 100px !important;
-    height: 100px !important;
-  }
 }
-@media (max-width: 768px) {
-  .appointments-header, 
+.appointments-header, 
   .btn-appointments,
   .search-container {
     position: static !important;
@@ -110,6 +105,30 @@ html, body {
   .search-container input {
     width: 100% !important;
   }
+
+@media (max-width: 480px) {
+  .appointment-listed-card {
+    padding: 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+  }
+  .col-md-2 img {
+    width: 100px !important;
+    height: 100px !important;
+  }
+  .appointment-btn {
+    font-size: 12px !important;
+    padding: 6px 10px !important;
+    margin-left: 5px !important;
 }
+  .listed-patients {
+    font-size: 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+}
+
 
 

@@ -107,7 +107,7 @@ const DoctorOverview = () => {
     return (
       <div className="d-flex vh-100 justify-content-center align-items-center">
         <div className="text-center">
-          <p className="lead">Can't load doctor data, pleast login first.</p>
+          <p className="lead">Can't load doctor data, please login first.</p>
         </div>
       </div>
     );
@@ -347,8 +347,8 @@ const DoctorOverview = () => {
               </div>
             </div>
 
-            <div className="card shadow-sm p-3">
-              <div className="d-flex justify-content-between align-items-center mb-3">
+            <div className="card shadow-sm p-3 ">
+              <div className="d-flex justify-content-between align-items-center mb-3 appointment-listed-card">
                 <div>
                   <h5 className="mb-0">Appointments</h5>
                   <small className="text-muted">
@@ -357,7 +357,7 @@ const DoctorOverview = () => {
                 </div>
                 <div>
                   <button
-                    className="primary-btn btn-sm"
+                    className="primary-btn btn-sm appointment-btn"
                     onClick={() => navigate('/doctor/appointments')}
                   >
                     Go to Appointments
@@ -370,12 +370,12 @@ const DoctorOverview = () => {
                   {patientsToShow.slice(0, visiblePatients).map((p, idx) => (
                     <div
                       key={idx}
-                      className="list-group-item list-group-item-action d-flex gap-3 py-3"
+                      className="list-group-item list-group-item-action d-flex gap-3 py-3 listed-patients"
                       aria-current="true"
                       style={{ borderRadius: 10, marginBottom: 8 }}
                     >
                       <img
-                        src={p.photo || '/image 4.png'}
+                        src={p.photo || '/Face.png'}
                         alt={p.name}
                         className="rounded-circle"
                         style={{ width: 72, height: 72, objectFit: 'cover' }}
@@ -391,7 +391,7 @@ const DoctorOverview = () => {
                               Status: {p.status || 'Upcoming'}
                             </div>
                             <div className="small text-muted">
-                              <FaClock /> {p.appointmentTime || p.date || '—'}
+                             {p.appointmentTime || p.date || '—'}
                             </div>
                           </div>
                         </div>
