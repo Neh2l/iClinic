@@ -372,7 +372,7 @@ function DoctorProfile() {
               </div>
 
               <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-                <button
+                <button className={style.greenButton}
                   onClick={handleBookAppointment}
                   disabled={bookingLoading || !selectedDate || !selectedTime}
                   style={{
