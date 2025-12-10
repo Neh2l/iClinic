@@ -87,10 +87,6 @@ html, body {
     width: 120px !important;
     height: 120px !important;
   }
-  .form-control {
-  display: none !important;
-}
-}
 .appointments-header, 
   .btn-appointments,
   .search-container {
@@ -108,6 +104,7 @@ html, body {
   .search-container input {
     width: 100% !important;
   }
+}
 
 @media (max-width: 480px) {
   .appointment-listed-card {
