@@ -215,7 +215,7 @@ const DoctorOverview = () => {
               <img
                 src={doctor.photo || '/image 1 (1).png'}
                 alt="doc"
-                className="rounded-circle mb-2"
+                className="rounded-circle mb-2 docImg"
                 style={{
                   width: 180,
                   height: 180,
