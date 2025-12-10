@@ -17,7 +17,7 @@ function SinglePatient({
         <td className="p-3">
           <div className="d-flex align-items-center">
             <img
-              src={patient.photo || '/profile.jpg'}
+              src={patient.photo || '/Face.png'}
               alt={patient.name}
               className="rounded-circle me-2"
               style={{ width: '40px', height: '40px' }}
