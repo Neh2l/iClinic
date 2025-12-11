@@ -29,7 +29,7 @@ function SinglePatient({
         <td className="p-3">
           {new Date(patient.createdAt).toLocaleDateString()}
         </td>
-        <td className="p-3">{patient.gender}</td>
+        <td className="p-3">{patient.gender || 'Female'}</td>
         <td className="p-3">{patient.patientDisease}</td>
         <td className="p-3 position-relative bg-white">
           <button
@@ -197,22 +197,22 @@ const DoctorPatients = () => {
   const submitReport = () => {
     if (reportReason.trim()) {
       toast.success(`Report submitted for ${selectedPatient.name}!`, {
-        position: "top-right",
+        position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored"
+        theme: 'colored'
       });
       closeReportModal();
     } else {
-      toast.error("Please enter a reason for the report", {
-        position: "top-right",
+      toast.error('Please enter a reason for the report', {
+        position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
-        theme: "colored"
+        theme: 'colored'
       });
     }
   };
@@ -228,12 +228,42 @@ const DoctorPatients = () => {
           <table className="table table-hover mb-0">
             <thead>
               <tr>
-                <th className="p-3 text-white" style={{ backgroundColor: '#015D82' }}>Patient Name</th>
-                <th className="p-3 text-white" style={{ backgroundColor: '#015D82' }}>Patient ID</th>
-                <th className="p-3 text-white" style={{ backgroundColor: '#015D82' }}>Date</th>
-                <th className="p-3 text-white" style={{ backgroundColor: '#015D82' }}>Gender</th>
-                <th className="p-3 text-white" style={{ backgroundColor: '#015D82' }}>Diseases</th>
-                <th className="p-3 text-white" style={{ backgroundColor: '#015D82' }}>Action</th>
+                <th
+                  className="p-3 text-white"
+                  style={{ backgroundColor: '#015D82' }}
+                >
+                  Patient Name
+                </th>
+                <th
+                  className="p-3 text-white"
+                  style={{ backgroundColor: '#015D82' }}
+                >
+                  Patient ID
+                </th>
+                <th
+                  className="p-3 text-white"
+                  style={{ backgroundColor: '#015D82' }}
+                >
+                  Date
+                </th>
+                <th
+                  className="p-3 text-white"
+                  style={{ backgroundColor: '#015D82' }}
+                >
+                  Gender
+                </th>
+                <th
+                  className="p-3 text-white"
+                  style={{ backgroundColor: '#015D82' }}
+                >
+                  Diseases
+                </th>
+                <th
+                  className="p-3 text-white"
+                  style={{ backgroundColor: '#015D82' }}
+                >
+                  Action
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -302,8 +332,6 @@ const DoctorPatients = () => {
           </div>
         </div>
       )}
-
-    
     </DoctorLayout>
   );
 };
