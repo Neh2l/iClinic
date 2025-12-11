@@ -513,8 +513,8 @@ const Nav = () => {
         </div>
         <div className={`${styles.navLinks} ${isOpen ? styles.show : ''}`}>
           <a href="#home">Home</a>
-          <a href="#features">Features</a>
-          <a href="#how-it-works">How it works</a>
+          <a href="#features">Services</a>
+          <a href="#how-it-works">Fields</a>
           <a href="#Testimonies">Testimonies</a>
           <div className={styles.navMobilButtons}>
             <button
