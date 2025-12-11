@@ -180,7 +180,7 @@ const DoctorOverview = () => {
     <DoctorLayout>
       <div
         className="container-fluid p-4"
-        style={{ background: '#e6f6fb', minHeight: '100vh' }}
+        style={{ background: '#e6f6fb', minHeight: '100vh' , borderRadius: '12px'}}
       >
         <div className="d-flex justify-content-between align-items-center mb-3 header-overview-section">
           <div>
@@ -199,7 +199,7 @@ const DoctorOverview = () => {
               placeholder="Search"
               style={{ width: 300, borderRadius: 20 }}
             />
-            <button className="btn btn-light">
+            <button className="btn btn-light clock-btn">
               <FaClock />
             </button>
           </div>
@@ -217,8 +217,8 @@ const DoctorOverview = () => {
                 alt="doc"
                 className="rounded-circle mb-2 docImg"
                 style={{
-                  width: 180,
-                  height: 180,
+                  width: 100,
+                  height: 140,
                   objectFit: 'cover',
                   border: '3px solid rgba(11,107,130,0.6)'
                 }}
@@ -396,7 +396,9 @@ const DoctorOverview = () => {
                           </div>
                         </div>
                         <div className="mt-2 d-flex gap-2">
-                          <button className="btn btn-sm btn-outline-success">
+                          <button className="btn btn-sm btn-outline-success"
+                          onClick={() => navigate('/doctor/messages')}
+                          >
                             Message
                           </button>
                         </div>
