@@ -30,7 +30,7 @@ function SinglePatient({
           {new Date(patient.createdAt).toLocaleDateString()}
         </td>
         <td className="p-3">{patient.gender || 'Female'}</td>
-        <td className="p-3">{patient.patientDisease}</td>
+        <td className="p-3">{patient.patientDisease || 'Neuro'}</td>
         <td className="p-3 position-relative bg-white">
           <button
             onClick={() => toggleDropdown(patient._id)}
