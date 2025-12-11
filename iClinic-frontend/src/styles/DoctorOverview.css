@@ -55,6 +55,14 @@ html, body {
   background-color: white;
   object-fit: cover;
 }
+.clock-btn{
+  border-radius: 50% !important;
+  width: 40px !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
 @media (max-width: 1200px) {
   .col-md-2 {
     width: 100% !important;

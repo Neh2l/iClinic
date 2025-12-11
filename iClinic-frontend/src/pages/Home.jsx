@@ -468,7 +468,7 @@ const Hero = () => {
               comfort of your home
             </p>
 
-            <a href="#" className={styles.exploreContainer}>
+            <a href="#how-it-works" className={styles.exploreContainer}>
               <button className={styles.exploreBtn}>Explore now</button>
               <img src="/Arrow right-circle.png" alt="arrow" />
             </a>
