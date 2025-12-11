@@ -182,7 +182,7 @@ const DoctorOverview = () => {
         className="container-fluid p-4"
         style={{ background: '#e6f6fb', minHeight: '100vh' }}
       >
-        <div className="d-flex justify-content-between align-items-center mb-3">
+        <div className="d-flex justify-content-between align-items-center mb-3 header-overview-section">
           <div>
             <h1 className="h3 fw-bold" style={{ color: '#0e79a3' }}>
               Inventory Management

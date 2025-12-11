@@ -104,6 +104,11 @@ html, body {
   .search-container input {
     width: 100% !important;
   }
+  .header-overview-section {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 15px !important;
+  }
 }
 
 @media (max-width: 480px) {
