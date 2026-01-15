@@ -1,0 +1,147 @@
+
+html, body {
+  overflow-x: hidden !important;
+  width: 100% !important;
+}
+
+* {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.container-fluid,
+.row,
+.col-md-2,
+.col-md-10 {
+  overflow-x: hidden !important;
+}
+
+.col-md-2 {
+  padding: 0 10px;
+}
+
+.col-md-2 .card {
+  overflow: hidden !important;
+  text-align: center;
+  border-radius: 12px;
+}
+
+.col-md-2 img,
+.doctor-card img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+  margin: 0 auto;
+  border-radius: 50%;
+}
+
+.col-md-2 img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+}
+
+.col-md-10 {
+  padding: 10px 20px;
+}
+
+.list-group-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-word;
+}
+.docImg{
+  background-color: white;
+  object-fit: cover;
+}
+.clock-btn{
+  border-radius: 50% !important;
+  width: 40px !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+@media (max-width: 1200px) {
+  .col-md-2 {
+    width: 100% !important;
+    margin-bottom: 20px;
+  }
+
+  .col-md-2 img {
+    width: 130px !important;
+    height: 130px !important;
+  }
+}
+
+@media (max-width: 768px) {
+
+  html, body {
+    overflow-x: hidden !important;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .col-md-10 {
+    width: 100% !important;
+    padding: 10px 10px;
+  }
+
+  .col-md-2 img {
+    width: 120px !important;
+    height: 120px !important;
+  }
+.appointments-header, 
+  .btn-appointments,
+  .search-container {
+    position: static !important;
+    margin: 10px 0 !important;
+    width: 100% !important;
+    text-align: left !important;
+  }
+
+  .btn-appointments {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .search-container input {
+    width: 100% !important;
+  }
+  .header-overview-section {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 15px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .appointment-listed-card {
+    padding: 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+  }
+  .col-md-2 img {
+    width: 100px !important;
+    height: 100px !important;
+  }
+  .appointment-btn {
+    font-size: 12px !important;
+    padding: 6px 10px !important;
+    margin-left: 5px !important;
+}
+  .listed-patients {
+    font-size: 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+}
+
+
+
