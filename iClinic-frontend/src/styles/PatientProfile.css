@@ -18,6 +18,7 @@
   display: inline-block;
   padding: 8px;
   background: rgba(255, 255, 255, 0.3);
+  -webkit-backdrop-filter: blur(50px);
   backdrop-filter: blur(50px);
 }
 .patientDetails {
@@ -29,6 +30,7 @@
 }
 .svg-info {
   background: rgba(255, 255, 255, 0.19);
+  -webkit-backdrop-filter: blur(50px);
   backdrop-filter: blur(50px);
   border-radius: 20%;
   padding: 5px;
@@ -64,6 +66,7 @@
 
 .info {
   background: rgba(255, 255, 255, 0.253);
+  -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
